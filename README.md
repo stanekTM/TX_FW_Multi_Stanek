@@ -1,3 +1,18 @@
+## Note:
+Support for custom Arduino-based DIY receivers with RF24 library from this repository [RC_RX_nRF24L01_Telemetry_Motor_Driver_Servo](https://github.com/stanekTM/RC_RX_nRF24L01_Telemetry_Motor_Driver_Servo).
+
+Included communication nRF24L01P "Stanek". Fixed RF channel, fixed address. 
+Channel reduction in sub protocols 2, 3, 4, 5, 6, 8, 10 and 12ch.
+This is the maximum in the "Servo" library on the Atmega328P processor.
+Telemetry A1 for measuring 1S Lipo power supply RX and TRSS.
+
+Operated in serial mode.
+* Jumper T12
+* OpenTX v2.3.11
+* Multiprotocol v1.3.2.33
+
+If necessary, I update with the latest version.
+#
 # Multiprotocol TX Module
 <img align="right" width=300 src="docs/images/multi.png" />
 

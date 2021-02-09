@@ -18,17 +18,15 @@
 //******************
 #define VERSION_MAJOR		1
 #define VERSION_MINOR		3
-#define VERSION_REVISION	4
-#define VERSION_PATCH_LEVEL	9
-
-#define MODE_SERIAL 0
+#define VERSION_REVISION	2
+#define VERSION_PATCH_LEVEL	33
 
 //******************
 // Protocols
 //******************
 enum PROTOCOLS
 {
-	PROTO_PROTOLIST	= 0,	// NO RF
+	MODE_SERIAL		= 0,	// Serial commands
 	PROTO_FLYSKY 	= 1,	// =>A7105
 	PROTO_HUBSAN	= 2,	// =>A7105
 	PROTO_FRSKYD	= 3,	// =>CC2500
@@ -73,7 +71,7 @@ enum PROTOCOLS
 	PROTO_BUGSMINI	= 42,	// =>NRF24L01
 	PROTO_TRAXXAS	= 43,	// =>CYRF6936
 	PROTO_NCC1701	= 44,	// =>NRF24L01
-	PROTO_E01X		= 45,	// =>CYRF6936
+	PROTO_E01X		= 45,	// =>NRF24L01
 	PROTO_V911S		= 46,	// =>NRF24L01
 	PROTO_GD00X		= 47,	// =>NRF24L01
 	PROTO_V761		= 48,	// =>NRF24L01
@@ -86,10 +84,10 @@ enum PROTOCOLS
 	PROTO_FRSKY_RX	= 55,	// =>CC2500
 	PROTO_AFHDS2A_RX= 56,	// =>A7105
 	PROTO_HOTT		= 57,	// =>CC2500
-	PROTO_FX		= 58,	// =>NRF24L01
+	PROTO_FX816		= 58,	// =>NRF24L01
 	PROTO_BAYANG_RX	= 59,	// =>NRF24L01
 	PROTO_PELIKAN	= 60,	// =>A7105
-	PROTO_EAZYRC	= 61,	// =>NRF24L01
+	PROTO_TIGER		= 61,	// =>NRF24L01
 	PROTO_XK		= 62,	// =>NRF24L01
 	PROTO_XN297DUMP	= 63,	// =>NRF24L01
 	PROTO_FRSKYX2	= 64,	// =>CC2500
@@ -111,23 +109,8 @@ enum PROTOCOLS
 	PROTO_E010R5	= 81,	// =>CYRF6936
 	PROTO_LOLI		= 82,	// =>NRF24L01
 	PROTO_E129		= 83,	// =>CYRF6936
-	PROTO_JOYSWAY	= 84,	// =>A7105
-	PROTO_E016H		= 85,	// =>NRF24L01
-	PROTO_CONFIG	= 86,	// Module config
-	PROTO_IKEAANSLUTA = 87, // =>CC2500
-	PROTO_WILLIFM	= 88,	// 27/35ab/40/41/72 MHz module external project
-	PROTO_LOSI		= 89,	// =>CYRF6936
-	PROTO_MOULDKG	= 90,	// =>NRF24L01
-	PROTO_XERALL	= 91,	// =>NRF24L01
-	PROTO_MT99XX2	= 92,	// =>NRF24L01, extension of MT99XX protocol
-	PROTO_KYOSHO2	= 93,	// =>NRF24L01
-	PROTO_SCORPIO	= 94,	// =>CYRF6936
-	PROTO_BLUEFLY	= 95,	// =>CC2500 & NRF24L01
-	PROTO_BUMBLEB	= 96,	// =>CC2500 & NRF24L01
-	PROTO_SGF22		= 97,	// =>NRF24L01
-	PROTO_KYOSHO3	= 98,	// =>CYRF6936
+	PROTO_STANEK  = 84, // =>NRF24L01
 
-	
 	PROTO_NANORF	= 126,	// =>NRF24L01
 	PROTO_TEST		= 127,	// =>CC2500
 };
@@ -158,8 +141,6 @@ enum AFHDS2A
 	PPM_SBUS = 3,
 	PWM_IB16 = 4,
 	PPM_IB16 = 5,
-	PWM_SB16 = 6,
-	PPM_SB16 = 7,
 };
 enum Hisky
 {
@@ -168,19 +149,11 @@ enum Hisky
 };
 enum DSM
 {
-	DSM2_1F		= 0,
-	DSM2_2F		= 1,
-	DSMX_1F		= 2,
-	DSMX_2F		= 3,
-	DSM_AUTO	= 4,
-	DSMR		= 5,
-	DSM2_SFC	= 6,
-};
-enum DSM_RX
-{
-	DSM_RX		= 0,
-	DSM_CLONE	= 1,
-	DSM_ERASE	= 2,
+	DSM2_22	= 0,
+	DSM2_11	= 1,
+	DSMX_22	= 2,
+	DSMX_11	= 3,
+	DSM_AUTO = 4,
 };
 enum YD717
 {       			
@@ -202,12 +175,11 @@ enum SYMAX
 };
 enum SLT
 {
-	SLT_V1		= 0,
-	SLT_V2		= 1,
-	Q100		= 2,
-	Q200		= 3,
-	MR100		= 4,
-	SLT_V1_4	= 5,
+	SLT_V1	= 0,
+	SLT_V2	= 1,
+	Q100	= 2,
+	Q200	= 3,
+	MR100	= 4,
 };
 enum CX10
 {
@@ -249,12 +221,6 @@ enum MT99XX
 	LS		= 3,
 	FY805	= 4,
 	A180	= 5,
-	DRAGON	= 6,
-	F949G	= 7,
-};
-enum MT99XX2
-{
-	PA18	= 0,
 };
 enum MJXQ
 {
@@ -363,8 +329,7 @@ enum REDPINE
 };
 enum TRAXXAS
 {
-	TRAXXAS_TQ2	= 0,
-	TRAXXAS_TQ1	= 1,
+	RX6519	= 0,
 };
 enum ESKY150
 {
@@ -380,7 +345,6 @@ enum XK
 {
 	X450	= 0,
 	X420	= 1,
-	XK_CARS	= 2,
 };
 enum XN297DUMP
 {
@@ -388,8 +352,6 @@ enum XN297DUMP
 	XN297DUMP_1M	= 1,
 	XN297DUMP_2M	= 2,
 	XN297DUMP_AUTO	= 3,
-	XN297DUMP_NRF	= 4,
-	XN297DUMP_CC2500	= 5,
 };
 enum FRSKY_R9
 {
@@ -407,79 +369,61 @@ enum ESKY
 	ESKY_STD	= 0,
 	ESKY_ET4	= 1,
 };
+
 enum FRSKY_RX
 {
 	FRSKY_RX	= 0,
 	FRSKY_CLONE	= 1,
 	FRSKY_ERASE	= 2,
-	FRSKY_CPPM  = 3,
 };
+
 enum FRSKYL
 {
 	LR12		= 0,
 	LR12_6CH	= 1,
 };
+
 enum HOTT
 {
 	HOTT_SYNC	= 0,
 	HOTT_NO_SYNC= 1,
 };
+
 enum PELIKAN
 {
 	PELIKAN_PRO	= 0,
 	PELIKAN_LITE= 1,
-	PELIKAN_SCX24=2,
 };
+
 enum V761
 {
 	V761_3CH	= 0,
 	V761_4CH	= 1,
-	V761_TOPRC	= 2,
 };
+
 enum HEIGHT
 {
 	HEIGHT_5CH	= 0,
 	HEIGHT_8CH	= 1,
 };
+
 enum KYOSHO
 {
 	KYOSHO_FHSS	= 0,
 	KYOSHO_HYPE	= 1,
 };
+
 enum JJRC345
 {
 	JJRC345		= 0,
 	SKYTMBLR	= 1,
 };
+
 enum RLINK
 {
 	RLINK_SURFACE	= 0,
 	RLINK_AIR		= 1,
 	RLINK_DUMBORC	= 2,
-	RLINK_RC4G		= 3,
-};
-enum MOULDKG
-{
-	MOULDKG_ANALOG	= 0,
-	MOULDKG_DIGIT	= 1,
-};
-enum KF606
-{
-	KF606_KF606		= 0,
-	KF606_MIG320	= 1,
-	KF606_ZCZ50		= 2,
-};
-enum E129
-{
-	E129_E129		= 0,
-	E129_C186		= 1,
-};
-enum FX
-{
-	FX816			= 0,
-	FX620			= 1,
-    FX9630          = 2,
-	FX_Q560			= 3,
 };
 
 #define NONE 		0
@@ -505,7 +449,7 @@ typedef uint16_t (*uint16_function_t) (void);	//pointer to a function with no pa
 typedef void     (*void_function_t  ) (void);	//pointer to a function with no parameters which returns nothing
 
 //Protocols definition
-struct __attribute__((__packed__)) mm_protocol_definition {
+struct mm_protocol_definition {
 	uint8_t protocol;
 	const char *ProtoString;
 	const char *SubProtoString;
@@ -544,9 +488,6 @@ enum MultiPacketTypes
 	MULTI_TELEMETRY_AFHDS2A_AC		= 12,
 	MULTI_TELEMETRY_RX_CHANNELS		= 13,
 	MULTI_TELEMETRY_HOTT			= 14,
-	MULTI_TELEMETRY_MLINK			= 15,
-	MULTI_TELEMETRY_CONFIG			= 16,
-	MULTI_TELEMETRY_PROTO			= 17,
 };
 
 // Macros
@@ -640,11 +581,6 @@ enum MultiPacketTypes
 #define DISABLE_TELEM_on		protocol_flags3 |= _BV(3)
 #define IS_DISABLE_TELEM_on		( ( protocol_flags3 & _BV(3) ) !=0 )
 #define IS_DISABLE_TELEM_off	( ( protocol_flags3 & _BV(3) ) ==0 )
-//Valid/invalid sub_proto
-#define SUB_PROTO_VALID			protocol_flags3 &= ~_BV(6)
-#define SUB_PROTO_INVALID		protocol_flags3 |= _BV(6)
-#define IS_SUB_PROTO_INVALID	( ( protocol_flags3 & _BV(6) ) !=0 )
-#define IS_SUB_PROTO_VALID		( ( protocol_flags3 & _BV(6) ) ==0 )
 //LBT power
 #define LBT_POWER_off		protocol_flags3 &= ~_BV(7)
 #define LBT_POWER_on		protocol_flags3 |= _BV(7)
@@ -797,10 +733,6 @@ enum CYRF_POWER
 #define	CYRF_RANGE_POWER	CYRF_POWER_1	// 1/30 of the full power distance
 #define	CYRF_BIND_POWER		CYRF_POWER_0
 
-// SX1276
-#define JP_T18		1
-#define JP_TLite	2
-
 enum TXRX_State {
 	TXRX_OFF,
 	TX_EN,
@@ -821,8 +753,6 @@ enum {
 #define SPEED_125K	3
 
 /** EEPROM Layout */
-#define EEPROM_CID_INIT_OFFSET	0		// 1 byte flag that Cyrf ID is initialized
-#define EEPROM_CID_OFFSET		1		// 6 bytes Cyrf ID
 #define EEPROM_ID_OFFSET		10		// Module ID (4 bytes)
 #define EEPROM_BANK_OFFSET		15		// Current bank number (1 byte)
 #define EEPROM_ID_VALID_OFFSET	20		// 1 byte flag that ID is valid
@@ -839,10 +769,7 @@ enum {
 #define FRSKYX_CLONE_EEPROM_OFFSET	822	// (1) format + (3) TX ID + (47) channels, 51 bytes, end is 873
 #define FRSKYX2_CLONE_EEPROM_OFFSET	873	// (1) format + (3) TX ID, 4 bytes, end is 877
 #define DSM_RX_EEPROM_OFFSET	877		// (4) TX ID + format, 5 bytes, end is 882
-#define MOULDKG_EEPROM_OFFSET	882		// RX ID, 3 bytes per model, end is 882+64*3=1074
-#define DSM_CLONE_EEPROM_OFFSET	1074	// (4) TX ID, (1) Initialized, end is 1079
-#define TRAXXAS_EEPROM_OFFSET	1079	// RX ID and SOP index, 3 bytes per model id, end is 1079+192=1271
-//#define CONFIG_EEPROM_OFFSET 	1271	// Current configuration of the multimodule
+//#define CONFIG_EEPROM_OFFSET 	882		// Current configuration of the multimodule
 
 /* STM32 Flash Size */
 #ifndef DISABLE_FLASH_SIZE_CHECK
@@ -928,9 +855,10 @@ Serial: 100000 Baud 8e2      _ xxxx xxxx p --
 				FRSKY_RX	55
 				AFHDS2A_RX	56
 				HOTT		57
-				FX		58
+				FX816		58
 				BAYANG_RX	59
 				PELIKAN		60
+				TIGER		61
 				XK			62
 				XN297DUMP	63
 				FRSKYX2		64
@@ -952,9 +880,6 @@ Serial: 100000 Baud 8e2      _ xxxx xxxx p --
 				E010R5		81
 				LOLI		82
 				E129		83
-				JOYSWAY		84
-				E016H		85
-				XERALL		91
    BindBit=>		0x80	1=Bind/0=No
    AutoBindBit=>	0x40	1=Yes /0=No
    RangeCheck=>		0x20	1=Yes /0=No
@@ -975,15 +900,11 @@ Serial: 100000 Baud 8e2      _ xxxx xxxx p --
 			Hisky		0
 			HK310		1
 		sub_protocol==DSM
-			DSM2_1F 	0
-			DSM2_2F 	1
-			DSMX_1F 	2
-			DSMX_2F 	3
+			DSM2_22 	0
+			DSM2_11 	1
+			DSMX_22 	2
+			DSMX_11 	3
 			DSM_AUTO	4
-		sub_protocol==DSM_RX
-			DSM_RX		0
-			DSM_CLONE	1
-			DSM_ERASE	2
 		sub_protocol==YD717
 			YD717		0
 			SKYWLKR		1
@@ -1104,6 +1025,7 @@ Serial: 100000 Baud 8e2      _ xxxx xxxx p --
 		sub_protocol==E01X
 			E012		0
 			E015		1
+			E016H		2
 		sub_protocol==GD00X
 			GD_V1		0
 			GD_V2		1
@@ -1111,7 +1033,7 @@ Serial: 100000 Baud 8e2      _ xxxx xxxx p --
 			RED_FAST	0
 			RED_SLOW	1
 		sub_protocol==TRAXXAS
-			TQ			0
+			RX6519		0
 		sub_protocol==ESKY150
 			ESKY150_4CH	0
 			ESKY150_7CH	1
@@ -1145,7 +1067,6 @@ Serial: 100000 Baud 8e2      _ xxxx xxxx p --
 		sub_protocol==PELIKAN
 			PELIKAN_PRO		0
 			PELIKAN_LITE	1
-			PELIKAN_SCX24	2
 		sub_protocol==V761
 			V761_3CH	0
 			V761_4CH	1
@@ -1230,17 +1151,16 @@ Serial: 100000 Baud 8e2      _ xxxx xxxx p --
    [11] Prev valid protocol number, can be used to skip invalid protocols
    [12..18] Protocol name [7], not null terminated if prototcol len == 7
    [19>>4] Option text to be displayed: 
-			OPTION_NONE		0	Hidden field
-			OPTION_OPTION	1	"Option:"		value=-128..0(default)..127
-			OPTION_RFTUNE	2	"RF freq tune:"	value=-128..0(default)..127
-			OPTION_VIDFREQ	3	"Video freq:"	value=-128..0(default)..127
-			OPTION_FIXEDID	4	"ID type:"		value="Auto":0(default), "Fixed":1
-			OPTION_TELEM	5	"Telem:"		value="Off":0(default), "On":1, "Off+Aux":2, "On+Aux":3
-			OPTION_SRVFREQ	6	"Servo freq(Hz):"	value="50":0(default).."400":70 => display=50+5*option with option=0..70
-			OPTION_MAXTHR	7	"Max throw:"	value="Disabled":0, "Enabled":1
-			OPTION_RFCHAN	8	"Select RF chan:"	value=-128..0(default)..127
-			OPTION_RFPOWER	9	"RF power:"		"1.6mW":0(default),"2.0mW":1,"2.5mW":2,"3.2mW":3,"4.0mW":4,"5.0mW":5,"6.3mW":6,"7.9mW":7,"10mW\0":8,"13mW\0":9,"16mW\0":10,"20mW\0":11,"25mW\0":12,"32mW\0":13,"40mW\0":14,"50mW\0":15
-			OPTION_WBUS		10	"Output:"		"WBUS":0(default),"PPM":1
+			OPTION_NONE		0
+			OPTION_OPTION	1
+			OPTION_RFTUNE	2
+			OPTION_VIDFREQ	3
+			OPTION_FIXEDID	4
+			OPTION_TELEM	5
+			OPTION_SRVFREQ	6
+			OPTION_MAXTHR	7
+			OPTION_RFCHAN	8
+			OPTION_RFPOWER	9
    [19&0x0F] Number of sub protocols
    [20..27] Sub protocol name [8], not null terminated if sub prototcol len == 8
    If the current protocol is invalid [12..27] are all 0x00.
@@ -1307,34 +1227,11 @@ Serial: 100000 Baud 8e2      _ xxxx xxxx p --
    data[4-]= packed channels data, 11 bit per channel
 
   Type 0x0E HoTT telemetry
-   length: 15
+   length: 14
    data[0] = TX_RSSI
    data[1] = TX_LQI
    data[2] = type
    data[3] = page
-   data[4-14] = data
+   data[4-13] = data
 
-  Type 0x0F M-Link telemetry
-   length: 10
-   data[0] = TX_RSSI
-   data[1] = TX_LQI
-   data[2] = telem_type
-   data[3-9] = data
-
-  Type 0x10 Config telemetry
-   length: 22
-   data[0..21] = Config data
-   
-  Type 0x11 Protocol list export via telemetry. Used by the protocol PROTO_PROTOLIST=0, the list entry is given by the Option field.
-   length: variable
-   data[0]     = protocol number, 0xFF is an invalid list entry (Option value too large), Option == 0xFF -> number of protocols in the list
-   data[1..n]  = protocol name null terminated
-   data[n+1]   = flags
-                 flags>>4 Option text number to be displayed (check multi status for description)
-                 flags&0x01 failsafe supported
-                 flags&0x02 Channel Map Disabled supported
-   data[n+2]   = number of sub protocols
-   data[n+3]   = sub protocols text length, only sent if nbr_sub != 0
-   data[n+4..] = sub protocol names, only sent if nbr_sub != 0
-   
 */
