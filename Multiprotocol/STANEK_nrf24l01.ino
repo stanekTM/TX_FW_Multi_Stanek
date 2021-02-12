@@ -59,25 +59,13 @@ static void __attribute__((unused)) STANEK_setAddress()
 static void __attribute__((unused)) STANEK_RF_init()
 {
   NRF24L01_Initialize();
-  NRF24L01_SetPower();
   NRF24L01_SetBitrate(NRF24L01_BR_250K);           // NRF24L01_BR_250K (fails for units without +), NRF24L01_BR_1M, NRF24L01_BR_2M
-  NRF24L01_WriteReg(NRF24L01_01_EN_AA, 0x00);      //0x00 no auto acknowledgment on all data pipes
-  NRF24L01_SetTxRxMode(TX_EN);                     // power up and 16 bit CRC
-
   STANEK_setAddress();
-
-  NRF24L01_WriteReg(NRF24L01_07_STATUS, 0x70);     //0x70 reset status
-  NRF24L01_FlushTx();
-  NRF24L01_FlushRx();
-  NRF24L01_WriteReg(NRF24L01_02_EN_RXADDR, 0x03);  //0x03 enable only data pipe
   NRF24L01_WriteReg(NRF24L01_11_RX_PW_P0, 0x20);   //0x20 32 byte packet length
   NRF24L01_WriteReg(NRF24L01_12_RX_PW_P1, 0x20);   //0x20 32 byte packet length
-  NRF24L01_WriteReg(NRF24L01_03_SETUP_AW, 0x03);   //0x03 5 bytes adress
-  NRF24L01_WriteReg(NRF24L01_04_SETUP_RETR, 0x1A); //0x1A ,0xFF ,0x5F no retransmits
-  NRF24L01_Activate(0x73);                         // activate feature register
   NRF24L01_WriteReg(NRF24L01_1C_DYNPD, 0x3F);      //0x3F enable dynamic payload length on all pipes
   NRF24L01_WriteReg(NRF24L01_1D_FEATURE, 0x04);    //0x04 enable dynamic Payload Length
-  NRF24L01_Activate(0x73);                         // activate feature register
+  NRF24L01_SetTxRxMode(TX_EN);                     // clear data ready, data sent, retransmit and enable CRC 16bits, ready for TX
 }
 
 //**********************************************************************************************************************************

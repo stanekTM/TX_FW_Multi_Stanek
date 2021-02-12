@@ -74,7 +74,7 @@
 //4-in-1 modules have the A7105, CYRF6936, CC2500 and NRF24L01 RF chips installed
 //5-in-1 modules have all RF chips installed
 //!!!If a RF chip is present it MUST be marked as installed!!! or weird things will happen you have been warned.
-//#define A7105_INSTALLED
+#define A7105_INSTALLED
 #define CYRF6936_INSTALLED
 #define CC2500_INSTALLED
 #define NRF24L01_INSTALLED
@@ -242,7 +242,6 @@
 #define	REALACC_NRF24L01_INO
 #define	SHENQI_NRF24L01_INO
 #define	SLT_NRF24L01_INO
-#define STANEK_NRF24L01_INO
 #define	SYMAX_NRF24L01_INO
 #define	TIGER_NRF24L01_INO
 #define	V2X2_NRF24L01_INO
@@ -251,6 +250,7 @@
 #define	XK_NRF24L01_INO
 #define	YD717_NRF24L01_INO
 #define	ZSX_NRF24L01_INO
+#define STANEK_NRF24L01_INO
 
 //The protocols below need a SX1276 to be installed
 #define	FRSKYR9_SX1276_INO
@@ -354,7 +354,7 @@
 /*************************/
 //In this section you can configure all details about PPM.
 //If you do not plan to use the PPM mode comment this line using "//" to save Flash space, you don't need to configure anything below in this case
-//#define ENABLE_PPM
+#define ENABLE_PPM
 
 /** TX END POINTS **/
 //It is important for the module to know the endpoints of your radio.
