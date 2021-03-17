@@ -19,14 +19,16 @@
 #define VERSION_MAJOR		1
 #define VERSION_MINOR		3
 #define VERSION_REVISION	2
-#define VERSION_PATCH_LEVEL	48
+#define VERSION_PATCH_LEVEL	62
+
+#define MODE_SERIAL 0
 
 //******************
 // Protocols
 //******************
 enum PROTOCOLS
 {
-	MODE_SERIAL		= 0,	// Serial commands
+	PROTO_CONFIG	= 0,	// Module config
 	PROTO_FLYSKY 	= 1,	// =>A7105
 	PROTO_HUBSAN	= 2,	// =>A7105
 	PROTO_FRSKYD	= 3,	// =>CC2500
@@ -109,8 +111,11 @@ enum PROTOCOLS
 	PROTO_E010R5	= 81,	// =>CYRF6936
 	PROTO_LOLI		= 82,	// =>NRF24L01
 	PROTO_E129		= 83,	// =>CYRF6936
-	PROTO_STANEK  = 84, // =>NRF24L01
-
+	PROTO_JOYSWAY	= 84,	// =>A7105
+	PROTO_E016H		= 85,	// =>NRF24L01
+	
+	PROTO_STANEK  = 125, // =>NRF24L01
+	
 	PROTO_NANORF	= 126,	// =>NRF24L01
 	PROTO_TEST		= 127,	// =>CC2500
 };
@@ -149,10 +154,10 @@ enum Hisky
 };
 enum DSM
 {
-	DSM2_22	= 0,
-	DSM2_11	= 1,
-	DSMX_22	= 2,
-	DSMX_11	= 3,
+	DSM2_1F	= 0,
+	DSM2_2F	= 1,
+	DSMX_1F	= 2,
+	DSMX_2F	= 3,
 	DSM_AUTO = 4,
 };
 enum YD717
@@ -376,6 +381,7 @@ enum FRSKY_RX
 	FRSKY_RX	= 0,
 	FRSKY_CLONE	= 1,
 	FRSKY_ERASE	= 2,
+	FRSKY_CPPM  = 3,
 };
 
 enum FRSKYL
@@ -490,6 +496,7 @@ enum MultiPacketTypes
 	MULTI_TELEMETRY_RX_CHANNELS		= 13,
 	MULTI_TELEMETRY_HOTT			= 14,
 	MULTI_TELEMETRY_MLINK			= 15,
+	MULTI_TELEMETRY_CONFIG			= 16,
 };
 
 // Macros
@@ -583,6 +590,11 @@ enum MultiPacketTypes
 #define DISABLE_TELEM_on		protocol_flags3 |= _BV(3)
 #define IS_DISABLE_TELEM_on		( ( protocol_flags3 & _BV(3) ) !=0 )
 #define IS_DISABLE_TELEM_off	( ( protocol_flags3 & _BV(3) ) ==0 )
+//Valid/invalid sub_proto
+#define SUB_PROTO_VALID			protocol_flags3 &= ~_BV(6)
+#define SUB_PROTO_INVALID		protocol_flags3 |= _BV(6)
+#define IS_SUB_PROTO_INVALID	( ( protocol_flags3 & _BV(6) ) !=0 )
+#define IS_SUB_PROTO_VALID		( ( protocol_flags3 & _BV(6) ) ==0 )
 //LBT power
 #define LBT_POWER_off		protocol_flags3 &= ~_BV(7)
 #define LBT_POWER_on		protocol_flags3 |= _BV(7)
@@ -736,8 +748,8 @@ enum CYRF_POWER
 #define	CYRF_BIND_POWER		CYRF_POWER_0
 
 // SX1276
-#define JP_T18		0
-#define JP_TLite	1
+#define JP_T18		1
+#define JP_TLite	2
 
 enum TXRX_State {
 	TXRX_OFF,
@@ -886,6 +898,8 @@ Serial: 100000 Baud 8e2      _ xxxx xxxx p --
 				E010R5		81
 				LOLI		82
 				E129		83
+				JOYSWAY		84
+				E016H		85
    BindBit=>		0x80	1=Bind/0=No
    AutoBindBit=>	0x40	1=Yes /0=No
    RangeCheck=>		0x20	1=Yes /0=No
@@ -906,10 +920,10 @@ Serial: 100000 Baud 8e2      _ xxxx xxxx p --
 			Hisky		0
 			HK310		1
 		sub_protocol==DSM
-			DSM2_22 	0
-			DSM2_11 	1
-			DSMX_22 	2
-			DSMX_11 	3
+			DSM2_1F 	0
+			DSM2_2F 	1
+			DSMX_1F 	2
+			DSMX_2F 	3
 			DSM_AUTO	4
 		sub_protocol==YD717
 			YD717		0
@@ -1031,7 +1045,6 @@ Serial: 100000 Baud 8e2      _ xxxx xxxx p --
 		sub_protocol==E01X
 			E012		0
 			E015		1
-			E016H		2
 		sub_protocol==GD00X
 			GD_V1		0
 			GD_V2		1
