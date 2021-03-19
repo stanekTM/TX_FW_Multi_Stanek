@@ -19,7 +19,7 @@
 #define VERSION_MAJOR		1
 #define VERSION_MINOR		3
 #define VERSION_REVISION	2
-#define VERSION_PATCH_LEVEL	62
+#define VERSION_PATCH_LEVEL	63
 
 #define MODE_SERIAL 0
 
@@ -28,7 +28,7 @@
 //******************
 enum PROTOCOLS
 {
-	PROTO_CONFIG	= 0,	// Module config
+	//PROTO_CONFIG	= 0,	// Module config
 	PROTO_FLYSKY 	= 1,	// =>A7105
 	PROTO_HUBSAN	= 2,	// =>A7105
 	PROTO_FRSKYD	= 3,	// =>CC2500
@@ -113,9 +113,8 @@ enum PROTOCOLS
 	PROTO_E129		= 83,	// =>CYRF6936
 	PROTO_JOYSWAY	= 84,	// =>A7105
 	PROTO_E016H		= 85,	// =>NRF24L01
-	
-	PROTO_STANEK  = 125, // =>NRF24L01
-	
+	PROTO_CONFIG	= 86,	// Module config
+
 	PROTO_NANORF	= 126,	// =>NRF24L01
 	PROTO_TEST		= 127,	// =>CC2500
 };
@@ -1260,4 +1259,8 @@ Serial: 100000 Baud 8e2      _ xxxx xxxx p --
    data[1] = TX_LQI
    data[2] = telem_type
    data[3-9] = data
+
+  Type 0x10 Config telemetry
+   length: 22
+   data[0..21] = Config data
 */
