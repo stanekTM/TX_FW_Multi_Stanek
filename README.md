@@ -15,6 +15,8 @@ Operated in serial mode.
 
 If necessary, I update with the latest version.
 #
+Jiri StanekTM
+#
 <img align="right" width=300 src="docs/images/multi.png" />
 
 The **Multiprotocol Tx Module** (or **MULTI-Module**) is a 2.4GHz transmitter module which enables almost any transmitter to control many different receivers and models, including many popular helicopters, planes, quadcopters, and miniquads.
