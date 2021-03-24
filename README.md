@@ -1,4 +1,5 @@
-# Thanks to the original developers "midelic", "pascallanger", "goebish" and many others ...
+# Multiprotocol TX Module
+Thanks to the original developers "midelic", "pascallanger", "goebish" and many others ...
 ## Note:
 Support for custom Arduino-based DIY receivers with RF24 library from this repository [RC_RX_nRF24L01_Telemetry_Motor_Driver_Servo](https://github.com/stanekTM/RC_RX_nRF24L01_Telemetry_Motor_Driver_Servo).
 
@@ -14,7 +15,6 @@ Operated in serial mode.
 
 If necessary, I update with the latest version.
 #
-# Multiprotocol TX Module
 <img align="right" width=300 src="docs/images/multi.png" />
 
 The **Multiprotocol Tx Module** (or **MULTI-Module**) is a 2.4GHz transmitter module which enables almost any transmitter to control many different receivers and models, including many popular helicopters, planes, quadcopters, and miniquads.
