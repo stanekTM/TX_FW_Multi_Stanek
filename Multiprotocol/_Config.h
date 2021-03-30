@@ -337,7 +337,6 @@
 #define AFHDS2A_RX_TELEMETRY		// Forward channels data to TX
 #define HOTT_FW_TELEMETRY			// Forward received telemetry packets to be decoded by erskyTX and OpenTX
 #define BAYANG_RX_TELEMETRY			// Forward channels data to TX
-#define STANEK_HUB_TELEMETRY    // Use FrSkyD Hub format to send telemetry to TX
 
 /****************************/
 /*** SERIAL MODE SETTINGS ***/
