@@ -29,15 +29,15 @@
 
 uint8_t TX_RX_ADDRESS[] = "jirka"; // setting RF channels address (5 bytes number or character)
 
-#define STANEK_RF_CHANNEL      76   // which RF channel to communicate on (0-125, 2.4Ghz + 76 = 2.476Ghz)
+#define STANEK_RF_CHANNEL     76   // which RF channel to communicate on (0-125, 2.4Ghz + 76 = 2.476Ghz)
 
-#define STANEK_PACKET_PERIOD   3000 //3000 do not set too low or else next packet may not be finished transmitting before the channel is changed next time around
+#define STANEK_PACKET_PERIOD  3000 // do not set too low or else next packet may not be finished transmitting before the channel is changed next time around
 
-#define STANEK_RC_CHANNELS     12   // number of RC channels that can be sent in one packet
+#define STANEK_RC_CHANNELS    12   // number of RC channels that can be sent in one packet
 
-#define STANEK_RC_PACKET_SIZE  24   // STANEK_RC_DATA_PACKET_SIZE = STANEK_RC_CHANNELS * 2
+#define STANEK_RC_PACKET_SIZE 24   // STANEK_RC_PACKET_SIZE = STANEK_RC_CHANNELS * 2
 
-#define STANEK_TELEMETRY_PACKET_SIZE  2
+#define STANEK_TELEMETRY_PACKET_SIZE 3 // RSSI, A1, A2
 
 //**********************************************************************************************************************************
 //**********************************************************************************************************************************
@@ -61,10 +61,10 @@ static void __attribute__((unused)) STANEK_RF_init()
   NRF24L01_Initialize();
   NRF24L01_SetBitrate(NRF24L01_BR_250K);           // NRF24L01_BR_250K (fails for units without +), NRF24L01_BR_1M, NRF24L01_BR_2M
   STANEK_setAddress();
-  NRF24L01_WriteReg(NRF24L01_11_RX_PW_P0, STANEK_RC_PACKET_SIZE); //24, 0x20 32 byte packet length
-  NRF24L01_WriteReg(NRF24L01_12_RX_PW_P1, STANEK_RC_PACKET_SIZE); //24, 0x20 32 byte packet length
-  NRF24L01_WriteReg(NRF24L01_1C_DYNPD, 0x3F);      //0x3F enable dynamic payload length on all pipes
-  NRF24L01_WriteReg(NRF24L01_1D_FEATURE, 0x04);    //0x04 enable dynamic Payload Length
+  NRF24L01_WriteReg(NRF24L01_11_RX_PW_P0, 0x20); // 0x20 32 byte packet length
+  NRF24L01_WriteReg(NRF24L01_12_RX_PW_P1, 0x20); // 0x20 32 byte packet length
+  NRF24L01_WriteReg(NRF24L01_1C_DYNPD, 0x3F);      // enable dynamic payload length on all pipes
+  NRF24L01_WriteReg(NRF24L01_1D_FEATURE, 0x04);    // enable dynamic Payload Length
   NRF24L01_SetTxRxMode(TX_EN);                     // clear data ready, data sent, retransmit and enable CRC 16bits, ready for TX
 }
 
@@ -89,9 +89,10 @@ static void __attribute__((unused)) STANEK_get_telemetry()
     // data received from model
     NRF24L01_ReadPayload(packet, STANEK_TELEMETRY_PACKET_SIZE);
 
-    RX_RSSI = packet[1]; // packet rate 0 to 255 where 255 is 100% packet rate
-    v_lipo1 = packet[0]; // directly from analog input of receiver, but reduced to 8-bit depth (0 to 255). Scaling depends on the input to the analog pin of the receiver
-//    v_lipo2 = packet[2]; // directly from analog input of receiver, but reduced to 8-bit depth (0 to 255). Scaling depends on the input to the analog pin of the receiver
+    RX_RSSI = packet[0]; // packet rate 0 to 255 where 255 is 100% packet rate
+    v_lipo1 = packet[1]; // directly from analog input of receiver, but reduced to 8-bit depth (0 to 255). Scaling depends on the input to the analog pin of the receiver
+    v_lipo2 = packet[2]; // directly from analog input of receiver, but reduced to 8-bit depth (0 to 255). Scaling depends on the input to the analog pin of the receiver
+    
     telemetry_counter++;
 
     if (telemetry_lost == 0)
@@ -99,8 +100,8 @@ static void __attribute__((unused)) STANEK_get_telemetry()
   }
   else
   {
-    // if no telemetry packet was received then delay by the typical telemetry packet processing time
-    // this is done to try to keep the sendPacket process timing more consistent. Since the SPI payload read takes some time
+    // if no telemetry packet was received then delay by the typical telemetry packet processing time.
+    // This is done to try to keep the sendPacket process timing more consistent. Since the SPI payload read takes some time
     delayMicroseconds(50);
   }
   NRF24L01_SetTxRxMode(TX_EN);
@@ -110,16 +111,9 @@ static void __attribute__((unused)) STANEK_get_telemetry()
 //**********************************************************************************************************************************
 //**********************************************************************************************************************************
 //**********************************************************************************************************************************
-typedef struct
-{
-  uint8_t payloadValue[STANEK_RC_PACKET_SIZE] = {0}; // 12 bits per value * 12 channels
-}
-STANEK_RxTxPacket_t;
-
 static void __attribute__((unused)) STANEK_send_packet(uint8_t stanek_telemetry)
 {
   STANEK_get_telemetry();  // check for incoming packet and switch radio back to TX mode if we were listening for telemetry
-
 
   switch (sub_protocol)
   {
@@ -148,42 +142,43 @@ static void __attribute__((unused)) STANEK_send_packet(uint8_t stanek_telemetry)
       num_ch = 2;
       break;
   }
+  
+  uint8_t rc_channels_reduction = constrain(12 - num_ch, 0, STANEK_RC_CHANNELS);
 
-  uint8_t channelReduction = constrain(12 - num_ch, 0, STANEK_RC_CHANNELS);
+  uint8_t packetSize = STANEK_RC_PACKET_SIZE - (rc_channels_reduction * 2); // 2ch = 20, 18, 16, 14, ... -> 10ch = 4, 12ch = 0
 
-  uint8_t packetSize = STANEK_RC_PACKET_SIZE - (channelReduction * 2); //2ch=20, 18, 16, 14, ... -> 10ch=4, 12ch=0
+  uint8_t packet[STANEK_RC_PACKET_SIZE] = {0};
 
-  uint8_t maxPayloadValueIndex = packetSize;
-
-
-  STANEK_RxTxPacket_t TxPacket;
-
-  int payloadIndex = 0;
+  uint8_t payloadIndex = 0;
   uint16_t holdValue;
 
-  for (int x = 0; (x < STANEK_RC_CHANNELS - channelReduction); x++)
+  for (uint8_t x = 0; (x < STANEK_RC_CHANNELS - rc_channels_reduction); x++)
   {
     holdValue = convert_channel_16b_limit(x, 1000, 2000); // valid channel values are 1000 to 2000
 
     // use 12 bits per value
     if (x %2)
-      holdValue &= 0x0FFF; //4095
+      holdValue &= 0x0FFF; // 4095
 
-    TxPacket.payloadValue[payloadIndex] |= holdValue & 0xFF; //255
+    packet[0 + payloadIndex] |= holdValue & 0xFF; // 255
     payloadIndex++;
-    TxPacket.payloadValue[payloadIndex] |= holdValue >> 8;
+    packet[0 + payloadIndex] |= holdValue >> 8;
     payloadIndex++;
+
+    /*packet[0 + payloadIndex] |= (uint8_t)(holdValue & 0x00FF); // 255
+    payloadIndex++;
+    packet[0 + payloadIndex] |= (uint8_t)((holdValue>>8) & 0x00FF);
+    payloadIndex++;*/
   }
 
-  uint16_t checkSum; // start Calculate checksum
+  uint16_t checkSum; // start calculate checksum
 
-  for (int x = 0; x < maxPayloadValueIndex; x++)
-    checkSum += TxPacket.payloadValue[x]; // finish Calculate checksum
+  for (uint8_t x = 0; x < packetSize; x ++)
+    checkSum += packet[0 + x]; // finish calculate checksum
 
-
-  NRF24L01_WriteReg(NRF24L01_05_RF_CH, rf_ch_num);        // send channel
+  NRF24L01_WriteReg(NRF24L01_05_RF_CH, rf_ch_num); // send channel
   NRF24L01_SetPower();
-  NRF24L01_WritePayload((uint8_t*)&TxPacket, packetSize); // and payload
+  NRF24L01_WritePayload(packet, packetSize);       // and payload
 
 
   if (!stanek_telemetry) //!
@@ -196,7 +191,7 @@ static void __attribute__((unused)) STANEK_send_packet(uint8_t stanek_telemetry)
     // then add 140 uS which is 130 uS to begin the xmit and 10 uS fudge factor
     delayMicroseconds(((((unsigned long)packetSize * 8ul)  +  73ul) * 4ul) + 140ul);
 
-    packet_period = STANEK_PACKET_PERIOD + (constrain(((int16_t)(STANEK_RC_CHANNELS - channelReduction) - (int16_t)6), (int16_t)0, (int16_t)10) * (int16_t)100); // increase packet period by 100 us for each channel over 6
+    packet_period = STANEK_PACKET_PERIOD + (constrain(((int16_t)(STANEK_RC_CHANNELS - rc_channels_reduction) - (int16_t)6), (int16_t)0, (int16_t)10) * (int16_t)100); // increase packet period by 100 us for each channel over 6
     
     NRF24L01_WriteReg(NRF24L01_00_CONFIG, 0x7F); // 0x7F RX mode with 16 bit CRC no IRQ, 0x0F RX mode with 16 bit CRC
   }
