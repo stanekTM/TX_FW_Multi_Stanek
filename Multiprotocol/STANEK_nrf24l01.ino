@@ -15,7 +15,7 @@
 
 //***************************************************************************************//
 // Support for custom Arduino-based DIY receivers with RF24 library from this repository //
-// https://github.com/stanekTM/RC_RX_nRF24L01_Telemetry_Motor_Driver_Servo               //
+// https://github.com/stanekTM/RX_nRF24L01_Telemetry_Motor_Servo                         //
 //                                                                                       //
 // Included communication nRF24L01P "Stanek". Fixed RF channel, fixed address.           //
 // Channel reduction in sub protocols 2, 3, 4, 5, 6, 8, 10 and 12ch.                     //
@@ -31,15 +31,15 @@
 
 uint8_t TX_RX_ADDRESS[] = "jirka"; // setting RF channels address (5 bytes number or character)
 
-#define STANEK_RF_CHANNEL     76   // which RF channel to communicate on (0-125, 2.4Ghz + 76 = 2.476Ghz)
+#define STANEK_RF_CHANNEL      76   // which RF channel to communicate on (0-125, 2.4Ghz + 76 = 2.476Ghz)
 
-#define STANEK_PACKET_PERIOD  3000 // do not set too low or else next packet may not be finished transmitting before the channel is changed next time around
+#define STANEK_PACKET_PERIOD   3000 // do not set too low or else next packet may not be finished transmitting before the channel is changed next time around
 
-#define STANEK_RC_CHANNELS    12   // number of RC channels that can be sent in one packet
+#define STANEK_RC_CHANNELS     12   // number of RC channels that can be sent in one packet
 
-#define STANEK_RC_PACKET_SIZE 24   // STANEK_RC_PACKET_SIZE = STANEK_RC_CHANNELS * 2
+#define STANEK_RC_PACKET_SIZE  24   // STANEK_RC_PACKET_SIZE = STANEK_RC_CHANNELS * 2
 
-#define STANEK_TELEMETRY_PACKET_SIZE 3 // RSSI, A1, A2
+#define STANEK_TELEMETRY_PACKET_SIZE  3 // RSSI, A1, A2
 
 //**********************************************************************************************************************************
 //**********************************************************************************************************************************
