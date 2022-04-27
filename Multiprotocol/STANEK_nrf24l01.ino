@@ -13,15 +13,15 @@
   along with Multiprotocol.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-//***************************************************************************************//
-// Support for custom Arduino-based DIY receivers with RF24 library from this repository //
-// https://github.com/stanekTM/RX_nRF24L01_Telemetry_Motor_Servo                         //
-//                                                                                       //
-// Included communication nRF24L01P "Stanek". Fixed RF channel, fixed address.           //
-// Channel reduction in sub protocols 2, 3, 4, 5, 6, 8, 10 and 12ch.                     //
-// This is the maximum in the "Servo" library on the Atmega328P processor.               //
-// Telemetry A1 for measuring 1S Lipo power supply RX and TRSS.                          //
-//***************************************************************************************//
+//***************************************************************************************
+// Support for custom Arduino-based DIY receivers with RF24 library from this repository
+// https://github.com/stanekTM/RX_nRF24L01_Telemetry_Motor_Servo
+//
+// Included communication nRF24L01P "Stanek". Fixed RF channel, fixed address.
+// Channel reduction in sub protocols 2, 3, 4, 5, 6, 8, 10 and 12ch.
+// This is the maximum in the "Servo" library on the Atmega328P processor.
+// Telemetry A1 for measuring 1S Lipo power supply RX and TRSS.
+//***************************************************************************************
 
 
 #if defined(STANEK_NRF24L01_INO)
@@ -29,7 +29,7 @@
 #include "iface_nrf24l01.h"
 
 
-uint8_t TX_RX_ADDRESS[] = "jirka"; // setting RF channels address (5 bytes number or character)
+uint8_t TX_RX_ADDRESS[] = "jirka";  // setting RF channels address (5 bytes number or character)
 
 #define STANEK_RF_CHANNEL      76   // which RF channel to communicate on (0-125, 2.4Ghz + 76 = 2.476Ghz)
 
@@ -61,13 +61,11 @@ static void __attribute__((unused)) STANEK_setAddress()
 static void __attribute__((unused)) STANEK_RF_init()
 {
   NRF24L01_Initialize();
-  NRF24L01_SetBitrate(NRF24L01_BR_250K);           // NRF24L01_BR_250K (fails for units without +), NRF24L01_BR_1M, NRF24L01_BR_2M
+  NRF24L01_SetBitrate(NRF24L01_BR_250K);        // NRF24L01_BR_250K (fails for units without +), NRF24L01_BR_1M, NRF24L01_BR_2M
   STANEK_setAddress();
-//  NRF24L01_WriteReg(NRF24L01_11_RX_PW_P0, 0x20); // 0x20 32 byte packet length
-//  NRF24L01_WriteReg(NRF24L01_12_RX_PW_P1, 0x20); // 0x20 32 byte packet length
-  NRF24L01_WriteReg(NRF24L01_1C_DYNPD, 0x3F);      // enable dynamic payload length on all pipes
-  NRF24L01_WriteReg(NRF24L01_1D_FEATURE, 0x04);    // enable dynamic Payload Length
-  NRF24L01_SetTxRxMode(TX_EN);                     // clear data ready, data sent, retransmit and enable CRC 16bits, ready for TX
+  NRF24L01_WriteReg(NRF24L01_1C_DYNPD, 0x3F);   // enable dynamic payload length on all pipes
+  NRF24L01_WriteReg(NRF24L01_1D_FEATURE, 0x04); // enable dynamic Payload Length
+  NRF24L01_SetTxRxMode(TX_EN);                  // clear data ready, data sent, retransmit and enable CRC 16bits, ready for TX
 }
 
 //**********************************************************************************************************************************
@@ -77,6 +75,7 @@ static void __attribute__((unused)) STANEK_get_telemetry()
 {
   // calculate TX rssi based on past 250 expected telemetry packets. Cannot use full second count because telemetry_counter is not large enough
   state++;
+  
   if (state > 250)
   {
     TX_RSSI = telemetry_counter;
@@ -84,7 +83,7 @@ static void __attribute__((unused)) STANEK_get_telemetry()
     state = 0;
     telemetry_lost = 0;
   }
-
+  
   // process incoming telemetry packet of it was received
   if (NRF24L01_ReadReg(NRF24L01_07_STATUS) & _BV(NRF24L01_07_RX_DR))
   {
@@ -96,7 +95,7 @@ static void __attribute__((unused)) STANEK_get_telemetry()
     v_lipo2 = packet[2]; // directly from analog input of receiver, but reduced to 8-bit depth (0 to 255). Scaling depends on the input to the analog pin of the receiver
     
     telemetry_counter++;
-
+    
     if (telemetry_lost == 0)
       telemetry_link = 1;
   }
@@ -106,6 +105,7 @@ static void __attribute__((unused)) STANEK_get_telemetry()
     // This is done to try to keep the sendPacket process timing more consistent. Since the SPI payload read takes some time
     delayMicroseconds(50);
   }
+  
   NRF24L01_SetTxRxMode(TX_EN);
   NRF24L01_FlushRx();
 }
@@ -115,7 +115,7 @@ static void __attribute__((unused)) STANEK_get_telemetry()
 //**********************************************************************************************************************************
 static void __attribute__((unused)) STANEK_send_packet(uint8_t stanek_telemetry)
 {
-  STANEK_get_telemetry();  // check for incoming packet and switch radio back to TX mode if we were listening for telemetry
+  STANEK_get_telemetry(); // check for incoming packet and switch radio back to TX mode if we were listening for telemetry
 
   switch (sub_protocol)
   {
@@ -175,8 +175,8 @@ static void __attribute__((unused)) STANEK_send_packet(uint8_t stanek_telemetry)
 
   uint16_t checkSum; // start calculate checksum
 
-  for (uint8_t x = 0; x < packetSize; x ++)
-    checkSum += packet[0 + x]; // finish calculate checksum
+  for (uint8_t x = 0; x < packetSize; x++)
+     checkSum += packet[0 + x]; // finish calculate checksum
 
   NRF24L01_WriteReg(NRF24L01_05_RF_CH, rf_ch_num); // send channel
   NRF24L01_SetPower();
@@ -196,7 +196,7 @@ static void __attribute__((unused)) STANEK_send_packet(uint8_t stanek_telemetry)
     // increase packet period by 100 us for each channel over 6
     packet_period = STANEK_PACKET_PERIOD + (constrain(((int16_t)(STANEK_RC_CHANNELS - rc_channels_reduction) - (int16_t)6), (int16_t)0, (int16_t)10) * (int16_t)100);
     
-    NRF24L01_WriteReg(NRF24L01_00_CONFIG, 0x7F); // 0x7F RX mode with 16 bit CRC no IRQ, 0x0F RX mode with 16 bit CRC
+    NRF24L01_WriteReg(NRF24L01_00_CONFIG, 0x7F); // RX mode with 16 bit CRC no IRQ, 0x0F RX mode with 16 bit CRC
   }
 }
 
