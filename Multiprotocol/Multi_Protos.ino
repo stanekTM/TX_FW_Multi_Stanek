@@ -430,7 +430,7 @@ const mm_protocol_definition multi_protocols[] = {
 	#endif
 	
 	#if defined(STANEK_NRF24L01_INO)
-    {PROTO_STANEK,     STR_STANEK,    STR_SUBTYPE_STANEK,    8, OPTION_NONE,    0, 0, SW_NRF,    STANEK_init,     STANEK_callback     },
+	  {PROTO_STANEK,     STR_STANEK,    STR_SUBTYPE_STANEK,    8, OPTION_NONE,    0, 0, SW_NRF,    STANEK_init,     STANEK_callback     },
 	#endif
 	
 	#if defined(SYMAX_NRF24L01_INO)

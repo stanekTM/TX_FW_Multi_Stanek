@@ -311,9 +311,9 @@
 	#undef	XK_NRF24L01_INO
 	#undef	YD717_NRF24L01_INO
 	#undef	ZSX_NRF24L01_INO
-  
-  #undef  STANEK_NRF24L01_INO
-  
+	
+	#undef  STANEK_NRF24L01_INO
+
 #endif
 #if not defined(STM32_BOARD)
 	#undef SX1276_INSTALLED
