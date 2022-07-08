@@ -251,6 +251,7 @@
 #define	XK_NRF24L01_INO
 #define	YD717_NRF24L01_INO
 #define	ZSX_NRF24L01_INO
+
 #define STANEK_NRF24L01_INO
 
 //The protocols below need a SX1276 to be installed
