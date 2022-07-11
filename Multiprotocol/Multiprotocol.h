@@ -18,8 +18,8 @@
 //******************
 #define VERSION_MAJOR		1
 #define VERSION_MINOR		3
-#define VERSION_REVISION	2
-#define VERSION_PATCH_LEVEL	63
+#define VERSION_REVISION	3
+#define VERSION_PATCH_LEVEL	15
 
 #define MODE_SERIAL 0
 
@@ -28,7 +28,7 @@
 //******************
 enum PROTOCOLS
 {
-	//PROTO_CONFIG	= 0,	// Module config
+	PROTO_PROTOLIST	= 0,	// NO RF
 	PROTO_FLYSKY 	= 1,	// =>A7105
 	PROTO_HUBSAN	= 2,	// =>A7105
 	PROTO_FRSKYD	= 3,	// =>CC2500
@@ -73,7 +73,7 @@ enum PROTOCOLS
 	PROTO_BUGSMINI	= 42,	// =>NRF24L01
 	PROTO_TRAXXAS	= 43,	// =>CYRF6936
 	PROTO_NCC1701	= 44,	// =>NRF24L01
-	PROTO_E01X		= 45,	// =>NRF24L01
+	PROTO_E01X		= 45,	// =>CYRF6936
 	PROTO_V911S		= 46,	// =>NRF24L01
 	PROTO_GD00X		= 47,	// =>NRF24L01
 	PROTO_V761		= 48,	// =>NRF24L01
@@ -114,6 +114,12 @@ enum PROTOCOLS
 	PROTO_JOYSWAY	= 84,	// =>A7105
 	PROTO_E016H		= 85,	// =>NRF24L01
 	PROTO_CONFIG	= 86,	// Module config
+	PROTO_IKEAANSLUTA = 87, // =>CC2500
+	PROTO_WILLIFM	= 88,	// 27/35ab/40/41/72 MHz module external project
+	PROTO_LOSI		= 89,	// =>CYRF6936
+	PROTO_MOULDKG	= 90,	// =>NRF24L01
+	PROTO_XERALL	= 91,	// =>NRF24L01
+	PROTO_MT99XX2	= 92,	// =>NRF24L01, extension of MT99XX protocol
 
 	PROTO_NANORF	= 126,	// =>NRF24L01
 	PROTO_TEST		= 127,	// =>CC2500
@@ -147,6 +153,8 @@ enum AFHDS2A
 	PPM_SBUS = 3,
 	PWM_IB16 = 4,
 	PPM_IB16 = 5,
+	PWM_SB16 = 6,
+	PPM_SB16 = 7,
 };
 enum Hisky
 {
@@ -155,11 +163,12 @@ enum Hisky
 };
 enum DSM
 {
-	DSM2_1F	= 0,
-	DSM2_2F	= 1,
-	DSMX_1F	= 2,
-	DSMX_2F	= 3,
-	DSM_AUTO = 4,
+	DSM2_1F		= 0,
+	DSM2_2F		= 1,
+	DSMX_1F		= 2,
+	DSMX_2F		= 3,
+	DSM_AUTO	= 4,
+	DSMR		= 5,
 };
 enum YD717
 {       			
@@ -228,6 +237,11 @@ enum MT99XX
 	FY805	= 4,
 	A180	= 5,
 	DRAGON	= 6,
+	F949G	= 7,
+};
+enum MT99XX2
+{
+	PA18	= 0,
 };
 enum MJXQ
 {
@@ -359,6 +373,8 @@ enum XN297DUMP
 	XN297DUMP_1M	= 1,
 	XN297DUMP_2M	= 2,
 	XN297DUMP_AUTO	= 3,
+	XN297DUMP_NRF	= 4,
+	XN297DUMP_CC2500	= 5,
 };
 enum FRSKY_R9
 {
@@ -401,6 +417,7 @@ enum PELIKAN
 {
 	PELIKAN_PRO	= 0,
 	PELIKAN_LITE= 1,
+	PELIKAN_SCX24=2,
 };
 
 enum V761
@@ -434,6 +451,24 @@ enum RLINK
 	RLINK_DUMBORC	= 2,
 };
 
+enum MOULDKG
+{
+	MOULDKG_ANALOG	= 0,
+	MOULDKG_DIGIT	= 1,
+};
+
+enum KF606
+{
+	KF606_KF606		= 0,
+	KF606_MIG320	= 1,
+};
+
+enum E129
+{
+	E129_E129		= 0,
+	E129_C186		= 1,
+};
+
 #define NONE 		0
 #define P_HIGH		1
 #define P_LOW		0
@@ -457,7 +492,7 @@ typedef uint16_t (*uint16_function_t) (void);	//pointer to a function with no pa
 typedef void     (*void_function_t  ) (void);	//pointer to a function with no parameters which returns nothing
 
 //Protocols definition
-struct mm_protocol_definition {
+struct __attribute__((__packed__)) mm_protocol_definition {
 	uint8_t protocol;
 	const char *ProtoString;
 	const char *SubProtoString;
@@ -498,6 +533,7 @@ enum MultiPacketTypes
 	MULTI_TELEMETRY_HOTT			= 14,
 	MULTI_TELEMETRY_MLINK			= 15,
 	MULTI_TELEMETRY_CONFIG			= 16,
+	MULTI_TELEMETRY_PROTO			= 17,
 };
 
 // Macros
@@ -772,6 +808,8 @@ enum {
 #define SPEED_125K	3
 
 /** EEPROM Layout */
+#define EEPROM_CID_INIT_OFFSET	0		// 1 byte flag that Cyrf ID is initialized
+#define EEPROM_CID_OFFSET		1		// 6 bytes Cyrf ID
 #define EEPROM_ID_OFFSET		10		// Module ID (4 bytes)
 #define EEPROM_BANK_OFFSET		15		// Current bank number (1 byte)
 #define EEPROM_ID_VALID_OFFSET	20		// 1 byte flag that ID is valid
@@ -788,7 +826,8 @@ enum {
 #define FRSKYX_CLONE_EEPROM_OFFSET	822	// (1) format + (3) TX ID + (47) channels, 51 bytes, end is 873
 #define FRSKYX2_CLONE_EEPROM_OFFSET	873	// (1) format + (3) TX ID, 4 bytes, end is 877
 #define DSM_RX_EEPROM_OFFSET	877		// (4) TX ID + format, 5 bytes, end is 882
-//#define CONFIG_EEPROM_OFFSET 	882		// Current configuration of the multimodule
+#define MOULDKG_EEPROM_OFFSET	882		// RX ID, 3 bytes per model, end is 882+64*3=1074
+//#define CONFIG_EEPROM_OFFSET 	1074	// Current configuration of the multimodule
 
 /* STM32 Flash Size */
 #ifndef DISABLE_FLASH_SIZE_CHECK
@@ -901,6 +940,7 @@ Serial: 100000 Baud 8e2      _ xxxx xxxx p --
 				E129		83
 				JOYSWAY		84
 				E016H		85
+				XERALL		91
    BindBit=>		0x80	1=Bind/0=No
    AutoBindBit=>	0x40	1=Yes /0=No
    RangeCheck=>		0x20	1=Yes /0=No
@@ -1087,6 +1127,7 @@ Serial: 100000 Baud 8e2      _ xxxx xxxx p --
 		sub_protocol==PELIKAN
 			PELIKAN_PRO		0
 			PELIKAN_LITE	1
+			PELIKAN_SCX24	2
 		sub_protocol==V761
 			V761_3CH	0
 			V761_4CH	1
@@ -1248,12 +1289,12 @@ Serial: 100000 Baud 8e2      _ xxxx xxxx p --
    data[4-]= packed channels data, 11 bit per channel
 
   Type 0x0E HoTT telemetry
-   length: 14
+   length: 15
    data[0] = TX_RSSI
    data[1] = TX_LQI
    data[2] = type
    data[3] = page
-   data[4-13] = data
+   data[4-14] = data
 
   Type 0x0F M-Link telemetry
    length: 10
@@ -1265,4 +1306,17 @@ Serial: 100000 Baud 8e2      _ xxxx xxxx p --
   Type 0x10 Config telemetry
    length: 22
    data[0..21] = Config data
+   
+  Type 0x11 Protocol list export via telemetry. Used by the protocol PROTO_PROTOLIST=0, the list entry is given by the Option field.
+   length: variable
+   data[0]     = protocol number, 0xFF is an invalid list entry (Option value too large), Option == 0xFF -> number of protocols in the list
+   data[1..n]  = protocol name null terminated
+   data[n+1]   = flags
+                 flags>>4 Option text number to be displayed (check multi status for description)
+                 flags&0x01 failsafe supported
+                 flags&0x02 Channel Map Disabled supported
+   data[n+2]   = number of sub protocols
+   data[n+3]   = sub protocols text length, only sent if nbr_sub != 0
+   data[n+4..] = sub protocol names, only sent if nbr_sub != 0
+   
 */
