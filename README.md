@@ -1,4 +1,4 @@
-## Note:
+## Note
 Thanks to the original developers "midelic", "pascallanger", "goebish" and many others ...
 #
 Support for custom Arduino-based DIY receivers with RF24 library from this repository [RX_nRF24L01_Telemetry_Motor_Servo](https://github.com/stanekTM/RX_nRF24L01_Telemetry_Motor_Servo).
@@ -14,8 +14,6 @@ Operated in serial mode.
 * Multiprotocol v1.3.3.19
 
 If necessary, I update with the latest version.
-
-Jiri StanekTM
 #
 # Multiprotocol TX Module
 <img align="right" width=300 src="docs/images/multi.png" />
