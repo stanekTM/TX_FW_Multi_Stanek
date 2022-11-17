@@ -20,7 +20,6 @@
 // Included communication nRF24L01P "Stanek". Fixed RF channel, fixed address.
 // Channel reduction in sub protocols 2, 3, 4, 5, 6, 8, 10 and 12ch.
 // This is the maximum in the "Servo" library on the Atmega328P processor.
-// Telemetry A1 for measuring 1S Lipo power supply RX and TRSS.
 //***************************************************************************************
 
 
@@ -47,9 +46,9 @@ uint8_t TX_RX_ADDRESS[] = "jirka";  // setting RF channels address (5 bytes numb
 static void __attribute__((unused)) STANEK_setAddress()
 {
   rf_ch_num = STANEK_RF_CHANNEL; // initialize the channel
-
+  
   uint8_t RX_P1_ADDRESS = ~TX_RX_ADDRESS[5]; // invert bits for reading so that telemetry packets have a different address
-
+  
   NRF24L01_WriteRegisterMulti(NRF24L01_0A_RX_ADDR_P0, (uint8_t*)(&TX_RX_ADDRESS), 5);
   NRF24L01_WriteRegisterMulti(NRF24L01_0B_RX_ADDR_P1, (uint8_t*)(&RX_P1_ADDRESS), 5);
   NRF24L01_WriteRegisterMulti(NRF24L01_10_TX_ADDR,    (uint8_t*)(&TX_RX_ADDRESS), 5);
@@ -89,7 +88,7 @@ static void __attribute__((unused)) STANEK_get_telemetry()
   {
     // data received from model
     NRF24L01_ReadPayload(packet, STANEK_TELEMETRY_PACKET_SIZE);
-
+    
     RX_RSSI = packet[0]; // packet rate 0 to 255 where 255 is 100% packet rate
     v_lipo1 = packet[1]; // directly from analog input of receiver, but reduced to 8-bit depth (0 to 255). Scaling depends on the input to the analog pin of the receiver
     v_lipo2 = packet[2]; // directly from analog input of receiver, but reduced to 8-bit depth (0 to 255). Scaling depends on the input to the analog pin of the receiver
@@ -97,7 +96,9 @@ static void __attribute__((unused)) STANEK_get_telemetry()
     telemetry_counter++;
     
     if (telemetry_lost == 0)
+    {
       telemetry_link = 1;
+    }
   }
   else
   {
@@ -116,7 +117,7 @@ static void __attribute__((unused)) STANEK_get_telemetry()
 static void __attribute__((unused)) STANEK_send_packet(uint8_t stanek_telemetry)
 {
   STANEK_get_telemetry(); // check for incoming packet and switch radio back to TX mode if we were listening for telemetry
-
+  
   switch (sub_protocol)
   {
     case 1:
@@ -146,43 +147,38 @@ static void __attribute__((unused)) STANEK_send_packet(uint8_t stanek_telemetry)
   }
   
   uint8_t rc_channels_reduction = constrain(12 - num_ch, 0, STANEK_RC_CHANNELS);
-
+  
   uint8_t packetSize = STANEK_RC_PACKET_SIZE - (rc_channels_reduction * 2); // 2ch = 20, 18, 16, 14, ... -> 10ch = 4, 12ch = 0
-
+  
   uint8_t packet[STANEK_RC_PACKET_SIZE] = {0};
-
+  
+  
   uint8_t payloadIndex = 0;
   uint16_t holdValue;
-
+  
   for (uint8_t x = 0; (x < STANEK_RC_CHANNELS - rc_channels_reduction); x++)
   {
     holdValue = convert_channel_16b_limit(x, 1000, 2000); // valid channel values are 1000 to 2000
-
+    
     // use 12 bits per value
-    if (x %2)
-      holdValue &= 0x0FFF; // 4095
-
-    packet[0 + payloadIndex] |= holdValue & 0xFF; // 255
+    holdValue &= 0x0FFF; // 4095
+    
+    packet[payloadIndex] |= holdValue & 0xFF; // 255
     payloadIndex++;
-    packet[0 + payloadIndex] |= holdValue >> 8;
+    packet[payloadIndex] |= holdValue >> 8;
     payloadIndex++;
-
-    /*packet[0 + payloadIndex] |= (uint8_t)(holdValue & 0x00FF); // 255
+      
+    /*packet[payloadIndex] |= (uint8_t)(holdValue & 0x00FF); // 255
     payloadIndex++;
-    packet[0 + payloadIndex] |= (uint8_t)((holdValue>>8) & 0x00FF);
+    packet[payloadIndex] |= (uint8_t)((holdValue>>8) & 0x00FF);
     payloadIndex++;*/
   }
-
-  uint16_t checkSum; // start calculate checksum
-
-  for (uint8_t x = 0; x < packetSize; x++)
-     checkSum += packet[0 + x]; // finish calculate checksum
-
+  
   NRF24L01_WriteReg(NRF24L01_05_RF_CH, rf_ch_num); // send channel
   NRF24L01_SetPower();
   NRF24L01_WritePayload(packet, packetSize);       // and payload
-
-
+  
+  
   if (!stanek_telemetry) //!
   {
     // switch radio to rx as soon as packet is sent
@@ -192,7 +188,7 @@ static void __attribute__((unused)) STANEK_send_packet(uint8_t stanek_telemetry)
     // at 250 Kbs per sec, one bit is 4 uS
     // then add 140 uS which is 130 uS to begin the xmit and 10 uS fudge factor
     delayMicroseconds(((((unsigned long)packetSize * 8ul)  +  73ul) * 4ul) + 140ul);
-
+    
     // increase packet period by 100 us for each channel over 6
     packet_period = STANEK_PACKET_PERIOD + (constrain(((int16_t)(STANEK_RC_CHANNELS - rc_channels_reduction) - (int16_t)6), (int16_t)0, (int16_t)10) * (int16_t)100);
     
@@ -212,7 +208,7 @@ uint16_t STANEK_callback()
 #endif*/
 
   return packet_period;
-
+  
   return STANEK_PACKET_PERIOD;
 }
 
@@ -223,7 +219,7 @@ void STANEK_init(void)
 {
   STANEK_RF_init();
   STANEK_get_telemetry();
-
+  
   packet_period = STANEK_PACKET_PERIOD;
 }
 
