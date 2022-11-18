@@ -19,7 +19,6 @@
 //
 // Included communication nRF24L01P "Stanek". Fixed RF channel, fixed address.
 // Channel reduction in sub protocols 2, 3, 4, 5, 6, 8, 10 and 12ch.
-// This is the maximum in the "Servo" library on the Atmega328P processor.
 //***************************************************************************************
 
 
@@ -28,15 +27,15 @@
 #include "iface_nrf24l01.h"
 
 
-uint8_t TX_RX_ADDRESS[] = "jirka";  // setting RF channels address (5 bytes number or character)
+uint8_t TX_RX_ADDRESS[] = "jirka";      // setting RF channels address (5 bytes number or character)
 
-#define STANEK_RF_CHANNEL      76   // which RF channel to communicate on (0-125, 2.4Ghz + 76 = 2.476Ghz)
+#define STANEK_RF_CHANNEL      76       // which RF channel to communicate on (0-125, 2.4Ghz + 76 = 2.476Ghz)
 
-#define STANEK_PACKET_PERIOD   3000 // do not set too low or else next packet may not be finished transmitting before the channel is changed next time around
+#define STANEK_PACKET_PERIOD   3000     // do not set too low or else next packet may not be finished transmitting before the channel is changed next time around
 
-#define STANEK_RC_CHANNELS     12   // number of RC channels that can be sent in one packet
+#define STANEK_RC_CHANNELS     12       // number of RC channels that can be sent in one packet
 
-#define STANEK_RC_PACKET_SIZE  24   // STANEK_RC_PACKET_SIZE = STANEK_RC_CHANNELS * 2
+#define STANEK_RC_PACKET_SIZE  24       // STANEK_RC_PACKET_SIZE = STANEK_RC_CHANNELS * 2
 
 #define STANEK_TELEMETRY_PACKET_SIZE  3 // RSSI, A1, A2
 
@@ -47,11 +46,8 @@ static void __attribute__((unused)) STANEK_setAddress()
 {
   rf_ch_num = STANEK_RF_CHANNEL; // initialize the channel
   
-  uint8_t RX_P1_ADDRESS = ~TX_RX_ADDRESS[5]; // invert bits for reading so that telemetry packets have a different address
-  
-  NRF24L01_WriteRegisterMulti(NRF24L01_0A_RX_ADDR_P0, (uint8_t*)(&TX_RX_ADDRESS), 5);
-  NRF24L01_WriteRegisterMulti(NRF24L01_0B_RX_ADDR_P1, (uint8_t*)(&RX_P1_ADDRESS), 5);
   NRF24L01_WriteRegisterMulti(NRF24L01_10_TX_ADDR,    (uint8_t*)(&TX_RX_ADDRESS), 5);
+  NRF24L01_WriteRegisterMulti(NRF24L01_0A_RX_ADDR_P0, (uint8_t*)(&TX_RX_ADDRESS), 5);
 }
 
 //**********************************************************************************************************************************
