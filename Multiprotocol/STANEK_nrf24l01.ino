@@ -14,7 +14,7 @@
 */
 
 //***************************************************************************************
-// Support for custom Arduino-based DIY receivers with RF24 library from this repository
+// Support for custom Arduino-based DIY receivers with RF24 library from this repository:
 // https://github.com/stanekTM/RX_nRF24L01_Telemetry_Motor_Servo
 //
 // Included communication nRF24L01P "Stanek". Fixed RF channel, fixed address.
