@@ -110,9 +110,9 @@ static void __attribute__((unused)) STANEK_get_telemetry()
 //**********************************************************************************************************************************
 //**********************************************************************************************************************************
 //**********************************************************************************************************************************
-static void __attribute__((unused)) STANEK_send_packet(uint8_t stanek_telemetry)
+static void __attribute__((unused)) STANEK_send_packet()
 {
-  STANEK_get_telemetry(); // check for incoming packet and switch radio back to TX mode if we were listening for telemetry
+  STANEK_get_telemetry();
   
   switch (sub_protocol)
   {
@@ -175,21 +175,19 @@ static void __attribute__((unused)) STANEK_send_packet(uint8_t stanek_telemetry)
   NRF24L01_WritePayload(packet, packetSize);       // and payload
   
   
-  if (!stanek_telemetry) //!
-  {
-    // switch radio to rx as soon as packet is sent
-    // calculate transmit time based on packet size and data rate of 1MB per sec
-    // this is done because polling the status register during xmit caused issues.
-    // bits = packst_size * 8  +  73 bits overhead
-    // at 250 Kbs per sec, one bit is 4 uS
-    // then add 140 uS which is 130 uS to begin the xmit and 10 uS fudge factor
-    delayMicroseconds(((((unsigned long)packetSize * 8ul)  +  73ul) * 4ul) + 140ul);
-    
-    // increase packet period by 100 us for each channel over 6
-    packet_period = STANEK_PACKET_PERIOD + (constrain(((int16_t)(STANEK_RC_CHANNELS - rc_channels_reduction) - (int16_t)6), (int16_t)0, (int16_t)10) * (int16_t)100);
-    
-    NRF24L01_WriteReg(NRF24L01_00_CONFIG, 0x7F); // RX mode with 16 bit CRC no IRQ, 0x0F RX mode with 16 bit CRC
-  }
+  // switch radio to rx as soon as packet is sent
+  // calculate transmit time based on packet size and data rate of 1MB per sec
+  // this is done because polling the status register during xmit caused issues.
+  // bits = packst_size * 8  +  73 bits overhead
+  // at 250 Kbs per sec, one bit is 4 uS
+  // then add 140 uS which is 130 uS to begin the xmit and 10 uS fudge factor
+  delayMicroseconds(((((unsigned long)packetSize * 8ul)  +  73ul) * 4ul) + 140ul);
+  
+  // increase packet period by 100 us for each channel over 6
+  packet_period = STANEK_PACKET_PERIOD + (constrain(((int16_t)(STANEK_RC_CHANNELS - rc_channels_reduction) - (int16_t)6), (int16_t)0, (int16_t)10) * (int16_t)100);
+  
+  NRF24L01_WriteReg(NRF24L01_00_CONFIG, 0x7F); // RX mode with 16 bit CRC no IRQ
+  //NRF24L01_WriteReg(NRF24L01_00_CONFIG, 0x0F); // RX mode with 16 bit CRC
 }
 
 //**********************************************************************************************************************************
@@ -197,15 +195,13 @@ static void __attribute__((unused)) STANEK_send_packet(uint8_t stanek_telemetry)
 //**********************************************************************************************************************************
 uint16_t STANEK_callback()
 {
-  STANEK_send_packet(0); // packet_period is set/adjusted in STANEK_send_packet
-
-/*#ifdef MULTI_SYNC
-  telemetry_set_input_sync(packet_period);
-#endif*/
-
-  return packet_period;
+  STANEK_send_packet(); // packet_period is set/adjusted in STANEK_send_packet
   
-  return STANEK_PACKET_PERIOD;
+#ifdef MULTI_SYNC
+  telemetry_set_input_sync(packet_period);
+#endif
+  
+  return packet_period;
 }
 
 //**********************************************************************************************************************************
@@ -213,10 +209,8 @@ uint16_t STANEK_callback()
 //**********************************************************************************************************************************
 void STANEK_init(void)
 {
+  BIND_DONE;
   STANEK_RF_init();
-  STANEK_get_telemetry();
-  
-  packet_period = STANEK_PACKET_PERIOD;
 }
 
 #endif
