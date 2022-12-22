@@ -159,15 +159,17 @@ static void __attribute__((unused)) STANEK_send_packet()
     // use 12 bits per value
     holdValue &= 0x0FFF; // 4095
     
-    packet[payloadIndex] |= holdValue & 0xFF; // 255
+    packet[0 + payloadIndex] |= holdValue & 0xFF; // 255
     payloadIndex++;
-    packet[payloadIndex] |= holdValue >> 8;
+    packet[0 + payloadIndex] |= holdValue >> 8;
     payloadIndex++;
       
-    /*packet[payloadIndex] |= (uint8_t)(holdValue & 0x00FF); // 255
+    /*
+    packet[0 + payloadIndex] |= (uint8_t)(holdValue & 0x00FF); // 255
     payloadIndex++;
-    packet[payloadIndex] |= (uint8_t)((holdValue>>8) & 0x00FF);
-    payloadIndex++;*/
+    packet[0 + payloadIndex] |= (uint8_t)((holdValue>>8) & 0x00FF);
+    payloadIndex++;
+    */
   }
   
   NRF24L01_WriteReg(NRF24L01_05_RF_CH, rf_ch_num); // send channel
