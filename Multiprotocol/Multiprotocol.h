@@ -19,7 +19,7 @@
 #define VERSION_MAJOR		1
 #define VERSION_MINOR		3
 #define VERSION_REVISION	3
-#define VERSION_PATCH_LEVEL	15
+#define VERSION_PATCH_LEVEL	24
 
 #define MODE_SERIAL 0
 
@@ -120,11 +120,12 @@ enum PROTOCOLS
 	PROTO_MOULDKG	= 90,	// =>NRF24L01
 	PROTO_XERALL	= 91,	// =>NRF24L01
 	PROTO_MT99XX2	= 92,	// =>NRF24L01, extension of MT99XX protocol
-
+	PROTO_KYOSHO2	= 93,	// =>NRF24L01
+	
+	PROTO_STANEK  = 125,  // =>NRF24L01
+	
 	PROTO_NANORF	= 126,	// =>NRF24L01
 	PROTO_TEST		= 127,	// =>CC2500
-	
-	PROTO_STANEK  = 128,  // =>NRF24L01
 };
 
 enum Flysky
@@ -419,6 +420,7 @@ enum V761
 {
 	V761_3CH	= 0,
 	V761_4CH	= 1,
+	V761_TOPRC	= 2,
 };
 enum HEIGHT
 {
