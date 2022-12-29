@@ -144,46 +144,46 @@ static void __attribute__((unused)) STANEK_send_packet()
   
   uint8_t rc_channels_reduction = constrain(12 - num_ch, 0, STANEK_RC_CHANNELS);
   
-  uint8_t packetSize = STANEK_RC_PACKET_SIZE - (rc_channels_reduction * 2); // 2ch = 20, 18, 16, 14, ... -> 10ch = 4, 12ch = 0
+  uint8_t packet_size = STANEK_RC_PACKET_SIZE - (rc_channels_reduction * 2); // 2ch = 20, 18, 16, 14, ... -> 10ch = 4, 12ch = 0
   
   uint8_t packet[STANEK_RC_PACKET_SIZE] = {0};
   
   
-  uint8_t payloadIndex = 0;
-  uint16_t holdValue;
+  uint8_t payload_index = 0;
+  uint16_t hold_value;
   
   for (uint8_t x = 0; (x < STANEK_RC_CHANNELS - rc_channels_reduction); x++)
   {
-    holdValue = convert_channel_16b_limit(x, 1000, 2000); // valid channel values are 1000 to 2000
+    hold_value = convert_channel_16b_limit(x, 1000, 2000); // valid channel values are 1000 to 2000
     
     // use 12 bits per value
-    holdValue &= 0x0FFF; // 4095
+    hold_value &= 0x0FFF; // 4095
     
-    packet[0 + payloadIndex] |= holdValue & 0xFF; // 255
-    payloadIndex++;
-    packet[0 + payloadIndex] |= holdValue >> 8;
-    payloadIndex++;
+    packet[0 + payload_index] |= hold_value & 0xFF; // 255
+    payload_index++;
+    packet[0 + payload_index] |= hold_value >> 8;
+    payload_index++;
       
     /*
-    packet[0 + payloadIndex] |= (uint8_t)(holdValue & 0x00FF); // 255
-    payloadIndex++;
-    packet[0 + payloadIndex] |= (uint8_t)((holdValue>>8) & 0x00FF);
-    payloadIndex++;
+    packet[0 + payload_index] |= (uint8_t)(hold_value & 0x00FF); // 255
+    payload_index++;
+    packet[0 + payload_index] |= (uint8_t)((hold_value >> 8) & 0x00FF);
+    payload_index++;
     */
   }
   
   NRF24L01_WriteReg(NRF24L01_05_RF_CH, rf_ch_num); // send channel
   NRF24L01_SetPower();
-  NRF24L01_WritePayload(packet, packetSize);       // and payload
+  NRF24L01_WritePayload(packet, packet_size);      // and payload
   
   
   // switch radio to rx as soon as packet is sent
   // calculate transmit time based on packet size and data rate of 1MB per sec
   // this is done because polling the status register during xmit caused issues.
-  // bits = packst_size * 8  +  73 bits overhead
+  // bits = packet_size * 8  +  73 bits overhead
   // at 250 Kbs per sec, one bit is 4 uS
   // then add 140 uS which is 130 uS to begin the xmit and 10 uS fudge factor
-  delayMicroseconds(((((unsigned long)packetSize * 8ul)  +  73ul) * 4ul) + 140ul);
+  delayMicroseconds(((((unsigned long)packet_size * 8ul)  +  73ul) * 4ul) + 140ul);
   
   // increase packet period by 100 us for each channel over 6
   packet_period = STANEK_PACKET_PERIOD + (constrain(((int16_t)(STANEK_RC_CHANNELS - rc_channels_reduction) - (int16_t)6), (int16_t)0, (int16_t)10) * (int16_t)100);
@@ -209,7 +209,7 @@ uint16_t STANEK_callback()
 //**********************************************************************************************************************************
 //**********************************************************************************************************************************
 //**********************************************************************************************************************************
-void STANEK_init(void)
+void STANEK_init()
 {
   BIND_DONE;
   STANEK_RF_init();
