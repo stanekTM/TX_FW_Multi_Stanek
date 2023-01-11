@@ -56,11 +56,14 @@ static void __attribute__((unused)) STANEK_setAddress()
 static void __attribute__((unused)) STANEK_RF_init()
 {
   NRF24L01_Initialize();
-  NRF24L01_SetBitrate(NRF24L01_BR_250K);        // NRF24L01_BR_250K (fails for units without +), NRF24L01_BR_1M, NRF24L01_BR_2M
+  
   STANEK_setAddress();
+  
+  NRF24L01_SetBitrate(NRF24L01_BR_250K);        // NRF24L01_BR_250K (fails for units without +), NRF24L01_BR_1M, NRF24L01_BR_2M
   NRF24L01_WriteReg(NRF24L01_1C_DYNPD, 0x3F);   // enable dynamic payload length on all pipes
   NRF24L01_WriteReg(NRF24L01_1D_FEATURE, 0x04); // enable dynamic Payload Length
   NRF24L01_SetTxRxMode(TX_EN);                  // clear data ready, data sent, retransmit and enable CRC 16bits, ready for TX
+  delayMilliseconds(100);
 }
 
 //**********************************************************************************************************************************
@@ -198,18 +201,17 @@ static void __attribute__((unused)) STANEK_send_packet()
 uint16_t STANEK_callback()
 {
   STANEK_send_packet(); // packet_period is set/adjusted in STANEK_send_packet
-  
+  return packet_period;
+
 #ifdef MULTI_SYNC
   telemetry_set_input_sync(packet_period);
 #endif
-  
-  return packet_period;
 }
 
 //**********************************************************************************************************************************
 //**********************************************************************************************************************************
 //**********************************************************************************************************************************
-void STANEK_init()
+void STANEK_init(void)
 {
   BIND_DONE;
   STANEK_RF_init();
