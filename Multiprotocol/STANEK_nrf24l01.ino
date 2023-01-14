@@ -119,30 +119,22 @@ static void __attribute__((unused)) STANEK_send_packet()
   
   switch (sub_protocol)
   {
-    case 1:
-      num_ch = 3;
-      break;
-    case 2:
-      num_ch = 4;
-      break;
-    case 3:
-      num_ch = 5;
-      break;
-    case 4:
-      num_ch = 6;
-      break;
-    case 5:
-      num_ch = 8;
-      break;
-    case 6:
-      num_ch = 10;
-      break;
-    case 7:
-      num_ch = 12;
-      break;
-    default:
-      num_ch = 2;
-      break;
+    case 1: num_ch = 3;
+    break;
+    case 2: num_ch = 4;
+    break;
+    case 3: num_ch = 5;
+    break;
+    case 4: num_ch = 6;
+    break;
+    case 5: num_ch = 8;
+    break;
+    case 6: num_ch = 10;
+    break;
+    case 7: num_ch = 12;
+    break;
+    default: num_ch = 2;
+    break;
   }
   
   uint8_t rc_channels_reduction = constrain(12 - num_ch, 0, STANEK_RC_CHANNELS);
