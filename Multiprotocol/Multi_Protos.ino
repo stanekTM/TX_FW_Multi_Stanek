@@ -165,7 +165,7 @@ const char STR_SUBTYPE_JJRC345[] =    "\x08""JJRC345\0""SkyTmblr";
 const char STR_SUBTYPE_MOULKG[] =     "\x06""Analog""Digit\0";
 const char STR_SUBTYPE_KF606[] =      "\x06""KF606\0""MIG320";
 const char STR_SUBTYPE_E129[] =       "\x04""E129""C186";
-const char STR_SUBTYPE_FX[] =         "\x03""816""620";
+const char STR_SUBTYPE_FX[] =         "\x04""816\0""620\0""9630";
 
 const char STR_SUBTYPE_STANEK[] =     "\x04""2ch\0""3ch\0""4ch\0""5ch\0""6ch\0""8ch\0""10ch""12ch";
 
@@ -309,8 +309,8 @@ const mm_protocol_definition multi_protocols[] = {
 	#if defined(FUTABA_CC2500_INO)
 		{PROTO_FUTABA,     STR_FUTABA,    STR_SUBTYPE_FUTABA,    1, OPTION_RFTUNE,  1, 1, SW_CC2500, SFHSS_init,      SFHSS_callback      },
 	#endif
-  #if defined(FX_NRF24L01_INO)
-    {PROTO_FX,         STR_FX,        STR_SUBTYPE_FX,        2, OPTION_NONE,    0, 0, SW_NRF,    FX_init,         FX_callback         },
+	#if defined(FX_NRF24L01_INO)
+		{PROTO_FX,         STR_FX,        STR_SUBTYPE_FX,        3, OPTION_NONE,    0, 0, SW_NRF,    FX_init,         FX_callback         },
 	#endif
 	#if defined(FY326_NRF24L01_INO)
 		{PROTO_FY326,      STR_FY326,     STR_SUBTYPE_FY326,     2, OPTION_NONE,    0, 0, SW_NRF,    FY326_init,      FY326_callback      },
