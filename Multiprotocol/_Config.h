@@ -121,6 +121,7 @@
 //#define FORCE_FLYSKY_TUNING	0
 //#define FORCE_HEIGHT_TUNING	0
 //#define FORCE_HUBSAN_TUNING	0
+//#define FORCE_JOYSWAY_TUNING	0
 //#define FORCE_KYOSHO_TUNING	0
 //#define FORCE_PELIKAN_TUNING	0
 //#define FORCE_WFLY2_TUNING	0
@@ -167,6 +168,9 @@
 //All the protocols will not fit in the Atmega328p module so you need to pick and choose.
 //Comment the protocols you are not using with "//" to save Flash space.
 
+//Protocol for module configuration
+#define MULTI_CONFIG_INO
+
 //The protocols below need an A7105 to be installed
 #define	AFHDS2A_A7105_INO
 #define	AFHDS2A_RX_A7105_INO
@@ -174,6 +178,7 @@
 #define	FLYSKY_A7105_INO
 #define	HEIGHT_A7105_INO
 #define	HUBSAN_A7105_INO
+#define	JOYSWAY_A7105_INO
 #define	KYOSHO_A7105_INO
 #define	PELIKAN_A7105_INO
 #define	WFLY2_A7105_INO
@@ -183,9 +188,12 @@
 #define	DSM_CYRF6936_INO
 #define	DSM_RX_CYRF6936_INO
 #define	E010R5_CYRF6936_INO
+#define	E01X_CYRF6936_INO
 #define	E129_CYRF6936_INO
 #define	J6PRO_CYRF6936_INO
+//#define	LOSI_CYRF6936_INO
 #define	MLINK_CYRF6936_INO
+#define	SCORPIO_CYRF6936_INO
 #define	TRAXXAS_CYRF6936_INO
 #define	WFLY_CYRF6936_INO
 #define	WK2x01_CYRF6936_INO
@@ -201,6 +209,7 @@
 #define	FRSKY_RX_CC2500_INO
 #define	HITEC_CC2500_INO
 #define	HOTT_CC2500_INO
+//#define	IKEAANSLUTA_CC2500_INO  // This is mostly a "for-fun" kind of a thing, not needed for most users
 #define	SCANNER_CC2500_INO
 #define	FUTABA_CC2500_INO
 #define	SKYARTEC_CC2500_INO
@@ -213,46 +222,51 @@
 #define	BAYANG_RX_NRF24L01_INO
 #define	BUGSMINI_NRF24L01_INO
 #define	CABELL_NRF24L01_INO
-#define	CFLIE_NRF24L01_INO
+//#define	CFLIE_NRF24L01_INO
 #define	CG023_NRF24L01_INO
 #define	CX10_NRF24L01_INO		//Include Q2X2 protocol
 #define	DM002_NRF24L01_INO
-#define	E01X_NRF24L01_INO
+#define	E016H_NRF24L01_INO
 #define	ESKY_NRF24L01_INO
 #define	ESKY150_NRF24L01_INO
 #define	FQ777_NRF24L01_INO
-#define FX_NRF24L01_INO
+#define	FX_NRF24L01_INO
 #define	FY326_NRF24L01_INO
-#define	GD00X_NRF24L01_INO
 #define	GW008_NRF24L01_INO
 #define	HISKY_NRF24L01_INO
 #define	HONTAI_NRF24L01_INO
 #define	H8_3D_NRF24L01_INO
 #define	JJRC345_NRF24L01_INO
-#define	KF606_NRF24L01_INO
 #define	KN_NRF24L01_INO
+#define	KYOSHO2_NRF24L01_INO
 #define	LOLI_NRF24L01_INO
-#define	MJXQ_NRF24L01_INO
-#define	MT99XX_NRF24L01_INO
+//#define	MOULDKG_NRF24L01_INO
 #define	NCC1701_NRF24L01_INO
-#define	OMP_CC2500_INO			//Need both CC2500 and NRF
 #define	POTENSIC_NRF24L01_INO
 #define	PROPEL_NRF24L01_INO
-#define	Q303_NRF24L01_INO
-#define	Q90C_NRF24L01_INO
 #define	REALACC_NRF24L01_INO
 #define	SHENQI_NRF24L01_INO
-#define	SLT_NRF24L01_INO
 #define	SYMAX_NRF24L01_INO
 #define	TIGER_NRF24L01_INO
 #define	V2X2_NRF24L01_INO
 #define	V761_NRF24L01_INO
-#define	V911S_NRF24L01_INO
-#define	XK_NRF24L01_INO
+#define	XERALL_NRF24L01_INO
 #define	YD717_NRF24L01_INO
 #define	ZSX_NRF24L01_INO
 
 #define STANEK_NRF24L01_INO
+
+//The protocols below need either a CC2500 or NRF24L01 to be installed
+#define	GD00X_CCNRF_INO
+#define	KF606_CCNRF_INO
+#define	MJXQ_CCNRF_INO
+#define	MT99XX_CCNRF_INO		//Include MT99XX2 protocol
+#define	OMP_CCNRF_INO
+#define	Q303_CCNRF_INO
+#define	Q90C_CCNRF_INO
+#define	SLT_CCNRF_INO
+#define	V911S_CCNRF_INO
+#define	XK_CCNRF_INO
 
 //The protocols below need a SX1276 to be installed
 #define	FRSKYR9_SX1276_INO
@@ -283,9 +297,9 @@
 /**************************/
 /*** FAILSAFE SETTINGS  ***/
 /**************************/
-//The following protocols are supporting failsafe: FrSkyX, Devo, WK2x01, Futaba/SFHSS, HISKY/HK310 and AFHDS2A
+//The following protocols are supporting failsafe: FrSkyX, FrSkyX2, FRSKYR9, Devo, WK2x01, Futaba/SFHSS, HISKY/HK310, HoTT, LOLI, MLINK, WFLY, WFLY2 and AFHDS2A
 //In Serial mode failsafe is configured on the radio itself.
-//In PPM mode and only after the module is up and fully operational, press the bind button for at least 5sec to send the current stick positions as failsafe to the RX.
+//In PPM mode and only after the module is up and fully operational, press the bind button for at least 5sec to send all the current channels positions as failsafe to the RX.
 //If you want to disable failsafe globally comment the line below using "//".
 #define FAILSAFE_ENABLE
 
@@ -330,7 +344,9 @@
 #define RLINK_HUB_TELEMETRY			// Use FrSkyD Hub format to send telemetry to TX
 #define WFLY2_HUB_TELEMETRY			// Use FrSkyD Hub format to send telemetry to TX
 #define LOLI_HUB_TELEMETRY			// Use FrSkyD Hub format to send telemetry to TX
-#define MLINK_HUB_TELEMETRY			// Use FrSkyD Hub format to send telemetry to TX
+#define MT99XX_HUB_TELEMETRY		// Use FrSkyD Hub format to send telemetry to TX
+//#define MLINK_HUB_TELEMETRY			// Use FrSkyD Hub format to send telemetry to TX
+#define MLINK_FW_TELEMETRY			// Forward received telemetry packet directly to TX to be decoded by erskyTX and OpenTX
 //#define HITEC_HUB_TELEMETRY		// Use FrSkyD Hub format to send basic telemetry to the radios which can decode it like er9x, erskyTX and OpenTX
 #define HITEC_FW_TELEMETRY			// Forward received telemetry packets to be decoded by erskyTX and OpenTX
 #define SCANNER_TELEMETRY			// Forward spectrum scanner data to TX
@@ -338,6 +354,16 @@
 #define AFHDS2A_RX_TELEMETRY		// Forward channels data to TX
 #define HOTT_FW_TELEMETRY			// Forward received telemetry packets to be decoded by erskyTX and OpenTX
 #define BAYANG_RX_TELEMETRY			// Forward channels data to TX
+
+/**************************/
+/***  TRAINER SETTINGS  ***/
+/**************************/
+// By default Multi uses the telemetry line to send the received channels using a RX protocol (FrSky, DSM, AFHDS2A, Bayang) to the radio.
+// But this does not work on FrSky radios since the telemetry lines of the internal and external modules are shared (hardware limitation).
+// On a STM32 module and with a simple hardware modification, you can go around this limitation using CPPM to send the trainer information to the radio.
+// Hardware modification: add a 1K resistor between the STM32 USART1 TX pin (Boot0 programming TX pin) and the radio bay pin 2.
+//Comment to disable
+#define SEND_CPPM
 
 /****************************/
 /*** SERIAL MODE SETTINGS ***/
@@ -355,7 +381,7 @@
 /*************************/
 //In this section you can configure all details about PPM.
 //If you do not plan to use the PPM mode comment this line using "//" to save Flash space, you don't need to configure anything below in this case
-//#define ENABLE_PPM
+#define ENABLE_PPM
 
 /** TX END POINTS **/
 //It is important for the module to know the endpoints of your radio.
@@ -426,14 +452,14 @@ const PPM_Parameters PPM_prot[14*NBR_BANKS]=	{
 #if NBR_BANKS > 1
 //******************************       BANK 2       ******************************
 //	Switch	Protocol 		Sub protocol	RX_Num	Power		Auto Bind		Option	Chan Order
-/*	1	*/	{PROTO_DSM	,	DSM2_11		,	0	,	P_HIGH	,	NO_AUTOBIND	,	6	,	0x00000000 },	// option=number of channels
-/*	2	*/	{PROTO_DSM	,	DSM2_22		,	0	,	P_HIGH	,	NO_AUTOBIND	,	6	,	0x00000000 },	// option=number of channels
-/*	3	*/	{PROTO_DSM	,	DSMX_11		,	0	,	P_HIGH	,	NO_AUTOBIND	,	6	,	0x00000000 },	// option=number of channels
-/*	4	*/	{PROTO_DSM	,	DSMX_22		,	0	,	P_HIGH	,	NO_AUTOBIND	,	6	,	0x00000000 },	// option=number of channels
-/*	5	*/	{PROTO_DSM	,	DSM2_11		,	0	,	P_HIGH	,	NO_AUTOBIND	,	8	,	0x00000000 },	// option=number of channels
-/*	6	*/	{PROTO_DSM	,	DSM2_22		,	0	,	P_HIGH	,	NO_AUTOBIND	,	8	,	0x00000000 },	// option=number of channels
-/*	7	*/	{PROTO_DSM	,	DSMX_11		,	0	,	P_HIGH	,	NO_AUTOBIND	,	8	,	0x00000000 },	// option=number of channels
-/*	8	*/	{PROTO_DSM	,	DSMX_22		,	0	,	P_HIGH	,	NO_AUTOBIND	,	8	,	0x00000000 },	// option=number of channels
+/*	1	*/	{PROTO_DSM	,	DSM2_2F		,	0	,	P_HIGH	,	NO_AUTOBIND	,	6	,	0x00000000 },	// option=number of channels
+/*	2	*/	{PROTO_DSM	,	DSM2_1F		,	0	,	P_HIGH	,	NO_AUTOBIND	,	6	,	0x00000000 },	// option=number of channels
+/*	3	*/	{PROTO_DSM	,	DSMX_2F		,	0	,	P_HIGH	,	NO_AUTOBIND	,	6	,	0x00000000 },	// option=number of channels
+/*	4	*/	{PROTO_DSM	,	DSMX_1F		,	0	,	P_HIGH	,	NO_AUTOBIND	,	6	,	0x00000000 },	// option=number of channels
+/*	5	*/	{PROTO_DSM	,	DSM2_2F		,	0	,	P_HIGH	,	NO_AUTOBIND	,	8	,	0x00000000 },	// option=number of channels
+/*	6	*/	{PROTO_DSM	,	DSM2_1F		,	0	,	P_HIGH	,	NO_AUTOBIND	,	8	,	0x00000000 },	// option=number of channels
+/*	7	*/	{PROTO_DSM	,	DSMX_2F		,	0	,	P_HIGH	,	NO_AUTOBIND	,	8	,	0x00000000 },	// option=number of channels
+/*	8	*/	{PROTO_DSM	,	DSMX_1F		,	0	,	P_HIGH	,	NO_AUTOBIND	,	8	,	0x00000000 },	// option=number of channels
 /*	9	*/	{PROTO_SLT	,	SLT_V1		,	0	,	P_HIGH	,	NO_AUTOBIND	,	6	,	0x00000000 },
 /*	10	*/	{PROTO_HUBSAN,	H107		,	0	,	P_HIGH	,	NO_AUTOBIND	,	0	,	0x00000000 },
 /*	11	*/	{PROTO_HUBSAN,	H301		,	0	,	P_HIGH	,	NO_AUTOBIND	,	0	,	0x00000000 },
@@ -527,6 +553,8 @@ const PPM_Parameters PPM_prot[14*NBR_BANKS]=	{
 		PPM_SBUS
 		PWM_IB16
 		PPM_IB16
+		PWM_SB16
+		PPM_SB16
 	PROTO_AFHDS2A_RX
 		NONE
 	PROTO_ASSAN
@@ -571,22 +599,25 @@ const PPM_Parameters PPM_prot[14*NBR_BANKS]=	{
 	PROTO_DM002
 		NONE
 	PROTO_DSM
-		DSM2_22
-		DSM2_11
-		DSMX_22
-		DSMX_11
+		DSM2_1F
+		DSM2_2F
+		DSMX_1F
+		DSMX_2F
+		DSMR
 	PROTO_DSM_RX
 		NONE
 	PROTO_E010R5
+		NONE
+	PROTO_E016H
 		NONE
 	PROTO_E016HV2
 		NONE
 	PROTO_E01X
 		E012
 		E015
-		E016H
 	PROTO_E129
-		NONE
+		E129_E129
+		E129_C186
 	PROTO_ESKY
 		ESKY_STD
 		ESKY_ET4
@@ -639,9 +670,12 @@ const PPM_Parameters PPM_prot[14*NBR_BANKS]=	{
 	PROTO_FRSKY_RX
 		FRSKY_RX
 		FRSKY_CLONE
-  PROTO_FX
-    FX816
-    FX620
+	PROTO_FUTABA
+		NONE
+	PROTO_FX
+		FX816
+		FX620
+		FX9630
 	PROTO_FY326
 		FY326
 		FY319
@@ -677,20 +711,30 @@ const PPM_Parameters PPM_prot[14*NBR_BANKS]=	{
 		H107
 		H301
 		H501
+	PROTO_IKEAANSLUTA
+		NONE
 	PROTO_J6PRO
 		NONE
 	PROTO_JJRC345
 		JJRC345
 		SKYTMBLR
-	PROTO_KF606
+	PROTO_JOYSWAY
 		NONE
+	PROTO_KF606
+		KF606_KF606
+		KF606_MIG320
+		KF606_ZCZ50
 	PROTO_KN
 		WLTOYS
 		FEILUN
 	PROTO_KYOSHO
 		KYOSHO_FHSS
 		KYOSHO_HYPE
+	PROTO_KYOSHO2
+		NONE
 	PROTO_LOLI
+		NONE
+	PROTO_LOSI
 		NONE
 	PROTO_MJXQ
 		WLH08
@@ -702,12 +746,20 @@ const PPM_Parameters PPM_prot[14*NBR_BANKS]=	{
 		PHOENIX
 	PROTO_MLINK
 		NONE
+	PROTO_MOULDKG
+		MOULDKG_ANALOG
+		MOULDKG_DIGIT
 	PROTO_MT99XX
 		MT99
 		H7
 		YZ
 		LS
 		FY805
+		A180
+		DRAGON
+		F949G
+	PROTO_MT99XX2
+		PA18
 	PROTO_NCC1701
 		NONE
 	PROTO_OMP
@@ -715,6 +767,7 @@ const PPM_Parameters PPM_prot[14*NBR_BANKS]=	{
 	PROTO_PELIKAN
 		PELIKAN_PRO
 		PELIKAN_LITE
+		PELIKAN_SCX24
 	PROTO_POTENSIC
 		NONE
 	PROTO_PROPEL
@@ -741,7 +794,7 @@ const PPM_Parameters PPM_prot[14*NBR_BANKS]=	{
 		RLINK_DUMBORC
 	PROTO_SCANNER
 		NONE
-	PROTO_FUTABA
+	PROTO_SCORPIO
 		NONE
 	PROTO_SHENQI
 		NONE
@@ -781,6 +834,8 @@ const PPM_Parameters PPM_prot[14*NBR_BANKS]=	{
 		W6_6_1
 		W6_HEL
 		W6_HEL_I
+	PROTO_XERALL
+		NONE
 	PROTO_XK
 		X450
 		X420
