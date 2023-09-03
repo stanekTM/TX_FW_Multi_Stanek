@@ -6,7 +6,7 @@ Support for custom Arduino-based DIY receivers with RF24 library from this repos
 Included communication nRF24L01P "Stanek". Fixed RF channel, fixed address. 
 Channel reduction in sub protocols 2, 3, 4, 5, 6, 8, 10 and 12ch.
 This is the maximum in the "Servo" library on the Atmega328P processor.
-Telemetry A1 for measuring 1S Lipo power supply RX, RSSI and TRSS.
+Telemetry A1 for measuring 1S Lipo power supply RX and RSSI.
 
 Operated in serial mode.
 * Jumper T12
