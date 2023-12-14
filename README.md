@@ -11,7 +11,7 @@ Telemetry A1 for measuring 1S Lipo power supply RX and RSSI.
 Operated in serial mode.
 * Jumper T12
 * OpenTX v2.3.15
-* Multiprotocol v1.3.3.38
+* Multiprotocol v1.3.3.41
 
 If necessary, I update with the latest version.
 #
