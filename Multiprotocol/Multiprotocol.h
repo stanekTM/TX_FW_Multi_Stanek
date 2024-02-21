@@ -19,7 +19,7 @@
 #define VERSION_MAJOR		1
 #define VERSION_MINOR		3
 #define VERSION_REVISION	3
-#define VERSION_PATCH_LEVEL	24
+#define VERSION_PATCH_LEVEL	49
 
 #define MODE_SERIAL 0
 
@@ -86,10 +86,10 @@ enum PROTOCOLS
 	PROTO_FRSKY_RX	= 55,	// =>CC2500
 	PROTO_AFHDS2A_RX= 56,	// =>A7105
 	PROTO_HOTT		= 57,	// =>CC2500
-	PROTO_FX    = 58, // =>NRF24L01
+	PROTO_FX		= 58,	// =>NRF24L01
 	PROTO_BAYANG_RX	= 59,	// =>NRF24L01
 	PROTO_PELIKAN	= 60,	// =>A7105
-	PROTO_TIGER		= 61,	// =>NRF24L01
+
 	PROTO_XK		= 62,	// =>NRF24L01
 	PROTO_XN297DUMP	= 63,	// =>NRF24L01
 	PROTO_FRSKYX2	= 64,	// =>CC2500
@@ -121,8 +121,11 @@ enum PROTOCOLS
 	PROTO_XERALL	= 91,	// =>NRF24L01
 	PROTO_MT99XX2	= 92,	// =>NRF24L01, extension of MT99XX protocol
 	PROTO_KYOSHO2	= 93,	// =>NRF24L01
-	
-	PROTO_STANEK  = 125,  // =>NRF24L01
+	PROTO_SCORPIO	= 94,	// =>CYRF6936
+	PROTO_BLUEFLY	= 95,	// =>CC2500 & NRF24L01
+	PROTO_BUMBLEB	= 96,	// =>CC2500 & NRF24L01
+	PROTO_SGF22		= 97,	// =>NRF24L01
+  
 	
   PROTO_STANEK  = 125,  // =>NRF24L01
 	
@@ -172,6 +175,12 @@ enum DSM
 	DSMX_2F		= 3,
 	DSM_AUTO	= 4,
 	DSMR		= 5,
+};
+enum DSM_RX
+{
+	DSM_RX		= 0,
+	DSM_CLONE	= 1,
+	DSM_ERASE	= 2,
 };
 enum YD717
 {       			
@@ -369,6 +378,7 @@ enum XK
 {
 	X450	= 0,
 	X420	= 1,
+	XK_CARS	= 2,
 };
 enum XN297DUMP
 {
@@ -444,6 +454,7 @@ enum RLINK
 	RLINK_SURFACE	= 0,
 	RLINK_AIR		= 1,
 	RLINK_DUMBORC	= 2,
+	RLINK_RC4G		= 3,
 };
 enum MOULDKG
 {
@@ -454,6 +465,7 @@ enum KF606
 {
 	KF606_KF606		= 0,
 	KF606_MIG320	= 1,
+	KF606_ZCZ50		= 2,
 };
 enum E129
 {
@@ -825,7 +837,9 @@ enum {
 #define FRSKYX2_CLONE_EEPROM_OFFSET	873	// (1) format + (3) TX ID, 4 bytes, end is 877
 #define DSM_RX_EEPROM_OFFSET	877		// (4) TX ID + format, 5 bytes, end is 882
 #define MOULDKG_EEPROM_OFFSET	882		// RX ID, 3 bytes per model, end is 882+64*3=1074
-//#define CONFIG_EEPROM_OFFSET 	1074	// Current configuration of the multimodule
+#define DSM_CLONE_EEPROM_OFFSET	1074	// (4) TX ID, (1) Initialized, end is 1079
+#define TRAXXAS_EEPROM_OFFSET	1079	// RX ID and SOP index, 3 bytes per model id, end is 1079+192=1271
+//#define CONFIG_EEPROM_OFFSET 	1271	// Current configuration of the multimodule
 
 /* STM32 Flash Size */
 #ifndef DISABLE_FLASH_SIZE_CHECK
@@ -911,10 +925,9 @@ Serial: 100000 Baud 8e2      _ xxxx xxxx p --
 				FRSKY_RX	55
 				AFHDS2A_RX	56
 				HOTT		57
-				FX    58
+				FX		58
 				BAYANG_RX	59
 				PELIKAN		60
-				TIGER		61
 				XK			62
 				XN297DUMP	63
 				FRSKYX2		64
@@ -964,6 +977,10 @@ Serial: 100000 Baud 8e2      _ xxxx xxxx p --
 			DSMX_1F 	2
 			DSMX_2F 	3
 			DSM_AUTO	4
+		sub_protocol==DSM_RX
+			DSM_RX		0
+			DSM_CLONE	1
+			DSM_ERASE	2
 		sub_protocol==YD717
 			YD717		0
 			SKYWLKR		1
