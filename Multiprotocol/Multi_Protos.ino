@@ -166,9 +166,12 @@ const char STR_SUBTYPE_MOULKG[] =     "\x06""Analog""Digit\0";
 const char STR_SUBTYPE_KF606[] =      "\x06""KF606\0""MIG320";
 const char STR_SUBTYPE_E129[] =       "\x04""E129""C186";
 const char STR_SUBTYPE_FX[] =         "\x04""816\0""620\0""9630";
+<<<<<<< HEAD
 
 const char STR_SUBTYPE_STANEK[] =     "\x04""2ch\0""3ch\0""4ch\0""5ch\0""6ch\0""8ch\0""10ch""12ch";
 
+=======
+>>>>>>> parent of 54ae77e (FX/Q560 new sub protocol)
 #define NO_SUBTYPE		nullptr
 
 #ifdef SEND_CPPM
