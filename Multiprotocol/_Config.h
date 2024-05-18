@@ -165,8 +165,13 @@
 /*** PROTOCOLS TO INCLUDE ***/
 /****************************/
 //In this section select the protocols you want to be accessible when using the module.
-//All the protocols will not fit in the Atmega328p module so you need to pick and choose.
+//All the protocols will not fit in the STM32 or Atmega328p modules so you need to pick and choose.
 //Comment the protocols you are not using with "//" to save Flash space.
+
+//Already defined protocols selection
+//#define MULTI_AIR			//Only Air protocols will be available, all the others are disabled
+//#define MULTI_SURFACE		//Only Surface protocols will be available, all the others are disabled
+//#define MULTI_EU			//Only LBT/EU protocols will be available, all the others are disabled
 
 //Protocol for module configuration
 #define MULTI_CONFIG_INO
@@ -191,7 +196,8 @@
 #define	E01X_CYRF6936_INO
 #define	E129_CYRF6936_INO
 #define	J6PRO_CYRF6936_INO
-//#define	LOSI_CYRF6936_INO
+#define	KYOSHO3_CYRF6936_INO
+#define	LOSI_CYRF6936_INO		//Need DSM to be enabled
 #define	MLINK_CYRF6936_INO
 #define	SCORPIO_CYRF6936_INO
 #define	TRAXXAS_CYRF6936_INO
@@ -222,11 +228,12 @@
 #define	BAYANG_RX_NRF24L01_INO
 #define	BUGSMINI_NRF24L01_INO
 #define	CABELL_NRF24L01_INO
-//#define	CFLIE_NRF24L01_INO
+#define	CFLIE_NRF24L01_INO
 #define	CG023_NRF24L01_INO
 #define	CX10_NRF24L01_INO		//Include Q2X2 protocol
 #define	DM002_NRF24L01_INO
 #define	E016H_NRF24L01_INO
+#define	EAZYRC_NRF24L01_INO
 #define	ESKY_NRF24L01_INO
 #define	ESKY150_NRF24L01_INO
 #define	FQ777_NRF24L01_INO
@@ -240,14 +247,14 @@
 #define	KN_NRF24L01_INO
 #define	KYOSHO2_NRF24L01_INO
 #define	LOLI_NRF24L01_INO
-//#define	MOULDKG_NRF24L01_INO
+#define	MOULDKG_NRF24L01_INO
 #define	NCC1701_NRF24L01_INO
 #define	POTENSIC_NRF24L01_INO
 #define	PROPEL_NRF24L01_INO
 #define	REALACC_NRF24L01_INO
+#define	SGF22_NRF24L01_INO
 #define	SHENQI_NRF24L01_INO
 #define	SYMAX_NRF24L01_INO
-#define	TIGER_NRF24L01_INO
 #define	V2X2_NRF24L01_INO
 #define	V761_NRF24L01_INO
 #define	XERALL_NRF24L01_INO
@@ -339,6 +346,7 @@
 #define HUBSAN_HUB_TELEMETRY		// Use FrSkyD Hub format to send telemetry to TX
 #define NCC1701_HUB_TELEMETRY		// Use FrSkyD Hub format to send telemetry to TX
 #define OMP_HUB_TELEMETRY			// Use FrSkyD Hub format to send telemetry to TX
+#define V761_HUB_TELEMETRY			// Use FrSkyD Hub format to send telemetry to TX
 #define PROPEL_HUB_TELEMETRY		// Use FrSkyD Hub format to send telemetry to TX
 #define CABELL_HUB_TELEMETRY		// Use FrSkyD Hub format to send telemetry to TX
 #define RLINK_HUB_TELEMETRY			// Use FrSkyD Hub format to send telemetry to TX
@@ -568,6 +576,8 @@ const PPM_Parameters PPM_prot[14*NBR_BANKS]=	{
 		QX100
 	PROTO_BAYANG_RX
 		NONE
+	PROTO_BLUEFLY
+		NONE
 	PROTO_BUGS
 		NONE
 	PROTO_BUGSMINI
@@ -604,8 +614,11 @@ const PPM_Parameters PPM_prot[14*NBR_BANKS]=	{
 		DSMX_1F
 		DSMX_2F
 		DSMR
+		DSM2_SFC
 	PROTO_DSM_RX
-		NONE
+		DSM_RX
+		DSM_CLONE
+  		DSM_ERASE
 	PROTO_E010R5
 		NONE
 	PROTO_E016H
@@ -618,6 +631,8 @@ const PPM_Parameters PPM_prot[14*NBR_BANKS]=	{
 	PROTO_E129
 		E129_E129
 		E129_C186
+	PROTO_EAZYRC
+		NONE
 	PROTO_ESKY
 		ESKY_STD
 		ESKY_ET4
@@ -676,6 +691,7 @@ const PPM_Parameters PPM_prot[14*NBR_BANKS]=	{
 		FX816
 		FX620
 		FX9630
+		Q560
 	PROTO_FY326
 		FY326
 		FY319
@@ -731,6 +747,8 @@ const PPM_Parameters PPM_prot[14*NBR_BANKS]=	{
 		KYOSHO_FHSS
 		KYOSHO_HYPE
 	PROTO_KYOSHO2
+		NONE
+	PROTO_KYOSHO3
 		NONE
 	PROTO_LOLI
 		NONE
@@ -792,9 +810,12 @@ const PPM_Parameters PPM_prot[14*NBR_BANKS]=	{
 		RLINK_SURFACE
 		RLINK_AIR
 		RLINK_DUMBORC
+		RLINK_RC4G
 	PROTO_SCANNER
 		NONE
 	PROTO_SCORPIO
+		NONE
+	PROTO_SGF22
 		NONE
 	PROTO_SHENQI
 		NONE
@@ -809,10 +830,8 @@ const PPM_Parameters PPM_prot[14*NBR_BANKS]=	{
 	PROTO_SYMAX
 		SYMAX
 		SYMAX5C
-	PROTO_TIGER
-		NONE
 	PROTO_TRAXXAS
-		RX6519
+		NONE
 	PROTO_V2X2
 		V2X2
 		JXD506
@@ -839,6 +858,7 @@ const PPM_Parameters PPM_prot[14*NBR_BANKS]=	{
 	PROTO_XK
 		X450
 		X420
+		XK_CARS
 	PROTO_YD717
 		YD717
 		SKYWLKR
