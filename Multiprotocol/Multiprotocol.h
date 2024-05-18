@@ -19,7 +19,7 @@
 #define VERSION_MAJOR		1
 #define VERSION_MINOR		3
 #define VERSION_REVISION	4
-#define VERSION_PATCH_LEVEL	9
+#define VERSION_PATCH_LEVEL	8
 
 #define MODE_SERIAL 0
 
@@ -480,7 +480,6 @@ enum FX
 	FX816			= 0,
 	FX620			= 1,
     FX9630          = 2,
-	FX_Q560			      = 3,
 };
 
 #define NONE 		0
