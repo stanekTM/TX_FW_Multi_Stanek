@@ -155,6 +155,11 @@
 		#error "The Hubsan forced frequency tuning value is outside of the range -300..300."
 	#endif
 #endif
+#ifdef FORCE_JOYSWAY_TUNING
+	#if ( FORCE_JOYSWAY_TUNING < -300 ) || ( FORCE_JOYSWAY_TUNING > 300 )
+		#error "The JOYSWAY forced frequency tuning value is outside of the range -300..300."
+	#endif
+#endif
 #ifdef FORCE_KYOSHO_TUNING
 	#if ( FORCE_KYOSHO_TUNING < -300 ) || ( FORCE_KYOSHO_TUNING > 300 )
 		#error "The Kyosho forced frequency tuning value is outside of the range -300..300."
@@ -178,6 +183,9 @@
 	#endif
 	#ifndef FORCE_PELIKAN_TUNING
 		#define FORCE_PELIKAN_TUNING 0
+	#endif
+	#ifndef FORCE_JOYSWAY_TUNING
+		#define FORCE_JOYSWAY_TUNING 0
 	#endif
 	#ifndef FORCE_KYOSHO_TUNING
 		#define FORCE_KYOSHO_TUNING 0
@@ -217,58 +225,181 @@
 	#if not defined(STM32_BOARD)
 		#error "Error MULTI_5IN1_INTERNAL is only for STM32 boards."
 	#endif
+	#if ! (MULTI_5IN1_INTERNAL + 0)
+		#define MULTI_5IN1_INTERNAL JP_T18	// make JP_T18 default if it has not been explicitly declared
+	#endif
+	#if MULTI_5IN1_INTERNAL > JP_TLite
+		#error "Invalid value for MULTI_5IN1_INTERNAL."
+	#endif
 	#define A7105_INSTALLED
 	#define CYRF6936_INSTALLED
 	#define CC2500_INSTALLED
 	#define NRF24L01_INSTALLED
 	#define SX1276_INSTALLED
-	#undef ENABLE_PPM
+	#undef	ENABLE_PPM
+	#undef	SEND_CPPM
 #endif
 
 //Make sure protocols are selected correctly
-#ifndef A7105_INSTALLED
-	#undef AFHDS2A_A7105_INO
-	#undef AFHDS2A_RX_A7105_INO
-	#undef BUGS_A7105_INO
-	#undef FLYSKY_A7105_INO
-	#undef HEIGHT_A7105_INO
-	#undef HUBSAN_A7105_INO
-	#undef KYOSHO_A7105_INO
-	#undef PELIKAN_A7105_INO
-	#undef WFLY2_A7105_INO
+#if not defined(A7105_INSTALLED) || defined MULTI_EU
+	#undef	AFHDS2A_A7105_INO
+	#if not defined(A7105_INSTALLED)
+		#undef	AFHDS2A_RX_A7105_INO
+	#endif
+	#undef	BUGS_A7105_INO
+	#undef	FLYSKY_A7105_INO
+	#undef	HEIGHT_A7105_INO
+	#undef	HUBSAN_A7105_INO
+	#undef	JOYSWAY_A7105_INO
+	#undef	KYOSHO_A7105_INO
+	#undef	PELIKAN_A7105_INO
+	#undef	WFLY2_A7105_INO
 #endif
-#ifndef CYRF6936_INSTALLED
+
+#if not defined(CYRF6936_INSTALLED) || defined MULTI_EU
 	#undef	DEVO_CYRF6936_INO
-	#undef	DSM_CYRF6936_INO
-	#undef	DSM_RX_CYRF6936_INO
+	#if not defined(CYRF6936_INSTALLED)
+		#undef	DSM_CYRF6936_INO
+		#undef	DSM_RX_CYRF6936_INO
+	#endif
 	#undef	E010R5_CYRF6936_INO
+	#undef	E01X_CYRF6936_INO
 	#undef	E129_CYRF6936_INO
 	#undef	J6PRO_CYRF6936_INO
+	#undef	KYOSHO3_CYRF6936_INO
+	#undef	LOSI_CYRF6936_INO
 	#undef	MLINK_CYRF6936_INO
 	#undef	TRAXXAS_CYRF6936_INO
+	#undef	SCORPIO_CYRF6936_INO
 	#undef	WFLY_CYRF6936_INO
 	#undef	WK2x01_CYRF6936_INO
 #endif
-#ifndef CC2500_INSTALLED
+
+#if not defined(CC2500_INSTALLED) || defined MULTI_EU
 	#undef	CORONA_CC2500_INO
 	#undef	E016HV2_CC2500_INO
 	#undef	ESKY150V2_CC2500_INO
 	#undef	FRSKYD_CC2500_INO
 	#undef	FRSKYL_CC2500_INO
 	#undef	FRSKYV_CC2500_INO
-	#undef	FRSKYX_CC2500_INO
-	#undef	FRSKY_RX_CC2500_INO
+	#if not defined(CC2500_INSTALLED)
+		#undef	FRSKYX_CC2500_INO
+		#undef	FRSKY_RX_CC2500_INO
+	#endif
 	#undef	HITEC_CC2500_INO
-	#undef	HOTT_CC2500_INO
-	#undef	OMP_CC2500_INO			// Use both CC2500 and NRF code
+	#if not defined(CC2500_INSTALLED)
+		#undef	HOTT_CC2500_INO
+	#endif
+	#undef	IKEAANSLUTA_CC2500_INO
 	#undef	REDPINE_CC2500_INO
 	#undef	RLINK_CC2500_INO
-	#undef	SCANNER_CC2500_INO
+	#if not defined(CC2500_INSTALLED)
+		#undef	SCANNER_CC2500_INO
+	#endif
 	#undef	FUTABA_CC2500_INO
 	#undef	SKYARTEC_CC2500_INO
 #endif
-#ifndef NRF24L01_INSTALLED
+
+#if not defined(NRF24L01_INSTALLED) || defined MULTI_EU
 	#undef	ASSAN_NRF24L01_INO
+	#undef	BAYANG_NRF24L01_INO
+	#if not defined(NRF24L01_INSTALLED)
+		#undef	BAYANG_RX_NRF24L01_INO
+	#endif
+	#undef	BUGSMINI_NRF24L01_INO
+	#undef	CABELL_NRF24L01_INO
+	#undef	CFLIE_NRF24L01_INO
+	#undef	CG023_NRF24L01_INO
+	#undef	CX10_NRF24L01_INO
+	#undef	DM002_NRF24L01_INO
+	#undef	E016H_NRF24L01_INO
+	#undef	EAZYRC_NRF24L01_INO
+	#undef	ESKY_NRF24L01_INO
+	#undef	ESKY150_NRF24L01_INO
+	#undef	FQ777_NRF24L01_INO
+	#undef  FX_NRF24L01_INO
+	#undef	FY326_NRF24L01_INO
+	#undef	GW008_NRF24L01_INO
+	#undef	H8_3D_NRF24L01_INO
+	#undef	HISKY_NRF24L01_INO
+	#undef	HONTAI_NRF24L01_INO
+	#undef	JJRC345_NRF24L01_INO
+	#undef	KN_NRF24L01_INO
+	#undef	KYOSHO2_NRF24L01_INO
+	#undef	LOLI_NRF24L01_INO
+	#undef	MOULDKG_NRF24L01_INO
+	#undef	NCC1701_NRF24L01_INO
+	#undef	POTENSIC_NRF24L01_INO
+	#undef	PROPEL_NRF24L01_INO
+	#undef	REALACC_NRF24L01_INO
+	#undef	SGF22_NRF24L01_INO
+	#undef	SHENQI_NRF24L01_INO
+	#undef	SYMAX_NRF24L01_INO
+	#undef	V2X2_NRF24L01_INO
+	#undef	V761_NRF24L01_INO
+	#undef	XERALL_NRF24L01_INO
+	#undef	YD717_NRF24L01_INO
+	#undef	ZSX_NRF24L01_INO
+	
+	#undef  STANEK_NRF24L01_INO
+
+#endif
+#if ( not defined(CC2500_INSTALLED) && not defined(NRF24L01_INSTALLED) ) || defined MULTI_EU
+	#undef	BLUEFLY_CCNRF_INO
+	#undef	BUMBLEB_CCNRF_INO
+	#undef	GD00X_CCNRF_INO
+	#undef	KF606_CCNRF_INO
+	#undef	MJXQ_CCNRF_INO
+	#undef	MT99XX_CCNRF_INO
+	#undef	OMP_CCNRF_INO
+	#undef	Q303_CCNRF_INO
+	#undef	Q90C_CCNRF_INO
+	#undef	SLT_CCNRF_INO
+	#undef	V911S_CCNRF_INO
+	#undef	XK_CCNRF_INO
+#endif
+#if not defined(DSM_CYRF6936_INO)
+	#undef	LOSI_CYRF6936_INO
+#endif
+#if not defined(STM32_BOARD)
+	//RF2500 emulation does not work on atmega...
+	#undef	E010R5_CYRF6936_INO
+	#undef	E129_CYRF6936_INO
+#endif
+#if not defined(STM32_BOARD)
+	#undef SX1276_INSTALLED
+#endif
+#if not defined(SX1276_INSTALLED) || defined MULTI_EU
+	#undef FRSKYR9_SX1276_INO
+#endif
+
+#ifdef MULTI_AIR
+	#undef	JOYSWAY_A7105_INO
+	//#undef	KYOSHO_A7105_INO
+	//#undef	PELIKAN_A7105_INO
+	#undef	LOSI_CYRF6936_INO		//Need DSM to be enabled
+	#undef	TRAXXAS_CYRF6936_INO
+	#undef	EAZYRC_NRF24L01_INO
+	#undef	KYOSHO2_NRF24L01_INO
+	#undef	KYOSHO3_CYRF6936_INO
+	#undef	MOULDKG_NRF24L01_INO
+	#undef	SHENQI_NRF24L01_INO
+#endif
+
+#ifdef MULTI_SURFACE
+	#undef	BUGS_A7105_INO
+	#undef	HEIGHT_A7105_INO
+	#undef	HUBSAN_A7105_INO
+	#undef	E010R5_CYRF6936_INO
+	#undef	E01X_CYRF6936_INO
+	#undef	E129_CYRF6936_INO
+	#undef	J6PRO_CYRF6936_INO
+	#undef	SCORPIO_CYRF6936_INO
+	#undef	E016HV2_CC2500_INO
+	#undef	ESKY150V2_CC2500_INO
+	#undef	IKEAANSLUTA_CC2500_INO  // This is mostly a "for-fun" kind of a thing, not needed for most users
+	#undef	SKYARTEC_CC2500_INO
+	#undef	REDPINE_CC2500_INO
 	#undef	BAYANG_NRF24L01_INO
 	#undef	BAYANG_RX_NRF24L01_INO
 	#undef	BUGSMINI_NRF24L01_INO
@@ -277,49 +408,36 @@
 	#undef	CG023_NRF24L01_INO
 	#undef	CX10_NRF24L01_INO
 	#undef	DM002_NRF24L01_INO
-	#undef	E01X_NRF24L01_INO
+	#undef	E016H_NRF24L01_INO
 	#undef	ESKY_NRF24L01_INO
 	#undef	ESKY150_NRF24L01_INO
 	#undef	FQ777_NRF24L01_INO
-	#undef  FX_NRF24L01_INO
+	#undef	FX_NRF24L01_INO
 	#undef	FY326_NRF24L01_INO
-	#undef	GD00X_NRF24L01_INO
 	#undef	GW008_NRF24L01_INO
-	#undef	H8_3D_NRF24L01_INO
-	#undef	HISKY_NRF24L01_INO
 	#undef	HONTAI_NRF24L01_INO
+	#undef	H8_3D_NRF24L01_INO
 	#undef	JJRC345_NRF24L01_INO
-	#undef	KF606_NRF24L01_INO
 	#undef	KN_NRF24L01_INO
 	#undef	LOLI_NRF24L01_INO
-	#undef	MJXQ_NRF24L01_INO
-	#undef	MT99XX_NRF24L01_INO
 	#undef	NCC1701_NRF24L01_INO
-	#undef	OMP_CC2500_INO			// Use both CC2500 and NRF code
 	#undef	POTENSIC_NRF24L01_INO
 	#undef	PROPEL_NRF24L01_INO
-	#undef	Q303_NRF24L01_INO
-	#undef	Q90C_NRF24L01_INO
 	#undef	REALACC_NRF24L01_INO
-	#undef	SHENQI_NRF24L01_INO
-	#undef	SLT_NRF24L01_INO
+	#undef	SGF22_NRF24L01_INO
 	#undef	SYMAX_NRF24L01_INO
-	#undef	TIGER_NRF24L01_INO
-	#undef	V2X2_NRF24L01_INO
 	#undef	V761_NRF24L01_INO
-	#undef	V911S_NRF24L01_INO
-	#undef	XK_NRF24L01_INO
+	#undef	XERALL_NRF24L01_INO
 	#undef	YD717_NRF24L01_INO
 	#undef	ZSX_NRF24L01_INO
-	
-	#undef  STANEK_NRF24L01_INO
-
-#endif
-#if not defined(STM32_BOARD)
-	#undef SX1276_INSTALLED
-#endif
-#ifndef SX1276_INSTALLED
-	#undef FRSKYR9_SX1276_INO
+	#undef	GD00X_CCNRF_INO
+	#undef	KF606_CCNRF_INO
+	#undef	MJXQ_CCNRF_INO
+	#undef	MT99XX_CCNRF_INO
+	#undef	OMP_CCNRF_INO
+	#undef	Q303_CCNRF_INO
+	#undef	Q90C_CCNRF_INO
+	#undef	V911S_CCNRF_INO
 #endif
 
 //OpenTX 2.3.x issue
@@ -357,13 +475,16 @@
 	#undef DEVO_HUB_TELEMETRY
 	#undef PROPEL_HUB_TELEMETRY
 	#undef OMP_HUB_TELEMETRY
+	#undef V761_HUB_TELEMETRY
 	#undef RLINK_HUB_TELEMETRY
 	#undef DSM_RX_CYRF6936_INO
 	#undef DSM_FWD_PGM
 	#undef WFLY2_HUB_TELEMETRY
 	#undef LOLI_HUB_TELEMETRY
+	#undef MT99XX_HUB_TELEMETRY
 	#undef MLINK_HUB_TELEMETRY
 	#undef MLINK_FW_TELEMETRY
+	#undef MULTI_CONFIG_INO 
 #else
 	#if not defined(SCANNER_CC2500_INO) || not defined(SCANNER_TELEMETRY)
 		#undef SCANNER_TELEMETRY
@@ -387,8 +508,11 @@
 	#if not defined(DEVO_CYRF6936_INO)
 		#undef DEVO_HUB_TELEMETRY
 	#endif
-	#if not defined(OMP_CC2500_INO)
+	#if not defined(OMP_CCNRF_INO)
 		#undef OMP_HUB_TELEMETRY
+	#endif
+	#if not defined(V761_NRF24L01_INO)
+		#undef V761_HUB_TELEMETRY
 	#endif
 	#if not defined(PROPEL_NRF24L01_INO)
 		#undef PROPEL_HUB_TELEMETRY
@@ -440,11 +564,14 @@
 	#if not defined(LOLI_NRF24L01_INO)
 		#undef LOLI_HUB_TELEMETRY
 	#endif
+	#if not defined(MT99XX_CCNRF_INO)
+		#undef MT99XX_HUB_TELEMETRY
+	#endif
 	#if not defined(FRSKYD_CC2500_INO) && not defined(MLINK_HUB_TELEMETRY) && not defined(BAYANG_HUB_TELEMETRY)
 		//protocols using FRSKYD user frames
 		#undef HUB_TELEMETRY 
 	#endif
-	#if not defined(HOTT_FW_TELEMETRY) && not defined(DSM_TELEMETRY) && not defined(SPORT_TELEMETRY) && not defined(HUB_TELEMETRY) && not defined(HUBSAN_HUB_TELEMETRY) && not defined(BUGS_HUB_TELEMETRY) && not defined(NCC1701_HUB_TELEMETRY) && not defined(BAYANG_HUB_TELEMETRY) && not defined(CABELL_HUB_TELEMETRY) && not defined(RLINK_HUB_TELEMETRY) && not defined(AFHDS2A_HUB_TELEMETRY) && not defined(AFHDS2A_FW_TELEMETRY) && not defined(MULTI_TELEMETRY) && not defined(MULTI_STATUS) && not defined(HITEC_HUB_TELEMETRY) && not defined(HITEC_FW_TELEMETRY) && not defined(SCANNER_TELEMETRY) && not defined(FRSKY_RX_TELEMETRY) && not defined(AFHDS2A_RX_TELEMETRY) && not defined(BAYANG_RX_TELEMETRY) && not defined(DEVO_HUB_TELEMETRY) && not defined(PROPEL_HUB_TELEMETRY) && not defined(OMP_HUB_TELEMETRY) && not defined(WFLY2_HUB_TELEMETRY) && not defined(LOLI_HUB_TELEMETRY) && not defined(MLINK_HUB_TELEMETRY) && not defined(MLINK_FW_TELEMETRY)
+	#if not defined(HOTT_FW_TELEMETRY) && not defined(DSM_TELEMETRY) && not defined(SPORT_TELEMETRY) && not defined(HUB_TELEMETRY) && not defined(HUBSAN_HUB_TELEMETRY) && not defined(BUGS_HUB_TELEMETRY) && not defined(NCC1701_HUB_TELEMETRY) && not defined(BAYANG_HUB_TELEMETRY) && not defined(CABELL_HUB_TELEMETRY) && not defined(RLINK_HUB_TELEMETRY) && not defined(AFHDS2A_HUB_TELEMETRY) && not defined(AFHDS2A_FW_TELEMETRY) && not defined(MULTI_TELEMETRY) && not defined(MULTI_STATUS) && not defined(HITEC_HUB_TELEMETRY) && not defined(HITEC_FW_TELEMETRY) && not defined(SCANNER_TELEMETRY) && not defined(FRSKY_RX_TELEMETRY) && not defined(AFHDS2A_RX_TELEMETRY) && not defined(BAYANG_RX_TELEMETRY) && not defined(DEVO_HUB_TELEMETRY) && not defined(PROPEL_HUB_TELEMETRY) && not defined(OMP_HUB_TELEMETRY) && not defined(V761_HUB_TELEMETRY) && not defined(WFLY2_HUB_TELEMETRY) && not defined(LOLI_HUB_TELEMETRY) && not defined(MLINK_HUB_TELEMETRY) && not defined(MLINK_FW_TELEMETRY) && not defined(MT99XX_HUB_TELEMETRY) && not defined(MULTI_CONFIG_INO)
 		#undef TELEMETRY
 		#undef INVERT_TELEMETRY
 		#undef MULTI_TELEMETRY
@@ -515,8 +642,14 @@
 	#error MAX_PPM_CHANNELS must be below or equal to 16. The default for this value is 16.
 #endif
 
-#if defined (STM32_BOARD) && defined (DEBUG_SERIAL) && defined (NRF24L01_INSTALLED)
-	#define XN297DUMP_NRF24L01_INO
+#if defined (STM32_BOARD) && defined (DEBUG_SERIAL)
+	#undef SEND_CPPM 
+	#ifdef NRF24L01_INSTALLED
+		#define XN297DUMP_NRF24L01_INO
+	#endif
+#endif
+#if not defined (STM32_BOARD) || not defined (TELEMETRY) || (not defined (FRSKY_RX_TELEMETRY) && not defined (AFHDS2A_RX_TELEMETRY) && not defined (BAYANG_RX_TELEMETRY) && not defined (DSM_RX_CYRF6936_INO))
+	#undef SEND_CPPM 
 #endif
 
 //Check if Direct inputs defined correctly
