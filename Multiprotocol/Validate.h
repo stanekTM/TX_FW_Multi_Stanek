@@ -359,6 +359,11 @@
 	#undef	XK_CCNRF_INO
 	#undef	XK2_CCNRF_INO
 #endif
+#if defined(MCU_STM32F103C8)	// Save flash space...
+	#undef	BUMBLEB_CCNRF_INO
+	#undef	Q303_CCNRF_INO
+	#undef	Q90C_CCNRF_INO
+#endif
 #if not defined(DSM_CYRF6936_INO)
 	#undef	LOSI_CYRF6936_INO
 #endif
@@ -439,6 +444,7 @@
 	#undef	Q303_CCNRF_INO
 	#undef	Q90C_CCNRF_INO
 	#undef	V911S_CCNRF_INO
+	#undef	SGF22_NRF24L01_INO
 #endif
 
 //OpenTX 2.3.x issue
