@@ -112,6 +112,8 @@ const char STR_SGF22[]      ="SGF22";
 const char STR_EAZYRC[]     ="EazyRC";
 const char STR_KYOSHO3[]    ="Kyosho3";
 
+const char STR_STANEK[]     ="Stanek";
+
 const char STR_SUBTYPE_FLYSKY[] =     "\x04""Std\0""V9x9""V6x6""V912""CX20";
 const char STR_SUBTYPE_HUBSAN[] =     "\x04""H107""H301""H501";
 const char STR_SUBTYPE_FRSKYD[] =     "\x06""D8\0   ""Cloned";
@@ -181,6 +183,9 @@ const char STR_SUBTYPE_KF606[] =      "\x06""KF606\0""MIG320""ZCZ50\0";
 const char STR_SUBTYPE_E129[] =       "\x04""E129""C186";
 const char STR_SUBTYPE_FX[] =         "\x04""816\0""620\0""9630""Q560";
 const char STR_SUBTYPE_SGF22[] =      "\x04""F22\0""F22S""J20\0";
+
+const char STR_SUBTYPE_STANEK[] =     "\x04""2ch\0""3ch\0""4ch\0""5ch\0""6ch\0""8ch\0""10ch""12ch";
+
 #define NO_SUBTYPE		nullptr
 
 #ifdef SEND_CPPM
@@ -466,7 +471,12 @@ const mm_protocol_definition multi_protocols[] = {
 	#if defined(SLT_CCNRF_INO)
 		{PROTO_SLT,        STR_SLT,       STR_SUBTYPE_SLT,       6, OPTION_RFTUNE,  0, 1, SW_NRF,    SLT_init,        SLT_callback        },
 	#endif
-	#if defined(SYMAX_NRF24L01_INO)
+	
+	#if defined(STANEK_NRF24L01_INO)
+    {PROTO_STANEK,     STR_STANEK,    STR_SUBTYPE_STANEK,    8, OPTION_NONE,    0, 0, SW_NRF,    STANEK_init,     STANEK_callback     },
+  #endif
+  
+  #if defined(SYMAX_NRF24L01_INO)
 		{PROTO_SYMAX,      STR_SYMAX,     STR_SUBTYPE_SYMAX,     2, OPTION_NONE,    0, 0, SW_NRF,    SYMAX_init,      SYMAX_callback      },
 	#endif
 	#if defined(TRAXXAS_CYRF6936_INO)

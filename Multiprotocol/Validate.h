@@ -340,6 +340,8 @@
 	#undef	XERALL_NRF24L01_INO
 	#undef	YD717_NRF24L01_INO
 	#undef	ZSX_NRF24L01_INO
+	
+	#undef  STANEK_NRF24L01_INO
 #endif
 #if ( not defined(CC2500_INSTALLED) && not defined(NRF24L01_INSTALLED) ) || defined MULTI_EU
 	#undef	BLUEFLY_CCNRF_INO
