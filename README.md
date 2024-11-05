@@ -5,7 +5,7 @@ Support for custom RC receivers with telemetry from this repository [RX_nRF24_Mo
 
 The "Stanek" protocol with the nRF24L01+ transceiver is included. Fixed RF channel, fixed address.
 Control channels reduction is in sub-protocols 2, 3, 4, 5, 6, 8, 10 and 12ch.
-Telemetry A1 for measuring 1S Lipo power supply RX and RSSI.
+Telemetry gets the measured voltage of the receiver to A1 (OpenTX) and "fake" RSSI (the nRF24L01+ transceiver does not contain real RSSI and is only a rough measurement of lost packets).
 
 Operated in serial mode.
 * Jumper T12
