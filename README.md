@@ -3,9 +3,8 @@ Thanks to the original developers "midelic", "pascallanger", "goebish" and many 
 #
 Support for custom RC receivers with telemetry from this repository [RX_nRF24_Motor_Servo](https://github.com/stanekTM/RX_nRF24_Motor_Servo).
 
-Included communication nRF24L01P "Stanek". Fixed RF channel, fixed address.
+The "Stanek" protocol with the nRF24L01+ transceiver is included. Fixed RF channel, fixed address.
 Control channel reduction is in sub-protocols 2, 3, 4, 5, 6, 8, 10 and 12ch.
-This is the maximum in the "Servo" library on the Atmega328P processor.
 Telemetry A1 for measuring 1S Lipo power supply RX and RSSI.
 
 Operated in serial mode.
