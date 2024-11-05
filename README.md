@@ -1,18 +1,18 @@
-## Note
-Thanks to the original developers "midelic", "pascallanger", "goebish" and many others ...
-#
+# Note
 Support for custom RC receivers with telemetry from this repository [RX_nRF24_Motor_Servo](https://github.com/stanekTM/RX_nRF24_Motor_Servo).
 
 The "Stanek" protocol with the nRF24L01+ transceiver is included. Fixed RF channel, fixed address.
 Control channels reduction is in sub-protocols 2, 3, 4, 5, 6, 8, 10 and 12ch.
 Telemetry gets the measured voltage of the receiver to A1 (OpenTX) and "fake" RSSI (the nRF24L01+ transceiver does not contain real RSSI and is only a rough measurement of lost packets).
 
-Works in serial mode with:
+## Works in serial mode with:
 * Jumper T12
 * OpenTX v2.3.15
 * Multiprotocol v1.3.4.12
 
 If necessary, I update with the latest version.
+
+Thanks to the original developers "midelic", "pascallanger", "goebish" and many others ...
 #
 # Multiprotocol TX Module
 <img align="right" width=300 src="docs/images/multi.png" />
