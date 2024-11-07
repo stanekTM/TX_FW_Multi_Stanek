@@ -1,5 +1,5 @@
 # Support for custom RC receivers with telemetry
-... from this repository [RX_nRF24_Motor_Servo](https://github.com/stanekTM/RX_nRF24_Motor_Servo).
+... from this repository [**RX_nRF24_Motor_Servo**](https://github.com/stanekTM/RX_nRF24_Motor_Servo).
 
 The "Stanek" protocol with the nRF24L01+ transceiver is included. Fixed RF channel, fixed address.
 Control channels reduction is in sub-protocols 2, 3, 4, 5, 6, 8, 10 and 12ch.
