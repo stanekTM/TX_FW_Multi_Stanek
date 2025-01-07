@@ -8,7 +8,7 @@ Telemetry monitors receiver voltage to A1 (OpenTX) and "fake" RSSI (the nRF24L01
 ## Works in serial mode with:
 * Jumper T12
 * OpenTX v2.3.15
-* Multiprotocol v1.3.4.12
+* Multiprotocol v1.3.4.13
 
 If necessary, I update with the latest version.
 
