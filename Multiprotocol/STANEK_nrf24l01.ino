@@ -55,14 +55,38 @@ static void __attribute__((unused)) STANEK_setAddress()
 //**********************************************************************************************************************************
 static void __attribute__((unused)) STANEK_RF_init()
 {
-  NRF24L01_Initialize();
-  
   STANEK_setAddress();
   
-  NRF24L01_SetBitrate(NRF24L01_BR_250K);        // NRF24L01_BR_250K (fails for units without +), NRF24L01_BR_1M, NRF24L01_BR_2M
-  NRF24L01_WriteReg(NRF24L01_1C_DYNPD, 0x3F);   // enable dynamic payload length on all pipes
-  NRF24L01_WriteReg(NRF24L01_1D_FEATURE, 0x04); // enable dynamic Payload Length
-  NRF24L01_SetTxRxMode(TX_EN);                  // clear data ready, data sent, retransmit and enable CRC 16bits, ready for TX
+	NRF24L01_FlushTx();
+	NRF24L01_FlushRx();
+  
+  NRF24L01_Initialize();
+  
+  NRF24L01_WriteReg(NRF24L01_01_EN_AA, 0x00);      //0x00 disable auto acknowledgement on all data pipes
+                                                   //0x3F enable auto acknowledgement on all data pipes
+                                                   //0x01 enable auto acknowledgement data pipe 0
+  
+  NRF24L01_WriteReg(NRF24L01_02_EN_RXADDR, 0x3F);  //0x3F enable all data pipes
+                                                   //0x01 enable data pipe 0 only
+  
+	NRF24L01_WriteReg(NRF24L01_03_SETUP_AW, 0x03);   // 5 bytes RX/TX address field width
+  
+  NRF24L01_WriteReg(NRF24L01_04_SETUP_RETR, 0x55); //0x55 1500us (5 * 250 + 250) delay, 5 * retries
+                                                   //0xFF 4000us (15 * 250 + 250) delay, 15 * retries
+                                                   //0x00 disable retransmits
+  
+	NRF24L01_SetBitrate(NRF24L01_BR_250K);           // 250Kbps
+  
+  NRF24L01_WriteReg(NRF24L01_1C_DYNPD, 0x3F);      //0x3F enable Dynamic Payload Length on all data pipes
+                                                   //0x01 enable Dynamic Payload Length on data pipe 0
+  
+  NRF24L01_WriteReg(NRF24L01_1D_FEATURE, 0x04);    //0x04 enable Dynamic Payload Length
+                                                   //0x06 enable Dynamic Payload Length, enable Payload with ACK
+                                                   //0x07 enable all features
+  
+	NRF24L01_SetPower();                             // NRF24L01_WriteReg(NRF24L01_06_RF_SETUP, rf_setup);
+	NRF24L01_SetTxRxMode(TX_EN);                     // clear data ready, data sent, retransmit and enable CRC 16bits, ready for TX
+  
   delayMilliseconds(10);
 }
 
