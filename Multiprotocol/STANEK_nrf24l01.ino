@@ -71,11 +71,11 @@ static void __attribute__((unused)) STANEK_RF_init()
   
 	NRF24L01_WriteReg(NRF24L01_03_SETUP_AW, 0x03);   // 5 bytes RX/TX address field width
   
-  NRF24L01_WriteReg(NRF24L01_04_SETUP_RETR, 0x55); //0x55 1500us (5 * 250 + 250) delay, 5 * retries
-                                                   //0xFF 4000us (15 * 250 + 250) delay, 15 * retries
+  NRF24L01_WriteReg(NRF24L01_04_SETUP_RETR, 0x55); //0x55 1500us (5 * 250us + 250us) delay, 5 * retries
+                                                   //0xFF 4000us (15 * 250us + 250us) delay, 15 * retries
                                                    //0x00 disable retransmits
   
-	NRF24L01_SetBitrate(NRF24L01_BR_250K);           // 250Kbps
+	NRF24L01_SetBitrate(NRF24L01_BR_250K);           // 250kbps
   
   NRF24L01_WriteReg(NRF24L01_1C_DYNPD, 0x3F);      //0x3F enable Dynamic Payload Length on all data pipes
                                                    //0x01 enable Dynamic Payload Length on data pipe 0
@@ -84,7 +84,7 @@ static void __attribute__((unused)) STANEK_RF_init()
                                                    //0x06 enable Dynamic Payload Length, enable Payload with ACK
                                                    //0x07 enable all features
   
-	NRF24L01_SetPower();                             // NRF24L01_WriteReg(NRF24L01_06_RF_SETUP, rf_setup);
+	NRF24L01_SetPower();
 	NRF24L01_SetTxRxMode(TX_EN);                     // clear data ready, data sent, retransmit and enable CRC 16bits, ready for TX
   
   delayMilliseconds(10);
