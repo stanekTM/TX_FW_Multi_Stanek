@@ -782,6 +782,7 @@ const PPM_Parameters PPM_prot[14*NBR_BANKS]=	{
 		F949G
 	PROTO_MT99XX2
 		PA18
+  		SU35
 	PROTO_NCC1701
 		NONE
 	PROTO_OMP
@@ -833,6 +834,8 @@ const PPM_Parameters PPM_prot[14*NBR_BANKS]=	{
 		Q100
 		Q200
 		MR100
+		V1_4CH
+		RF_SIM
 	PROTO_SYMAX
 		SYMAX
 		SYMAX5C

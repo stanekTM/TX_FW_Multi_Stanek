@@ -134,12 +134,12 @@ const char STR_SUBTYPE_DEVO[] =       "\x04""8ch\0""10ch""12ch""6ch\0""7ch\0";
 const char STR_SUBTYPE_YD717[] =      "\x07""Std\0   ""SkyWlkr""Syma X4""XINXUN\0""NIHUI\0 ";
 const char STR_SUBTYPE_KN[] =         "\x06""WLtoys""FeiLun";
 const char STR_SUBTYPE_SYMAX[] =      "\x03""Std""X5C";
-const char STR_SUBTYPE_SLT[] =        "\x06""V1_6ch""V2_8ch""Q100\0 ""Q200\0 ""MR100\0""V1_4ch";
+const char STR_SUBTYPE_SLT[] =        "\x06""V1_6ch""V2_8ch""Q100\0 ""Q200\0 ""MR100\0""V1_4ch""RF_SIM";
 const char STR_SUBTYPE_CX10[] =       "\x07""Green\0 ""Blue\0  ""DM007\0 ""-\0     ""JC3015a""JC3015b""MK33041";
 const char STR_SUBTYPE_CG023[] =      "\x05""Std\0 ""YD829";
 const char STR_SUBTYPE_BAYANG[] =     "\x07""Std\0   ""H8S3D\0 ""X16 AH\0""IRDrone""DHD D4\0""QX100\0 ";
 const char STR_SUBTYPE_MT99[] =       "\x06""MT99\0 ""H7\0   ""YZ\0   ""LS\0   ""FY805\0""A180\0 ""Dragon""F949G\0";
-const char STR_SUBTYPE_MT992[] =      "\x04""PA18";
+const char STR_SUBTYPE_MT992[] =      "\x04""PA18""SU35";
 const char STR_SUBTYPE_MJXQ[] =       "\x07""WLH08\0 ""X600\0  ""X800\0  ""H26D\0  ""E010\0  ""H26WH\0 ""Phoenix";
 const char STR_SUBTYPE_FY326[] =      "\x05""Std\0 ""FY319";
 const char STR_SUBTYPE_HONTAI[] =     "\x07""Std\0   ""JJRC X1""X5C1\0  ""FQ_951";
@@ -419,7 +419,7 @@ const mm_protocol_definition multi_protocols[] = {
 		{PROTO_MT99XX,     STR_MT99XX,    STR_SUBTYPE_MT99,      8, OPTION_NONE,    0, 0, SW_NRF,    MT99XX_init,     MT99XX_callback     },
 	#endif
 	#if defined(MT99XX_CCNRF_INO)
-		{PROTO_MT99XX2,    STR_MT99XX2,   STR_SUBTYPE_MT992,     1, OPTION_NONE,    0, 0, SW_NRF,    MT99XX_init,     MT99XX_callback     },
+		{PROTO_MT99XX2,    STR_MT99XX2,   STR_SUBTYPE_MT992,     2, OPTION_NONE,    0, 0, SW_NRF,    MT99XX_init,     MT99XX_callback     },
 	#endif
 	#if defined(NCC1701_NRF24L01_INO)
 		{PROTO_NCC1701,    STR_NCC1701,   NO_SUBTYPE,            0, OPTION_NONE,    0, 0, SW_NRF,    NCC_init,        NCC_callback        },
@@ -470,7 +470,7 @@ const mm_protocol_definition multi_protocols[] = {
 		{PROTO_SKYARTEC,   STR_SKYARTEC,  NO_SUBTYPE,            0, OPTION_RFTUNE,  0, 1, SW_CC2500, SKYARTEC_init,   SKYARTEC_callback   },
 	#endif
 	#if defined(SLT_CCNRF_INO)
-		{PROTO_SLT,        STR_SLT,       STR_SUBTYPE_SLT,       6, OPTION_RFTUNE,  0, 1, SW_NRF,    SLT_init,        SLT_callback        },
+		{PROTO_SLT,        STR_SLT,       STR_SUBTYPE_SLT,       7, OPTION_RFTUNE,  0, 1, SW_NRF,    SLT_init,        SLT_callback        },
 	#endif
 	
 	#if defined(STANEK_NRF24L01_INO)

@@ -6,6 +6,7 @@ Here are detailed descriptions of every supported protocols (sorted by RF module
  The Deviation project (on which this project was based) have a useful list of models and protocols [here](http://www.deviationtx.com/wiki/supported_models).
 
 ## Useful notes and definitions
+- **Surface and air protocols** - As the list of supported protocols grows even the STM32 ARM microcontroller cannot hold all of the protocols. Firmware available from the [Multi-Module](https://downloads.multi-module.org) website has been split into two groups, surface "SFC" and air "AIR". You can check which protocols are included in each of these groups in the [Validate.h](Multiprotocol/Validate.h) source file.
 - **Channel Order** - The channel order assumed in all the documentation is AETR. You can change this in the compilation settings or by using a precompiled firmware. The module will take whatever input channel order you have choosen and will rearrange them to match the output channel order required by the selected protocol. 
 - **Channel ranges** - A radio output of -100%..0%..+100% will match on the selected protocol -100%,0%,+100%. No convertion needs to be done.
 - **Extended limits supported** - A channel range of -125%..+125% will be transmitted. Otherwise it will be truncated to -100%..+100%.
@@ -123,7 +124,7 @@ CFlie|38|CFlie||||||||NRF24L01|
 [MLINK](Protocols_Details.md#MLINK---78)|78|||||||||CYRF6936|
 [MouldKg](Protocols_Details.md#mouldkg---90)|90|Analog|Digit|||||||NRF24L01|XN297
 [MT99xx](Protocols_Details.md#MT99XX---17)|17|MT|H7|YZ|LS|FY805|A180|DRAGON|F949G|NRF24L01|XN297
-[MT99xx2](Protocols_Details.md#MT99XX2---92)|92|PA18||||||||NRF24L01|XN297
+[MT99xx2](Protocols_Details.md#MT99XX2---92)|92|PA18|SU35|||||||NRF24L01|XN297
 [NCC1701](Protocols_Details.md#NCC1701---44)|44|||||||||NRF24L01|
 [OMP](Protocols_Details.md#OMP---77)|77|||||||||CC2500&NRF24L01|XN297L
 [OpenLRS](Protocols_Details.md#OpenLRS---27)|27|||||||||None|
@@ -141,9 +142,9 @@ CFlie|38|CFlie||||||||NRF24L01|
 [SGF22](Protocols_Details.md#SGF22---97)|97|F22|F22S|J20||||||NRF24L01|XN297
 [Shenqi](Protocols_Details.md#Shenqi---19)|19|Shenqi||||||||NRF24L01|LT8900
 [Skyartec](Protocols_Details.md#Skyartec---68)|68|||||||||CC2500|CC2500
-[SLT](Protocols_Details.md#SLT---11)|11|SLT_V1|SLT_V2|Q100|Q200|MR100|V1_4CH|||NRF24L01|CC2500
+[SLT](Protocols_Details.md#SLT---11)|11|SLT_V1|SLT_V2|Q100|Q200|MR100|V1_4CH|RF_SIM||NRF24L01|CC2500
 [SymaX](Protocols_Details.md#Symax---10)|10|SYMAX|SYMAX5C|||||||NRF24L01|
-[Traxxas](Protocols_Details.md#Traxxas---43)|43|TQ1|TQ2|||||||CYRF6936|
+[Traxxas](Protocols_Details.md#Traxxas---43)|43|TQ2|TQ1|||||||CYRF6936|
 [V2x2](Protocols_Details.md#V2X2---5)|5|V2x2|JXD506|MR101||||||NRF24L01|
 [V761](Protocols_Details.md#V761---48)|48|3CH|4CH|TOPRC||||||NRF24L01|XN297
 [V911S](Protocols_Details.md#V911S---46)|46|V911S*|E119*|||||||NRF24L01|XN297
@@ -698,12 +699,7 @@ A|E|T|R
 
 ## Traxxas - *43*
 
-### Sub_protocol TQ1 - *0*
-Transmitter 2228 TX and a 2217 RX
-
-Under dev
-
-### Sub_protocol TQ2 - *1*
+### Sub_protocol TQ2 - *0*
 Transmitter TQ, Receivers: 6519, 2218(X), ECM-2.5
 
 Extended limits supported
@@ -713,6 +709,9 @@ CH1|CH2|CH3|CH4|CH5|CH6
 CH1|CH2|CH3|CH4|CH5|CH6
 
 Warning from v1.3.4.7 channels order have changed
+
+### Sub_protocol TQ1 - *1*
+Transmitter 2228 TX and a 2217 RX
 
 ## WFLY - *40*
 Receivers: WFR04S, WFR07S, WFR09S
@@ -1260,7 +1259,7 @@ Unk1&2: long press right/left
 
 ## MT99XX2 - *92*
 
-### Sub_protocol PA18 - *92*
+### Sub_protocol PA18 - *0*
 Model: PA18 mini
 
 CH1|CH2|CH3|CH4|CH5|CH6|CH7
@@ -1268,6 +1267,17 @@ CH1|CH2|CH3|CH4|CH5|CH6|CH7
 A|E|T|R|MODE|FLIP|RTH
 
 MODE: -100% beginner, 0% intermediate, +100% Expert
+
+### Sub_protocol SU35 - *1*
+Model: QF009 SU35
+
+CH6 - LED, CH7 - LED Flash, CH8 - Invert, CH9 - Rate
+
+CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8|CH9
+---|---|---|---|---|---|---|---|---
+A|E|T|R|MODE|LED|LED_FLASH|INVERT|RATE
+
+MODE: -100% 6G, +100% 3D
 
 ## OMP - *77*
 Model: OMPHOBBY M1 & M2 Helis, T720 RC Glider
@@ -1429,6 +1439,23 @@ MODE: -100% level, +100% acro
 CH1|CH2|CH3|CH4
 ---|---|---|---
 CH1|CH2|CH3|CH4
+
+### Sub_protocol RF_SIM - *6*
+Models: the SLT-dongle included in RealFlight 7.5
+
+CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8|CH9|CH10
+---|---|---|---|---|---|---|---|---|----
+A|E|T|R|CH5|CH6|CH7|CH8|CH9|CH10
+
+Output 10 channels to use with RealFlight simulator.
+The RealFlight "reset" button found on the RealFlight USB-transmitter, can now be CH9 or CH10.
+
+RealFlight 8 crashes when trying to save file with reset-button defined.
+
+Please save radio-profile with a new name without setting reset-button in RF8. Then edit the radio-profile definition in  ~\Documents\RealFlight8\RadioProfiles\ in an ordinary fileeditor.
+
+Find the [Reset21] section and change Input=INT:-1 to Input=INT:9 
+
 
 ## V911S - *46*
 

@@ -171,9 +171,11 @@
 11,3,SLT,Q200,0,Rates,n-a,CH7,CH8,Mode,VidOn,VidOff,Calib
 11,4,SLT,MR100,0,Rates,n-a,CH7,CH8,Mode,Flip,Video,Pict
 11,5,SLT,V1_4CH,0
+11,6,SLT,RF_SIM,0,CH5,CH6,CH7,CH8,CH9,CH10
 10,0,Symax,Std,1,Flip,Rates,Pict,Video,HLess
 10,1,Symax,X5C,1,Flip,Rates,Pict,Video,HLess
-43,0,Traxxas,TQ,0
+43,0,Traxxas,TQ2,0
+43,1,Traxxas,TQ1,0
 5,0,V2x2,Std,1,Flip,Light,Pict,Video,HLess,CalX,CalY
 5,1,V2x2,JXD506,1,Flip,Light,Pict,Video,HLess,StaSto,Emerg,Cam_UD
 48,0,V761,3CH,0,Gyro,Calib,Flip,RtnAct,Rtn,Beep
@@ -213,6 +215,7 @@
 90,1,MouldKg,Digit,0
 91,0,Xerall,Tank,0,FlTa,TakLan,Rate,HLess,Photo,Video,TrimR,TrimE,TrimA
 92,0,MT99xx2,PA18,0,MODE,FLIP,RTH
+92,1,MT99xx2,SU35,0,Mode,LED,LED_FH,Invert,Rate
 93,0,Kyosho2,KT-17,0
 94,0,Scorpio
 95,0,Bluefly,HP100,0,CH5,CH6,CH7,CH8
