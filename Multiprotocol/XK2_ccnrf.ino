@@ -18,7 +18,7 @@ Multiprotocol is distributed in the hope that it will be useful,
 
 #include "iface_xn297.h"
 
-#define FORCE_XK2_ID
+//#define FORCE_XK2_ID
 
 #define XK2_RF_BIND_CHANNEL	71
 #define XK2_PAYLOAD_SIZE	9
@@ -70,19 +70,21 @@ static void __attribute__((unused)) XK2_send_packet()
 		//Flags
 		packet[5] = GET_FLAG(CH5_SW, 0x01)								//Rate
 				  | GET_FLAG(CH6_SW, 0x08)								//Mode
-				  | GET_FLAG(CH7_SW, 0x20);								//Hover
+				  | GET_FLAG(CH7_SW, 0x20)								//Hover
+				  | GET_FLAG(CH8_SW, 0x40);								//Light
 		//Telemetry not received=00, Telemetry received=01 but sometimes switch to 1 even if telemetry is not there...
 		packet[6] = 0x00;
 		//Unknown
-		packet[7] = crc8;												//?? RX_ID checksum ?? => sum RX_ID[0..2]
+		packet[7] = crc8;												//Sum RX_ID[0..2]
 		//Checksum seed
-		packet[8] = 0x7F;												//Constant?
+		packet[8] = num_ch;												//Based on TX ID
 	}
 	//Checksum
 	for(uint8_t i=0; i<XK2_PAYLOAD_SIZE-1; i++)
 		packet[8] += packet[i];
 
 	// Send
+	XN297_SetFreqOffset();
 	XN297_SetPower();
 	XN297_SetTxRxMode(TX_EN);
 	XN297_WritePayload(packet, XK2_PAYLOAD_SIZE);
@@ -108,14 +110,31 @@ static void __attribute__((unused)) XK2_RF_init()
 static void __attribute__((unused)) XK2_initialize_txid()
 {
 	#ifdef FORCE_XK2_ID
-		rx_tx_addr[0] = 0x66;
-		rx_tx_addr[1] = 0x4F;
-		rx_tx_addr[2] = 0x47;
-		for(uint8_t i=0;i<XK2_RF_NUM_CHANNELS;i++)
-			hopping_frequency[i] = 65 + i*4;	//65=0x41, 69=0x45, 73=0x49, 77=0x4D
+		if(rx_tx_addr[3]&1)
+		{//Pascal
+			rx_tx_addr[0] = 0x66;
+			rx_tx_addr[1] = 0x4F;
+			rx_tx_addr[2] = 0x47;
+			num_ch = 0x7F;
+			//hopping frequencies 65=0x41, 69=0x45, 73=0x49, 77=0x4D
+		}
+		else
+		{//Marc
+			rx_tx_addr[0] = 0x36;
+			rx_tx_addr[1] = 0x49;
+			rx_tx_addr[2] = 0x6B;
+			num_ch = 0x79;
+			//hopping frequencies 65=0x41, 69=0x45, 73=0x49, 77=0x4D
+		}
 	#endif
-	rx_tx_addr[3] = 0xCC;
-	rx_tx_addr[4] = 0xCC;
+	rx_tx_addr[0] = rx_tx_addr[3];				// Use RX_num
+	rx_tx_addr[3] = rx_tx_addr[4] = 0xCC;
+	num_ch = 0x21 + rx_tx_addr[0] - rx_tx_addr[1] + rx_tx_addr[2];
+
+	for(uint8_t i=0;i<XK2_RF_NUM_CHANNELS;i++)	// Are these RF frequencies always the same? It looks like yes...
+		hopping_frequency[i] = 65 + i*4;		//65=0x41, 69=0x45, 73=0x49, 77=0x4D
+
+	debugln("ID: %02X %02X %02X %02X %02X, OFFSET: %02X, HOP: %02X %02X %02X %02X",rx_tx_addr[0],rx_tx_addr[1],rx_tx_addr[2],rx_tx_addr[3],rx_tx_addr[4],num_ch,hopping_frequency[0],hopping_frequency[1],hopping_frequency[2],hopping_frequency[3]);
 }
 
 uint16_t XK2_callback()
@@ -138,8 +157,6 @@ uint16_t XK2_callback()
 						debug(" %02X",packet[i]);
 					debugln("");
 				#endif
-				//phase = XK2_BIND1;
-				//return 500;
 				crc8 = 0xBF;
 				for(uint8_t i=0; i<XK2_PAYLOAD_SIZE-1; i++)
 					crc8 += packet[i];
@@ -271,6 +288,7 @@ P[4] = alternates 20,60,A0,E0
 P[5] = flags
         01=high rate
 		20=hover=long_press_left
+		40=light -> temporary
 		08=6g/3d=short_press_right sequece also switches for a few packets to C1 if 8 C0 if 0
 P[6] = 00 telemetry nok
        01 telemetry ok but sometimes switch to 1 also when telemetry is nok...
