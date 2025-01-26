@@ -5,7 +5,7 @@ The "Stanek" protocol with the nRF24L01+ transceiver is included. Fixed RF chann
 Control channels reduction is in sub-protocols 2, 3, 4, 5, 6, 8, 10 and 12ch.
 Telemetry monitors receiver voltage to A1 (OpenTX) and "fake" RSSI (the nRF24L01+ transceiver does not contain real RSSI and is only a rough measurement of lost packets).
 
-## Multiprotocol v1.3.4.22
+## Multiprotocol v1.3.4.23
 
 ### Works in serial mode with:
 * Jumper T12
