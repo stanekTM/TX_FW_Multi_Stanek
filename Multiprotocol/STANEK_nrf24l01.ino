@@ -165,30 +165,18 @@ static void __attribute__((unused)) STANEK_send_packet()
   
   uint8_t packet_size = STANEK_RC_PACKET_SIZE - (rc_channels_reduction * 2); // 2ch = 20, 18, 16, 14, ... -> 10ch = 4, 12ch = 0
   
-  uint8_t packet[STANEK_RC_PACKET_SIZE] = {0};
   
-  
-  uint8_t payload_index = 0;
   uint16_t hold_value;
+  uint8_t payload_index = 0;
   
   for (uint8_t x = 0; (x < STANEK_RC_CHANNELS - rc_channels_reduction); x++)
   {
     hold_value = convert_channel_16b_limit(x, 1000, 2000); // valid channel values are 1000 to 2000
     
-    // use 12 bits per value
-    hold_value &= 0x0FFF; // 4095
-    
-    packet[0 + payload_index] |= hold_value & 0xFF; // 255
+    packet[payload_index] = hold_value & 0xFF; // 255
     payload_index++;
-    packet[0 + payload_index] |= hold_value >> 8;
+    packet[payload_index] = hold_value >> 8;
     payload_index++;
-      
-    /*
-    packet[0 + payload_index] |= (uint8_t)(hold_value & 0x00FF); // 255
-    payload_index++;
-    packet[0 + payload_index] |= (uint8_t)((hold_value >> 8) & 0x00FF);
-    payload_index++;
-    */
   }
   
   NRF24L01_WriteReg(NRF24L01_05_RF_CH, rf_ch_num); // send channel
@@ -216,13 +204,13 @@ static void __attribute__((unused)) STANEK_send_packet()
 //**********************************************************************************************************************************
 uint16_t STANEK_callback()
 {
-  STANEK_send_packet(); // packet_period is set/adjusted in STANEK_send_packet
+  STANEK_send_packet();
 
 #ifdef MULTI_SYNC
   telemetry_set_input_sync(packet_period);
 #endif
 
-  return packet_period;
+  return packet_period; // packet_period is set/adjusted in STANEK_send_packet
 }
 
 //**********************************************************************************************************************************
