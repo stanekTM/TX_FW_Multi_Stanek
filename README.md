@@ -2,8 +2,9 @@
 ... from this repository [**RX_nRF24_Motor_Servo**](https://github.com/stanekTM/RX_nRF24_Motor_Servo).
 
 The "Stanek" protocol with the nRF24L01+ transceiver is included. Fixed RF channel, fixed address.
-Control channels reduction is in sub-protocols 2, 3, 4, 5, 6, 8, 10 and 12ch.
-Telemetry monitors receiver voltage to A1 (OpenTX) and "fake" RSSI (the nRF24L01+ transceiver does not contain real RSSI and is only a rough measurement of lost packets).
+Setting the number of control channels in sub-protocols 2, 3, 4, 5, 6, 8, 10 and 12ch.
+Telemetry monitors receiver voltage to A1 (OpenTX) and "fake" RSSI.
+The nRF24L01+ transceiver does not contain real RSSI and is only a rough measurement of lost packets.
 
 ## Multiprotocol v1.3.4.28
 
