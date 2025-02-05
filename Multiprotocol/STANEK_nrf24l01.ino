@@ -31,31 +31,17 @@ uint8_t TX_RX_ADDRESS[] = "jirka";      // setting RF channels address (5 bytes 
 
 #define STANEK_RF_CHANNEL      76       // which RF channel to communicate on (0-125, 2.4Ghz + 76 = 2.476Ghz)
 
-#define STANEK_PACKET_PERIOD   3000     // do not set too low or else next packet may not be finished transmitting before the channel is changed next time around
-
-#define STANEK_RC_CHANNELS     12       // number of RC channels that can be sent in one packet
-
-#define STANEK_RC_PACKET_SIZE  24       // STANEK_RC_PACKET_SIZE = STANEK_RC_CHANNELS * 2
+#define STANEK_PACKET_PERIOD   3000     // in microseconds
 
 #define STANEK_TELEMETRY_PACKET_SIZE  3 // RSSI, A1, A2
 
 //**********************************************************************************************************************************
 //**********************************************************************************************************************************
 //**********************************************************************************************************************************
-static void __attribute__((unused)) STANEK_setAddress()
-{
-  rf_ch_num = STANEK_RF_CHANNEL; // initialize the channel
-  
-  NRF24L01_WriteRegisterMulti(NRF24L01_10_TX_ADDR,    (uint8_t*)(&TX_RX_ADDRESS), 5);
-  NRF24L01_WriteRegisterMulti(NRF24L01_0A_RX_ADDR_P0, (uint8_t*)(&TX_RX_ADDRESS), 5);
-}
-
-//**********************************************************************************************************************************
-//**********************************************************************************************************************************
-//**********************************************************************************************************************************
 static void __attribute__((unused)) STANEK_RF_init()
 {
-  STANEK_setAddress();
+  NRF24L01_WriteRegisterMulti(NRF24L01_10_TX_ADDR,    (uint8_t*)(&TX_RX_ADDRESS), 5);
+  NRF24L01_WriteRegisterMulti(NRF24L01_0A_RX_ADDR_P0, (uint8_t*)(&TX_RX_ADDRESS), 5);
   
 	NRF24L01_FlushTx();
 	NRF24L01_FlushRx();
@@ -95,7 +81,8 @@ static void __attribute__((unused)) STANEK_RF_init()
 //**********************************************************************************************************************************
 static void __attribute__((unused)) STANEK_get_telemetry()
 {
-  // calculate TX rssi based on past 250 expected telemetry packets. Cannot use full second count because telemetry_counter is not large enough
+  // calculate TX rssi based on past 250 expected telemetry packets.
+  // Cannot use full second count because telemetry_counter is not large enough
   state++;
   
   if (state > 250)
@@ -113,8 +100,10 @@ static void __attribute__((unused)) STANEK_get_telemetry()
     NRF24L01_ReadPayload(packet, STANEK_TELEMETRY_PACKET_SIZE);
     
     RX_RSSI = packet[0]; // packet rate 0 to 255 where 255 is 100% packet rate
-    v_lipo1 = packet[1]; // directly from analog input of receiver, but reduced to 8-bit depth (0 to 255). Scaling depends on the input to the analog pin of the receiver
-    v_lipo2 = packet[2]; // directly from analog input of receiver, but reduced to 8-bit depth (0 to 255). Scaling depends on the input to the analog pin of the receiver
+    v_lipo1 = packet[1]; // directly from analog input of receiver, but reduced to 8-bit depth (0 to 255).
+                         // Scaling depends on the input to the analog pin of the receiver
+    v_lipo2 = packet[2]; // directly from analog input of receiver, but reduced to 8-bit depth (0 to 255).
+                         // Scaling depends on the input to the analog pin of the receiver
     
     telemetry_counter++;
     
@@ -161,15 +150,12 @@ static void __attribute__((unused)) STANEK_send_packet()
     break;
   }
   
-  uint8_t rc_channels_reduction = constrain(12 - num_ch, 0, STANEK_RC_CHANNELS);
-  
-  uint8_t packet_size = STANEK_RC_PACKET_SIZE - (rc_channels_reduction * 2); // 2ch = 20, 18, 16, 14, ... -> 10ch = 4, 12ch = 0
-  
+  uint8_t packet_size = num_ch * 2; // for one control channel with a value of 1000 to 2000 we need 2 bytes (packets)
   
   uint16_t hold_value;
   uint8_t payload_index = 0;
   
-  for (uint8_t x = 0; (x < STANEK_RC_CHANNELS - rc_channels_reduction); x++)
+  for (uint8_t x = 0; x < num_ch; x++)
   {
     hold_value = convert_channel_16b_limit(x, 1000, 2000); // valid channel values are 1000 to 2000
     
@@ -179,9 +165,9 @@ static void __attribute__((unused)) STANEK_send_packet()
     payload_index++;
   }
   
-  NRF24L01_WriteReg(NRF24L01_05_RF_CH, rf_ch_num); // send channel
+  NRF24L01_WriteReg(NRF24L01_05_RF_CH, STANEK_RF_CHANNEL); // send channel
   NRF24L01_SetPower();
-  NRF24L01_WritePayload(packet, packet_size);      // and payload
+  NRF24L01_WritePayload(packet, packet_size);              // and payload
   
   
   // switch radio to rx as soon as packet is sent
@@ -193,7 +179,7 @@ static void __attribute__((unused)) STANEK_send_packet()
   delayMicroseconds(((((unsigned long)packet_size * 8ul)  +  73ul) * 4ul) + 140ul);
   
   // increase packet period by 100 us for each channel over 6
-  packet_period = STANEK_PACKET_PERIOD + (constrain(((int16_t)(STANEK_RC_CHANNELS - rc_channels_reduction) - (int16_t)6), (int16_t)0, (int16_t)10) * (int16_t)100);
+  packet_period = STANEK_PACKET_PERIOD + (constrain(((int16_t)(num_ch) - (int16_t)6), (int16_t)0, (int16_t)10) * (int16_t)100);
   
   NRF24L01_WriteReg(NRF24L01_00_CONFIG, 0x7F); // RX mode with 16 bit CRC no IRQ
   //NRF24L01_WriteReg(NRF24L01_00_CONFIG, 0x0F); // RX mode with 16 bit CRC
