@@ -1,7 +1,7 @@
 # Support for custom RC receivers with telemetry
 ... from this repository [**RX_nRF24_Motor_Servo**](https://github.com/stanekTM/RX_nRF24_Motor_Servo).
 
-The "Stanek" protocol with the nRF24L01+ transceiver is included. Fixed RF channel, fixed address.
+The [**Stanek**](Multiprotocol/STANEK_nrf24l01.ino) protocol with the nRF24L01+ transceiver is included. Fixed RF channel, fixed address.
 Setting the number of control channels in sub-protocols 2, 3, 4, 5, 6, 8, 10 and 12ch.
 Telemetry monitors receiver voltage to A1 (OpenTX) and "fake" RSSI.
 The nRF24L01+ transceiver does not contain real RSSI and is only a rough measurement of lost packets.
