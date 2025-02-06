@@ -224,6 +224,9 @@ enum
 
 const mm_protocol_definition multi_protocols[] = {
 // Protocol number, Protocol String, Sub_protocol strings, Number of sub_protocols, Option type, Failsafe, ChMap, RF switch, Init, Callback
+  #if defined(STANEK_NRF24L01_INO)
+    {PROTO_STANEK,     STR_STANEK,    STR_SUBTYPE_STANEK,    8, OPTION_NONE,    0, 0, SW_NRF,    STANEK_init,     STANEK_callback     },
+  #endif
 	#if defined(MULTI_CONFIG_INO)
 		{PROTO_CONFIG,     STR_CONFIG,    NO_SUBTYPE,            0, OPTION_NONE,    0, 0, 0,         CONFIG_init,     CONFIG_callback     },
 	#endif
@@ -483,11 +486,6 @@ const mm_protocol_definition multi_protocols[] = {
 	#if defined(SLT_CCNRF_INO)
 		{PROTO_SLT,        STR_SLT,       STR_SUBTYPE_SLT,       7, OPTION_RFTUNE,  0, 1, SW_NRF,    SLT_init,        SLT_callback        },
 	#endif
-	
-	#if defined(STANEK_NRF24L01_INO)
-    {PROTO_STANEK,     STR_STANEK,    STR_SUBTYPE_STANEK,    8, OPTION_NONE,    0, 0, SW_NRF,    STANEK_init,     STANEK_callback     },
-  #endif
-  
   #if defined(SYMAX_NRF24L01_INO)
 		{PROTO_SYMAX,      STR_SYMAX,     STR_SUBTYPE_SYMAX,     2, OPTION_NONE,    0, 0, SW_NRF,    SYMAX_init,      SYMAX_callback      },
 	#endif
