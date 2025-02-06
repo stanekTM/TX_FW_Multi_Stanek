@@ -301,6 +301,7 @@
 #endif
 
 #if not defined(NRF24L01_INSTALLED) || defined MULTI_EU
+  #undef  STANEK_NRF24L01_INO
 	#undef	ASSAN_NRF24L01_INO
 	#undef	BAYANG_NRF24L01_INO
 	#if not defined(NRF24L01_INSTALLED)
@@ -343,8 +344,6 @@
 	#undef	YD717_NRF24L01_INO
 	#undef	YUXIANG_NRF24L01_INO
 	#undef	ZSX_NRF24L01_INO
-	
-	#undef  STANEK_NRF24L01_INO
 #endif
 #if ( not defined(CC2500_INSTALLED) && not defined(NRF24L01_INSTALLED) ) || defined MULTI_EU
 	#undef	BLUEFLY_CCNRF_INO
