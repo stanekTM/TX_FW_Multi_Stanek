@@ -19,7 +19,7 @@
 //
 // The "Stanek" protocol with the nRF24L01+ transceiver is included. Fixed RF channel, fixed address.
 // Setting the number of control channels in sub-protocols 2, 3, 4, 5, 6, 8, 10 and 12ch.
-// Telemetry monitors receiver voltage to A1 (OpenTX) and "fake" RSSI.
+// Telemetry monitors receiver voltage to A1(A2) (OpenTX) and "fake" RSSI.
 // The nRF24L01+ transceiver does not contain real RSSI and is only a rough measurement of lost packets.
 //*******************************************************************************************************
 
@@ -162,7 +162,7 @@ static void __attribute__((unused)) STANEK_send_packet()
     payload_index++;
   }
   
-  uint8_t packet_size = num_ch * 2; // for one control channel with a value of 1000 to 2000 we need 2 bytes (packets)
+  uint8_t packet_size = num_ch * 2; // for one control channel with a value of 1000 to 2000 we need 2 bytes(packets)
   
   NRF24L01_WriteReg(NRF24L01_05_RF_CH, STANEK_RF_CHANNEL); // set RF channel
   NRF24L01_SetPower();
