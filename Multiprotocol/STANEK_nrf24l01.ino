@@ -29,11 +29,11 @@
 #include "iface_nrf24l01.h"
 
 
-uint8_t TX_RX_ADDRESS[] = "jirka";      // setting RF channels address (5 bytes number or character)
+uint8_t TX_RX_ADDRESS[] = "jirka";   // setting RF channels address (5 bytes number or character)
 
-#define STANEK_RF_CHANNEL      76       // which RF channel to communicate on (0 to 125ch, 2.4Ghz + 76 = 2.476Ghz)
+#define STANEK_RF_CHANNEL      76    // which RF channel to communicate on (0 to 125ch, 2.4Ghz + 76 = 2.476Ghz)
 
-#define STANEK_PACKET_PERIOD   3000     // in microseconds
+#define STANEK_PACKET_PERIOD   3000  // in microseconds
 
 //**********************************************************************************************************************************
 //**********************************************************************************************************************************
@@ -54,7 +54,7 @@ static void __attribute__((unused)) STANEK_RF_init()
   
   NRF24L01_WriteReg(NRF24L01_02_EN_RXADDR, 0x3F);  //0x3F enable all data pipes
                                                    //0x01 enable data pipe 0 only
-  
+                                                   
   NRF24L01_WriteReg(NRF24L01_03_SETUP_AW, 0x03);   // 5 bytes RX/TX address field width
   
   NRF24L01_WriteReg(NRF24L01_04_SETUP_RETR, 0x55); //0x55 1500us (5 * 250us + 250us) delay, 5 * retries
@@ -170,7 +170,7 @@ static void __attribute__((unused)) STANEK_send_packet()
   
   
   // switch radio to RX as soon as packet is sent
-  // calculate transmit time based on packet size and data rate of 1Mb per sec.
+  // Calculate transmit time based on packet size and data rate of 250 Kbs per sec.
   // This is done because polling the status register during xmit caused issues.
   // bits = packet_size * 8  +  73 bits overhead
   // at 250Kbps per sec, one bit is 4us
