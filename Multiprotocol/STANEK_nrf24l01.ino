@@ -172,10 +172,9 @@ static void __attribute__((unused)) STANEK_send_packet()
   // switch radio to RX as soon as packet is sent.
   // Calculate transmit time based on packet size and data rate of 250Kbs per sec.
   // This is done because polling the status register during xmit caused issues.
-  // bits = packet_size * 8  +  73 bits overhead
-  // at 250Kbps per sec, one bit is 4us
+  // bits = packet_size * 8  +  73 bits overhead at 250Kbps per sec, one bit is 4us
   // then add 140us which is 130us to begin the xmit and 10us fudge factor
-  delayMicroseconds(((((unsigned long)packet_size * 8ul) + 73ul) * 4ul) + 140ul);
+  delayMicroseconds(((((unsigned long)packet_size * 8ul) + 73ul) * 4ul) + 140ul); // 560us -> 1200us
   
   // increase packet period by 100us for each channel over 6
   packet_period = STANEK_PACKET_PERIOD + (constrain(((int16_t)num_ch - (int16_t)6), (int16_t)0, (int16_t)10) * (int16_t)100);
