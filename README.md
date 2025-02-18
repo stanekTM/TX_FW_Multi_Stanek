@@ -3,7 +3,7 @@
 
 The [**Stanek**](Multiprotocol/STANEK_nrf24l01.ino) protocol with the nRF24L01+ transceiver is included. Fixed RF channel, fixed address.
 Setting the number of control channels in sub-protocols 2, 3, 4, 5, 6, 8, 10 and 12ch.
-OpenTX telemetry monitors the receiver voltage on inputs A1(A2) and "fake" RSSI.
+Telemetry monitors receiver voltage A1(A2) and "fake" RSSI.
 The nRF24L01+ transceiver does not contain real RSSI and is only a rough measurement of lost packets.
 
 ## Multiprotocol v1.3.4.33
