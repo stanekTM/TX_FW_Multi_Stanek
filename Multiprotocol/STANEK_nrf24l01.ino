@@ -19,7 +19,7 @@
 //
 // The "Stanek" protocol with the nRF24L01+ transceiver is included. Fixed RF channel, fixed address.
 // Setting the number of control channels in sub-protocols 2, 3, 4, 5, 6, 8, 10 and 12ch.
-// Telemetry monitors receiver voltage to A1(A2) (OpenTX) and "fake" RSSI.
+// Telemetry monitors receiver voltage A1(A2) and "fake" RSSI.
 // The nRF24L01+ transceiver does not contain real RSSI and is only a rough measurement of lost packets.
 //*******************************************************************************************************
 
