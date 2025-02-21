@@ -114,7 +114,8 @@ const char STR_EAZYRC[]     ="EazyRC";
 const char STR_KYOSHO3[]    ="Kyosho3";
 const char STR_YUXIANG[]    ="YuXiang";
 const char STR_UDIRC[]      ="UDIRC";
-const char STR_JIABAILE[]	="JIABAILE";
+const char STR_JIABAILE[]   ="JIABAILE";
+const char STR_KAMTOM[]     ="KAMTOM";
 
 const char STR_STANEK[]         ="Stanek";
 const char STR_SUBTYPE_STANEK[] = "\x04""2ch\0""3ch\0""4ch\0""5ch\0""6ch\0""8ch\0""10ch""12ch";
@@ -396,6 +397,9 @@ const mm_protocol_definition multi_protocols[] = {
 	#endif
 	#if defined(JOYSWAY_A7105_INO)
 		{PROTO_JOYSWAY,    STR_JOYSWAY,   NO_SUBTYPE,            0, OPTION_NONE,    0, 0, SW_A7105,  JOYSWAY_init,    JOYSWAY_callback    },
+	#endif
+	#if defined(KAMTOM_NRF24L01_INO)
+		{PROTO_KAMTOM,     STR_KAMTOM,    NO_SUBTYPE,            0, OPTION_NONE,    0, 0, SW_NRF,    KAMTOM_init,     KAMTOM_callback     },
 	#endif
 	#if defined(KF606_CCNRF_INO)
 		{PROTO_KF606,      STR_KF606,     STR_SUBTYPE_KF606,     3, OPTION_RFTUNE,  0, 0, SW_NRF,    KF606_init,      KF606_callback      },
