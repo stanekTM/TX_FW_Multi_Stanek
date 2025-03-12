@@ -6,7 +6,7 @@ Setting the number of control channels in sub-protocols 2, 3, 4, 5, 6, 8, 10 and
 Telemetry monitors receiver voltage A1(A2) and "fake" RSSI.
 The nRF24L01+ transceiver does not contain real RSSI and is only a rough measurement of lost packets.
 
-## Multiprotocol v1.3.4.42
+## Multiprotocol v1.3.4.44
 
 ### Works in serial mode with:
 * Jumper T12
