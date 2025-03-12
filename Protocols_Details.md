@@ -99,7 +99,7 @@ CFlie|38|CFlie||||||||NRF24L01|
 [FrskyX2](Protocols_Details.md#FRSKYX2---64)|64|CH_16|CH_8|EU_16|EU_8|Cloned|Cloned_8|||CC2500|
 [Frsky_RX](Protocols_Details.md#FRSKY_RX---55)|55|Multi|CloneTX|EraseTX|CPPM|||||CC2500|
 [Futaba/SFHSS](Protocols_Details.md#Futaba---21)|21|SFHSS||||||||CC2500|
-[FX](Protocols_Details.md#FX---58)|28|816|620|9630|Q560|||||NRF24L01|
+[FX](Protocols_Details.md#FX---58)|28|816|620|9630|Q560|QF012||||NRF24L01|
 [FY326](Protocols_Details.md#FY326---20)|20|FY326|FY319|||||||NRF24L01|
 [GD00X](Protocols_Details.md#GD00X---47)|47|GD_V1*|GD_V2*|||||||NRF24L01|XN297L
 [GW008](Protocols_Details.md#GW008---32)|32|||||||||NRF24L01|XN297
@@ -155,6 +155,7 @@ CFlie|38|CFlie||||||||NRF24L01|
 [WFLY](Protocols_Details.md#WFLY---40)|40|WFR0x||||||||CYRF6936|
 [WFLY2](Protocols_Details.md#WFLY2---79)|79|RF20x||||||||A7105|
 [WK2x01](Protocols_Details.md#WK2X01---30)|30|WK2801|WK2401|W6_5_1|W6_6_1|W6_HEL|W6_HEL_I|||CYRF6936|
+[WL91X](Protocols_Details.md#WL91X---106)|106|||||||||NRF24L011&CC2500|XN297
 [XERALL](Protocols_Details.md#XERALL---91)|91|Tank||||||||NRF24L01|XN297
 [XK](Protocols_Details.md#XK---62)|62|X450|X420|Cars||||||NRF24L011&CC2500|XN297
 [XK2](Protocols_Details.md#XK2---99)|99|X4|P10|||||||NRF24L01&CC2500|XN297
@@ -1184,16 +1185,22 @@ If only a NRF24L01 is installed then this sub protocol might be problematic beca
 ## MT99XX - *17*
 Autobind protocol
 
-CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8|CH9
----|---|---|---|---|---|---|---|---
-A|E|T|R|FLIP|LED|PICTURE|VIDEO|HEADLESS
-
-CC2500: only YZ is supported.
+CC2500: only YZ and F949G are supported.
 
 ### Sub_protocol MT99 - *0*
 Models: MT99xx
+
+CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8|CH9|CH10|CH11
+---|---|---|---|---|---|---|---|---|---|---
+A|E|T|R|FLIP|LED|PICTURE|VIDEO|HEADLESS|ATrim|ETrim
+
 ### Sub_protocol H7 - *1*
 Models: Eachine H7, Cheerson CX023
+
+CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8|CH9|CH10|CH11
+---|---|---|---|---|---|---|---|---|---|---
+A|E|T|R|FLIP|LED|PICTURE|VIDEO|HEADLESS|ATrim|ETrim
+
 ### Sub_protocol YZ - *2*
 Model: Yi Zhan i6S
 
@@ -1203,63 +1210,71 @@ If a CC2500 is installed it will be used for this sub protocol. Option in this c
 
 If only a NRF24L01 is installed then this sub protocol might be problematic because it is using the xn297L emulation with a transmission speed of 250kbps which doesn't work very well with every NRF24L01, this is an hardware issue with the authenticity and accuracy of the components.
 
+CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8|CH9|CH10|CH11
+---|---|---|---|---|---|---|---|---|---|---
+A|E|T|R|FLIP|LED|PICTURE|VIDEO|HEADLESS|ATrim|ETrim
+
 ### Sub_protocol LS - *3*
 Models: LS114, 124, 215
 
-CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8|CH9
----|---|---|---|---|---|---|---|---
-A|E|T|R|FLIP|INVERT|PICTURE|VIDEO|HEADLESS
+CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8|CH9|CH10|CH11
+---|---|---|---|---|---|---|---|---|---|---
+A|E|T|R|FLIP|INVERT|PICTURE|VIDEO|HEADLESS|ATrim|ETrim
 
 ### Sub_protocol FY805 - *4*
 Model: FY805
 
 **Only 1 ID available**
 
-CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8|CH9
----|---|---|---|---|---|---|---|---
-A|E|T|R|FLIP||||HEADLESS
+CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8|CH9|CH10|CH11
+---|---|---|---|---|---|---|---|---|---|---
+A|E|T|R|FLIP||||HEADLESS|ATrim|ETrim
 
 ### Sub_protocol A180 - *5*
 Model: XK A180, A120, F949S, F959
 
 A180:
-CH1|CH2|CH3|CH4|CH5|CH6
----|---|---|---|---|---
-A|E|T|R|3D6G|RATE
+CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8|CH9|CH10|CH11
+---|---|---|---|---|---|---|---|---|---|---
+A|E|T|R|3D6G|RATE||||ATrim|ETrim
 
 A120:
-CH1|CH2|CH3|CH4|CH5|CH6
----|---|---|---|---|---
-A|E|T|R|RATE|LED
+CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8|CH9|CH10|CH11
+---|---|---|---|---|---|---|---|---|---|---
+A|E|T|R|RATE|LED||||ATrim|ETrim
 
 F949S:
-CH1|CH2|CH3|CH4|CH5|CH6|CH7
----|---|---|---|---|---|---
-A|E|T|R|RATE|RXLED|3D6G
+CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8|CH9|CH10|CH11
+---|---|---|---|---|---|---|---|---|---|---
+A|E|T|R|RATE|RXLED|3D6G|||ATrim|ETrim
 
 ### Sub_protocol DRAGON - *6*
 Model: Eachine Mini Wing Dragon, Eachine Mini Cessna
 
 Telemetry is supported: A1 = battery voltage with a Ratio of 25.5, A2=battery low flag (0=off,>0=on) and RSSI = dummy value of 100
 
-CH1|CH2|CH3|CH4|CH5|CH6
----|---|---|---|---|---
-A|E|T|R|MODE|RTH
+CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8|CH9|CH10|CH11
+---|---|---|---|---|---|---|---|---|---|---
+A|E|T|R|MODE|RTH||||ATrim|ETrim
 
 MODE: -100%=Beginner, 0%=Intermediate, +100%=Advanced
 
 ### Sub_protocol F949G - *7*
+If a CC2500 is installed it will be used for this sub protocol. Option in this case is used for fine frequency tuning like any CC2500 protocols so check the [Frequency Tuning page](/docs/Frequency_Tuning.md).
+
+If only a NRF24L01 is installed then this sub protocol might be problematic because it is using the xn297L emulation with a transmission speed of 250kbps which doesn't work very well with every NRF24L01, this is an hardware issue with the authenticity and accuracy of the components.
+
 Model: F949G
 
-CH1|CH2|CH3|CH4|CH5|CH6
----|---|---|---|---|---
-A|E|T|R|6G3D|Light
+CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8|CH9|CH10|CH11
+---|---|---|---|---|---|---|---|---|---|---
+A|E|T|R|6G3D|Light||||ATrim|ETrim
 
 Model: KFPLAN Z-Series like Z61 BF109, Z54 A380,...
 
-CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8|CH9
----|---|---|---|---|---|---|---|---
-A|E|T|R|-|Rate|Light|Unk1|Unk2
+CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8|CH9|CH10|CH11
+---|---|---|---|---|---|---|---|---|---|---
+A|E|T|R||Rate|Light|Unk1|Unk2|ATrim|ETrim
 
 Unk1&2: long press right/left
 
@@ -1268,20 +1283,18 @@ Unk1&2: long press right/left
 ### Sub_protocol PA18 - *0*
 Model: PA18 mini
 
-CH1|CH2|CH3|CH4|CH5|CH6|CH7
----|---|---|---|---|---|---
-A|E|T|R|MODE|FLIP|RTH
+CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8|CH9|CH10|CH11
+---|---|---|---|---|---|---|---|---|---|---
+A|E|T|R|MODE|FLIP|RTH|||ATrim|ETrim
 
 MODE: -100% beginner, 0% intermediate, +100% Expert
 
 ### Sub_protocol SU35 - *1*
 Model: QF009 SU35
 
-CH6 - LED, CH7 - LED Flash, CH8 - Invert, CH9 - Rate
-
-CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8|CH9
----|---|---|---|---|---|---|---|---
-A|E|T|R|MODE|LED|LED_FLASH|INVERT|RATE
+CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8|CH9|CH10|CH11
+---|---|---|---|---|---|---|---|---|---|---
+A|E|T|R|MODE|LED|LED_FLASH|INVERT|RATE|ATrim|ETrim
 
 MODE: -100% 6G, +100% 3D
 
@@ -1486,6 +1499,14 @@ A|E|T|R|CALIB|RATE|6G_3D|6GSENIOR|LIGHT
 
 A280 -> 6GSENIOR: -100% - 6G, +100% - Senior mode (turn off gyro), LIGHT: cycle the light through on-flash-off when the CH9 value is changed from -100% to 100%
 
+## WL91X - *106*
+
+Models: WLtoys WL911, WL913, WL915 and may be others...
+
+CH1|CH2|CH3|CH4
+---|---|---|---
+ST|TH|ST_TR|TH_TR
+
 ## XK - *62*
 
 CC2500: only X450 is supported.
@@ -1536,6 +1557,8 @@ A|E|T|R|Rate|Mode|Hover|Light
 The plane does not need to be bound each time if it is powered on **after** the radio/protocol is on.
 
 The rudder trim is driven from the rudder channel to increase the range (Original TX rudder has no range once the motor has been turned on...).
+
+Mode: -100%=6G, 0%=3D, +100%=Gyro off (Senior mode)
 
 ### Sub_protocol X4 - *0*
 Transmitter: XK X4-A160, X5S, model: XK A160S, XK A280, XK A300
@@ -1790,17 +1813,21 @@ FMODE and AUX7 have 4 positions: -100%..-50%=>0, -50%..5%=>1, 5%..50%=>2, 50%..1
 ## FX - *58*
 FEI XIONG
 
-CH1|CH2|CH3|CH4
----|---|---|---
-A|-|T|-
-
 ### Sub_protocol 816 - *0*
 Model: FX816 P38, B17
 
 Only 8 TX IDs available
 
+CH1|CH2|CH3|CH4
+---|---|---|---
+A|-|T|-
+
 ### Sub_protocol 620 - *1*
 Model: FX620 SU35
+
+CH1|CH2|CH3|CH4
+---|---|---|---
+A|-|T|-
 
 ### Sub_protocol 9630 - *2*
 Model: FX9630, FX9603, QIDI-550
@@ -1823,6 +1850,19 @@ A|E|T|R|FLIP|GYRO|LEDs
 FLIP is a toggle channel meaning that -100% to +100% is a command and +100% to -100% is also a command
 
 Gyro: -100%=6G, 0%=3D+Gyro, +100%=3D
+
+### Sub_protocol QF012 - *4*
+Model: QF012 SBD Dauntless
+
+CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8
+---|---|---|---|---|---|---|---
+A|E|T|R|FLIP|GYRO|Invert|Reset
+
+FLIP is a toggle channel meaning that -100% to +100% is a command and +100% to -100% is also a command
+
+Gyro: -100%=6G, 0%=3D+Gyro, +100%=3D
+
+Reset: Restore fine tunning midpoint
 
 ## FY326 - *20*
 

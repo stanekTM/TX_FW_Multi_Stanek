@@ -278,6 +278,7 @@
 #define	SLT_CCNRF_INO
 #define	UDIRC_CCNRF_INO
 #define	V911S_CCNRF_INO
+#define	WL91X_CCNRF_INO
 #define	XK_CCNRF_INO
 #define	XK2_CCNRF_INO
 
@@ -700,6 +701,7 @@ const PPM_Parameters PPM_prot[14*NBR_BANKS]=	{
 		FX620
 		FX9630
 		Q560
+		QF012
 	PROTO_FY326
 		FY326
 		FY319
