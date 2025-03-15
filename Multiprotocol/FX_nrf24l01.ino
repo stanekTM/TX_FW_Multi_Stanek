@@ -38,10 +38,17 @@ Multiprotocol is distributed in the hope that it will be useful,
 #define FX9630_BIND_CHANNEL			51
 #define FX9630_PAYLOAD_SIZE			8
 #define FX9630_NUM_CHANNELS			3
+#define FX9630_WRITE_TIME			500
 
 //#define FORCE_FX620_ID
 //#define FORCE_FX9630_ID
 //#define FORCE_QIDI_ID
+
+enum 
+{
+	FX_DATA=0,
+	FX_RX,
+};
 
 static void __attribute__((unused)) FX_send_packet()
 {
@@ -52,21 +59,20 @@ static void __attribute__((unused)) FX_send_packet()
 	{
 		XN297_Hopping(hopping_frequency_no++);
 		if(sub_protocol >= FX9630)
-		{ // FX9630 & FX_Q560
-			XN297_SetTXAddr(rx_tx_addr, 4);
+		{ // FX9630 & FX_Q560 & FX_QF012
 			if (hopping_frequency_no >= FX9630_NUM_CHANNELS)
 			{
 				hopping_frequency_no = 0;
 				if(sub_protocol == FX9630)
 				{
 					trim_ch++;
-					if(trim_ch > 3) trim_ch = 0;
+					trim_ch &= 3;
 				}
-				else // FX_Q560, QF012
+				else // FX_Q560 & FX_QF012
 					trim_ch = 0;
 			}
 		}
-		else // FX816 and FX620
+		else // FX816 & FX620
 		{
 			hopping_frequency_no &= 0x03;
 		}
@@ -186,7 +192,7 @@ static void __attribute__((unused)) FX_RF_init()
 		packet_period = FX620_BIND_PACKET_PERIOD;
 		packet_length = FX620_PAYLOAD_SIZE;
 	}
-	else // FX9630 & FX_Q560
+	else // FX9630 & FX_Q560 & FX_QF012
 	{
 		XN297_SetTXAddr((uint8_t *)"\x56\x78\x90\x12", 4);
 		XN297_RFChannel(FX9630_BIND_CHANNEL);
@@ -218,15 +224,16 @@ static void __attribute__((unused)) FX_initialize_txid()
 		for(uint8_t i=1;i<FX_NUM_CHANNELS;i++)
 			hopping_frequency[i] = i*10 + hopping_frequency[0];
 	}
-	else // FX9630 & FX_Q560
+	else // FX9630 & FX_Q560 & FX_QF012
 	{
+		//??? Need to find out how the first RF channel is calculated ???
+		hopping_frequency[0] = 0x13;
+		//Other 2 RF channels are sent during the bind phase so they can be whatever
+		hopping_frequency[1] = RX_num & 0x0F + 0x1A;
+		hopping_frequency[2] = rx_tx_addr[3] & 0x0F + 0x38;
 		#ifdef FORCE_FX9630_ID
 			memcpy(rx_tx_addr,(uint8_t*)"\xCE\x31\x9B\x73", 4);
 			memcpy(hopping_frequency,"\x13\x1A\x38", FX9630_NUM_CHANNELS);		//Original dump=>19=0x13,26=0x1A,56=0x38
-		#else
-			hopping_frequency[0] = 0x13; // constant???
-			hopping_frequency[1] = RX_num & 0x0F + 0x1A;
-			hopping_frequency[2] = rx_tx_addr[3] & 0x0F + 0x38;
 		#endif
 		#ifdef FORCE_QIDI_ID
 			memcpy(rx_tx_addr,(uint8_t*)"\x23\xDC\x76\xA2", 4);
@@ -236,26 +243,78 @@ static void __attribute__((unused)) FX_initialize_txid()
 			//memcpy(rx_tx_addr,(uint8_t*)"\x38\xC7\x6D\x8D", 4);
 			//memcpy(hopping_frequency,"\x0D\x20\x3A", FX9630_NUM_CHANNELS);
 		#endif
-		//??? Need to find out how the first RF channel is calculated ???
 	}
 }
 
 uint16_t FX_callback()
 {
-	#ifdef MULTI_SYNC
-		telemetry_set_input_sync(packet_period);
-	#endif
-	if(bind_counter)
-		if(--bind_counter==0)
+	#ifdef FX_HUB_TELEMETRY
+		bool rx=false;
+		
+		switch(phase)
 		{
-			BIND_DONE;
-			if(sub_protocol == FX620)
-			{
-				XN297_SetTXAddr(rx_tx_addr, 3);
-				packet_period = FX620_PACKET_PERIOD;
-			}
+			case FX_DATA:
+				rx = XN297_IsRX();
+				XN297_SetTxRxMode(TXRX_OFF);
+	#endif
+				#ifdef MULTI_SYNC
+					telemetry_set_input_sync(packet_period);
+				#endif
+				if(bind_counter)
+					if(--bind_counter==0)
+					{
+						BIND_DONE;
+						if(sub_protocol == FX620)
+						{
+							XN297_SetTXAddr(rx_tx_addr, 3);
+							packet_period = FX620_PACKET_PERIOD;
+						}
+						else if(sub_protocol >= FX9630)
+						{ // FX9630 & FX_Q560 & FX_QF012
+							XN297_SetTXAddr(rx_tx_addr, 4);
+	#ifdef FX_HUB_TELEMETRY
+							XN297_SetRXAddr(rx_tx_addr,packet_length);
+	#endif
+						}
+					}
+				FX_send_packet();
+	#ifdef FX_HUB_TELEMETRY
+				if(sub_protocol < FX9630)
+					break;
+				if(rx)
+				{
+					debug("RX");
+					if(XN297_ReadPayload(packet_in, packet_length))
+					{//Good CRC
+						telemetry_link = 1;
+						//v_lipo1 = packet_in[1] == 0x03 ? 0x00:0xFF;		// low voltage
+						#if 1
+							for(uint8_t i=0; i < packet_length; i++)
+								debug(" %02X", packet_in[i]);
+						#endif
+					}
+					debugln();
+				}
+				phase++;
+				return FX9630_WRITE_TIME;
+			default: //FX_RX
+				/* { // Wait for packet to be sent before switching to receive mode
+					uint16_t start=(uint16_t)micros(), count=0;
+					while ((uint16_t)((uint16_t)micros()-(uint16_t)start) < 500)
+					{
+						if(XN297_IsPacketSent())
+							break;
+						count++;
+					}
+					debug("%d",count);
+				} */
+				//Switch to RX
+				XN297_SetTxRxMode(TXRX_OFF);
+				XN297_SetTxRxMode(RX_EN);
+				phase = FX_DATA;
+				return packet_period - FX9630_WRITE_TIME;
 		}
-	FX_send_packet();
+	#endif
 	return packet_period;
 }
 
@@ -266,6 +325,10 @@ void FX_init()
 	FX_RF_init();
 	hopping_frequency_no = 0;
 	bind_counter=FX_BIND_COUNT;
+	#ifdef FX_HUB_TELEMETRY
+		RX_RSSI = 100;		// Dummy value
+		phase = FX_DATA;
+	#endif
 }
 
 #endif

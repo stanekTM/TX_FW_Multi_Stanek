@@ -19,7 +19,7 @@
 #define VERSION_MAJOR		1
 #define VERSION_MINOR		3
 #define VERSION_REVISION	4
-#define VERSION_PATCH_LEVEL	45
+#define VERSION_PATCH_LEVEL	46
 
 #define MODE_SERIAL 0
 
@@ -493,7 +493,7 @@ enum FX
 	FX620			= 1,
     FX9630          = 2,
 	FX_Q560			= 3,
-	FX_QF012  = 4,
+	FX_QF012		= 4,
 };
 enum SGF22
 {
