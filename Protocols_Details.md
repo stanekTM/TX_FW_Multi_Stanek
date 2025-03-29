@@ -1579,6 +1579,8 @@ A|E|T|R|Rate|Mode|Hover|Light
 
 The plane does not need to be bound each time if it is powered on **after** the radio/protocol is on.
 
+Telemetry is supported. The plane sends a battery status of good->empty which is visible in A1 (good=8.4V->empty=7.1V) and RSSI gets a dummy value of 100.
+
 The rudder trim is driven from the rudder channel to increase the range (Original TX rudder has no range once the motor has been turned on...).
 
 Mode: -100%=6G, 0%=3D, +100%=Gyro off (Senior mode)
@@ -1877,13 +1879,11 @@ Gyro: -100%=6G, 0%=3D+Gyro, +100%=3D
 ### Sub_protocol QF012 - *4*
 Model: QF012 SBD Dauntless
 
-Telemetry supported and gives a battery status of ok/empty in A1 (4.2V -> 3.1V) and RSSI gets a dummy value of 100.
+Telemetry supported. The plane sends a battery status of good->empty which is visible in A1 (good=4.2V->empty=3.1V) and RSSI gets a dummy value of 100.
 
 CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8
 ---|---|---|---|---|---|---|---
 A|E|T|R|FLIP|GYRO|Invert|Reset
-
-FLIP is a toggle channel meaning that -100% to +100% is a command and +100% to -100% is also a command
 
 Gyro: -100%=6G, 0%=3D+Gyro, +100%=3D
 
