@@ -29,7 +29,7 @@
 #include "iface_nrf24l01.h"
 
 
-uint8_t TX_RX_ADDRESS[] = "jirka";   // Setting RF channels address (5 bytes number or character)
+uint8_t STANEK_TX_RX_ADDRESS[] = "jirka";   // Setting RF channels address (5 bytes number or character)
 
 #define STANEK_RF_CHANNEL      76    // Which RF channel to communicate on (0 to 125ch, 2.4Ghz + 76 = 2.476Ghz)
 
@@ -40,8 +40,8 @@ uint8_t TX_RX_ADDRESS[] = "jirka";   // Setting RF channels address (5 bytes num
 //**********************************************************************************************************************************
 static void __attribute__((unused)) STANEK_RF_init()
 {
-  NRF24L01_WriteRegisterMulti(NRF24L01_10_TX_ADDR,    (uint8_t*)(&TX_RX_ADDRESS), 5);
-  NRF24L01_WriteRegisterMulti(NRF24L01_0A_RX_ADDR_P0, (uint8_t*)(&TX_RX_ADDRESS), 5);
+  NRF24L01_WriteRegisterMulti(NRF24L01_10_TX_ADDR,    (uint8_t*)(&STANEK_TX_RX_ADDRESS), 5);
+  NRF24L01_WriteRegisterMulti(NRF24L01_0A_RX_ADDR_P0, (uint8_t*)(&STANEK_TX_RX_ADDRESS), 5);
   
   NRF24L01_FlushTx();
   NRF24L01_FlushRx();
