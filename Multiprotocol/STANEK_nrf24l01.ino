@@ -17,7 +17,7 @@
 // Support for custom Arduino-based DIY receivers with RF24 library from this repository:
 // https://github.com/stanekTM/RX_nRF24L01_Telemetry_Motor_Servo
 //
-// The "Stanek" protocol with the nRF24L01+ transceiver is included. Fixed RF channel, fixed address.
+// The "Stanek" protocol with the nRF24L01+ transceiver is included.
 // Setting the number of control channels in sub-protocols 2, 3, 4, 5, 6, 8, 10 and 12ch.
 // Telemetry monitors receiver voltage A1(A2) and "fake" RSSI.
 // The nRF24L01+ transceiver does not contain real RSSI and is only a rough measurement of lost packets.
