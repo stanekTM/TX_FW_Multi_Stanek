@@ -142,7 +142,7 @@ CFlie|AIR|38|CFlie||||||||NRF24L01|
 [Redpine](Protocols_Details.md#Redpine---50)||50|FAST|SLOW|||||||NRF24L01|XN297
 [Scanner](Protocols_Details.md#Scanner---54)||54|||||||||CC2500|
 [Scorpio](Protocols_Details.md#Scorpio---94)||94|||||||||CYRF6936|
-[SGF22](Protocols_Details.md#SGF22---97)||97|F22|F22S|J20||||||NRF24L01|XN297
+[SGF22](Protocols_Details.md#SGF22---97)||97|F22|F22S|J20|CX10|||||NRF24L01|XN297
 [Shenqi](Protocols_Details.md#Shenqi---19)||19|Shenqi||||||||NRF24L01|LT8900
 [Shenqi2](Protocols_Details.md#Shenqi2---105)||105|Shenqi2||||||||NRF24L01|XN297
 [Skyartec](Protocols_Details.md#Skyartec---68)||68|||||||||CC2500|CC2500
@@ -155,9 +155,10 @@ CFlie|AIR|38|CFlie||||||||NRF24L01|
 [WFLY](Protocols_Details.md#WFLY---40)||40|WFR0x||||||||CYRF6936|
 [WFLY2](Protocols_Details.md#WFLY2---79)||79|RF20x||||||||A7105|
 [WK2x01](Protocols_Details.md#WK2X01---30)||30|WK2801|WK2401|W6_5_1|W6_6_1|W6_HEL|W6_HEL_I|||CYRF6936|
-[WL91X](Protocols_Details.md#WL91X---106)||106|||||||||NRF24L011&CC2500|XN297
+[WL91X](Protocols_Details.md#WL91X---106)||106|||||||||NRF24L01&CC2500|XN297
+[WPL](Protocols_Details.md#WPL---107)||107|||||||||NRF24L01|XN297
 [XERALL](Protocols_Details.md#XERALL---91)||91|Tank||||||||NRF24L01|XN297
-[XK](Protocols_Details.md#XK---62)||62|X450|X420|Cars||||||NRF24L011&CC2500|XN297
+[XK](Protocols_Details.md#XK---62)||62|X450|X420|Cars||||||NRF24L01&CC2500|XN297
 [XK2](Protocols_Details.md#XK2---99)||99|X4|P10|||||||NRF24L01&CC2500|XN297
 [YD717](Protocols_Details.md#YD717---8)||8|YD717|SKYWLKR|SYMAX4|XINXUN|NIHUI||||NRF24L01|
 [YuXiang](Protocols_Details.md#YuXiang---100)||100|||||||||NRF24L01|XN297
@@ -2252,12 +2253,19 @@ Manual CH11=-100% & CH12=-100%, Balance CH11=+100% & CH12=-100%, Large Angle Bal
 ### Sub_protocol F22S
 Model: ParkTen F22S
 
-F22S: Mode -100% = 3D, 0% = 6G
+Mode -100% = 3D, 0% = 6G
 
 ### Sub_protocol J20
 Model: KF700 J20
 
-J20: Mode -100% = Gyro off, 0% = Horizontal, 100% = Vertical. CH8 - Invert, CH10 - Fix Height (Altitude hold)
+Mode -100% = Gyro off, 0% = Horizontal, 100% = Vertical. CH8 - Invert, CH10 - Fix Height (Altitude hold)
+
+### Sub_protocol CX10
+Model: Cheerson CX-10 with red PCB
+
+**Only 2 IDs available**, use RX num to cycle through them.
+
+Mode -100% = Low, 0% = Medium, 100% = High
 
 ## Shenqi - *19*
 Autobind protocol
@@ -2362,6 +2370,19 @@ Models: Top RC Hobby Spitfire, P51D, BF-109
 CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8|CH9
 ---|---|---|---|---|---|---|---|---
 A|E|T|R|GYRO|CALIB|FLIP|RTN_ACT|RTN
+
+## WPL - *107*
+TX: "Basic", Models: D12 / D12KM / D22 / D32 / D42 / D14
+
+**Only 1 ID** available. If you have a TX contact me on GitHub or RCGroups.
+
+Autobind protocol
+
+CH1|CH2|CH3|CH4|CH5|CH6|CH7
+---|---|---|---|---|---|---
+TH|ST|ST_Trim|Aux|Light|TH_Rate|ST_Rate
+
+Light: -100%=Off, +100%=On, Rate: -100%=Low, +100%=High
 
 ## XERALL - *91*
 Model: Xerall TankCopter

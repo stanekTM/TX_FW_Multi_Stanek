@@ -118,6 +118,7 @@ const char STR_UDIRC[]      ="UDIRC";
 const char STR_JIABAILE[]   ="JIABAILE";
 const char STR_KAMTOM[]     ="KAMTOM";
 const char STR_WL91X[]      ="WL91x";
+const char STR_WPL[]        ="WPL";
 
 const char STR_STANEK[]         ="Stanek";
 const char STR_SUBTYPE_STANEK[] = "\x04""2ch\0""3ch\0""4ch\0""5ch\0""6ch\0""8ch\0""10ch""12ch";
@@ -191,7 +192,7 @@ const char STR_SUBTYPE_MOULDKG[] =    "\x05""A4444""D4444""A664\0";
 const char STR_SUBTYPE_KF606[] =      "\x06""KF606\0""MIG320""ZCZ50\0";
 const char STR_SUBTYPE_E129[] =       "\x04""E129""C186";
 const char STR_SUBTYPE_FX[] =         "\x05""816\0 ""620\0 ""9630\0""Q560\0""QF012";
-const char STR_SUBTYPE_SGF22[] =      "\x04""F22\0""F22S""J20\0";
+const char STR_SUBTYPE_SGF22[] =      "\x04""F22\0""F22S""J20\0""CX10";
 const char STR_SUBTYPE_JIABAILE[] =   "\x04""Std\0""Gyro";
 #define NO_SUBTYPE		nullptr
 
@@ -479,7 +480,7 @@ const mm_protocol_definition multi_protocols[] = {
 		{PROTO_SCORPIO,    STR_SCORPIO,   NO_SUBTYPE,            0, OPTION_NONE,    0, 0, SW_CYRF,   SCORPIO_init,    SCORPIO_callback    },
 	#endif
 	#if defined(SGF22_NRF24L01_INO)
-		{PROTO_SGF22,      STR_SGF22,     STR_SUBTYPE_SGF22,     3, OPTION_NONE,    0, 0, SW_NRF,    SGF22_init,      SGF22_callback      },
+		{PROTO_SGF22,      STR_SGF22,     STR_SUBTYPE_SGF22,     4, OPTION_NONE,    0, 0, SW_NRF,    SGF22_init,      SGF22_callback      },
 	#endif
 	#if defined(SHENQI_NRF24L01_INO)
 		{PROTO_SHENQI,     STR_SHENQI,    NO_SUBTYPE,            0, OPTION_NONE,    0, 0, SW_NRF,    SHENQI_init,     SHENQI_callback     },
@@ -524,7 +525,9 @@ const mm_protocol_definition multi_protocols[] = {
 	#if defined(WL91X_CCNRF_INO)
 		{PROTO_WL91X,      STR_WL91X,     NO_SUBTYPE,            0, OPTION_NONE,    0, 0, SW_NRF,    WL91X_init,      WL91X_callback      },
 	#endif
-	
+	#if defined(WPL_NRF24L01_INO)
+		{PROTO_WPL,        STR_WPL,       NO_SUBTYPE,            0, OPTION_NONE,    0, 0, SW_NRF,    WPL_init,        WPL_callback        },
+	#endif
 	#if defined(XERALL_NRF24L01_INO)
 		{PROTO_XERALL,     STR_XERALL,    NO_SUBTYPE,            0, OPTION_NONE,    0, 0, SW_NRF,    XERALL_init,     XERALL_callback     },	
 	#endif
