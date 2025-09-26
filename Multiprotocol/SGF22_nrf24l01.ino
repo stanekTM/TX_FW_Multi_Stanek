@@ -168,17 +168,20 @@ static void __attribute__((unused)) SGF22_initialize_txid()
 		memcpy(hopping_frequency,"\x15\x34\x24\x44", SGF22_RF_NUM_CHANNELS);    //Original dump=>21=0x15,52=0x34,36=0x24,68=0x44
 	#endif
 	#ifdef FORCE_SGF22_CX10_ORIGINAL_ID
-		if(rx_tx_addr[3] & 1)
+		if(sub_protocol == SGF22_CX10)
 		{
-			rx_tx_addr[2] = 0x4C;
-			rx_tx_addr[3] = 0xD7;
-			memcpy(hopping_frequency, "\x37\x42\x47\x3c", SGF22_RF_NUM_CHANNELS);
-		}
-		else
-		{
-			rx_tx_addr[2] = 0x50;
-			rx_tx_addr[3] = 0xE1;
-			memcpy(hopping_frequency, "\x3b\x4b\x46\x41", SGF22_RF_NUM_CHANNELS);
+			if(rx_tx_addr[3] & 1)
+			{
+				rx_tx_addr[2] = 0x4C;
+				rx_tx_addr[3] = 0xD7;
+				memcpy(hopping_frequency, "\x37\x42\x47\x3c", SGF22_RF_NUM_CHANNELS);
+			}
+			else
+			{
+				rx_tx_addr[2] = 0x50;
+				rx_tx_addr[3] = 0xE1;
+				memcpy(hopping_frequency, "\x3b\x4b\x46\x41", SGF22_RF_NUM_CHANNELS);
+			}
 		}
 	#endif
 	#if 0
