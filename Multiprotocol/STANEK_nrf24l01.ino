@@ -8,20 +8,22 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
-
+  
   You should have received a copy of the GNU General Public License
-  along with Multiprotocol.  If not, see <http://www.gnu.org/licenses/>.
+  along with Multiprotocol.  If not, see http://www.gnu.org/licenses.
 */
 
-//*******************************************************************************************************
-// Support for custom Arduino-based DIY receivers with RF24 library from this repository:
-// https://github.com/stanekTM/RX_nRF24L01_Telemetry_Motor_Servo
-//
-// The "Stanek" protocol with the nRF24L01+ transceiver is included.
-// Setting the number of control channels in sub-protocols 2, 3, 4, 5, 6, 8, 10 and 12ch.
-// Telemetry monitors receiver voltage A1(A2) and "fake" RSSI.
-// The nRF24L01+ transceiver does not contain real RSSI and is only a rough measurement of lost packets.
-//*******************************************************************************************************
+/*
+  **************************************************************************************************
+  Support for custom Arduino-based DIY receivers with RF24 library from this repository:
+  https://github.com/stanekTM/RX_nRF24_Motor_Servo
+  
+  The "Stanek" protocol with the nRF24L01+ transceiver is included.
+  Setting the number of control channels in sub-protocols 2, 3, 4, 5, 6, 8, 10 and 12ch.
+  Telemetry monitors receiver voltage A1(A2) and "fake" RSSI.
+  The nRF24L01+ transceiver does not contain real RSSI and is only a rough counting of lost packets.
+  **************************************************************************************************
+*/
 
 
 #if defined(STANEK_NRF24L01_INO)
