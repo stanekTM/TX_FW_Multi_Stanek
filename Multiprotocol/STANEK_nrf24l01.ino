@@ -158,7 +158,7 @@ static void __attribute__((unused)) STANEK_send_packet()
   {
     hold_value = convert_channel_16b_limit(x, 1000, 2000); // Valid channel values are 1000 to 2000
     
-    packet[payload_index] = hold_value & 0xFF; // 255
+    packet[payload_index] = hold_value & 0x00FF;
     payload_index++;
     packet[payload_index] = hold_value >> 8;
     payload_index++;
