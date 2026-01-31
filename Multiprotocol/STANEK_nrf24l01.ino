@@ -31,11 +31,11 @@
 #include "iface_nrf24l01.h"
 
 
-uint8_t STANEK_TX_RX_ADDRESS[] = "jirka";   // Setting RF channels address (5 bytes number or character)
+uint8_t STANEK_TX_RX_ADDRESS[] = "jirka"; // Setting RF channels address (5 bytes number or character)
 
-#define STANEK_RF_CHANNEL      76    // Which RF channel to communicate on (0 to 125ch, 2.4Ghz + 76 = 2.476Ghz)
+#define STANEK_RF_CHANNEL      76   // Which RF channel to communicate on (0 to 125ch, 2.4Ghz + 76 = 2.476Ghz)
 
-#define STANEK_PACKET_PERIOD   3000  // In microseconds
+#define STANEK_PACKET_PERIOD   3000 // In microseconds
 
 //**********************************************************************************************************************************
 //**********************************************************************************************************************************
@@ -50,30 +50,30 @@ static void __attribute__((unused)) STANEK_RF_init()
   
   NRF24L01_Initialize();
   
-  NRF24L01_WriteReg(NRF24L01_01_EN_AA, 0x00);      // 0x00 Disable auto acknowledgement on all data pipes
-                                                   // 0x3F Enable auto acknowledgement on all data pipes
-                                                   // 0x01 Enable auto acknowledgement data pipe 0
+  NRF24L01_WriteReg(NRF24L01_01_EN_AA, 0x00); // 0x00 Disable auto acknowledgement on all data pipes
+  //                                             0x3F Enable auto acknowledgement on all data pipes
+  //                                             0x01 Enable auto acknowledgement data pipe 0
   
-  NRF24L01_WriteReg(NRF24L01_02_EN_RXADDR, 0x3F);  // 0x3F Enable all data pipes
-                                                   // 0x01 Enable data pipe 0 only
+  NRF24L01_WriteReg(NRF24L01_02_EN_RXADDR, 0x3F); // 0x3F Enable all data pipes
+  //                                                 0x01 Enable data pipe 0 only
                                                    
-  NRF24L01_WriteReg(NRF24L01_03_SETUP_AW, 0x03);   // 5 bytes RX/TX address field width
+  NRF24L01_WriteReg(NRF24L01_03_SETUP_AW, 0x03); // 5 bytes RX/TX address field width
   
   NRF24L01_WriteReg(NRF24L01_04_SETUP_RETR, 0x55); // 0x55 1500us (5 * 250us + 250us) delay, 5 * retries
-                                                   // 0xFF 4000us (15 * 250us + 250us) delay, 15 * retries
-                                                   // 0x00 Disable retransmits
+  //                                                  0xFF 4000us (15 * 250us + 250us) delay, 15 * retries
+  //                                                  0x00 Disable retransmits
   
-  NRF24L01_SetBitrate(NRF24L01_BR_250K);           // 250Kbps
+  NRF24L01_SetBitrate(NRF24L01_BR_250K); // 250Kbps
   
-  NRF24L01_WriteReg(NRF24L01_1C_DYNPD, 0x3F);      // 0x3F Enable Dynamic Payload Length on all data pipes
-                                                   // 0x01 Enable Dynamic Payload Length on data pipe 0
+  NRF24L01_WriteReg(NRF24L01_1C_DYNPD, 0x3F); // 0x3F Enable Dynamic Payload Length on all data pipes
+  //                                             0x01 Enable Dynamic Payload Length on data pipe 0
   
-  NRF24L01_WriteReg(NRF24L01_1D_FEATURE, 0x04);    // 0x04 Enable Dynamic Payload Length
-                                                   // 0x06 Enable Dynamic Payload Length, enable Payload with ACK
-                                                   // 0x07 Enable all features
+  NRF24L01_WriteReg(NRF24L01_1D_FEATURE, 0x04); // 0x04 Enable Dynamic Payload Length
+  //                                               0x06 Enable Dynamic Payload Length, enable Payload with ACK
+  //                                               0x07 Enable all features
   
   NRF24L01_SetPower();
-  NRF24L01_SetTxRxMode(TX_EN);                     // Clear data ready, data sent, retransmit and enable CRC 16 bits, ready for TX
+  NRF24L01_SetTxRxMode(TX_EN); // Clear data ready, data sent, retransmit and enable CRC 16 bits, ready for TX
   
   delayMilliseconds(10);
 }
@@ -183,7 +183,7 @@ static void __attribute__((unused)) STANEK_send_packet()
   packet_period = STANEK_PACKET_PERIOD + (constrain(((int16_t)num_ch - (int16_t)6), (int16_t)0, (int16_t)10) * (int16_t)100);
   
   NRF24L01_WriteReg(NRF24L01_00_CONFIG, 0x7F); // 0x7F RX mode with 16 bit CRC no IRQ
-                                               // 0x0F RX mode with 16 bit CRC
+  //                                              0x0F RX mode with 16 bit CRC
 }
 
 //**********************************************************************************************************************************
