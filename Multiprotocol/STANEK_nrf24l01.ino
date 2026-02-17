@@ -16,10 +16,10 @@
 /*
   **************************************************************************************************
   Support for custom Arduino-based DIY receivers with RF24 library from this repository:
-  https://github.com/stanekTM/RX_nRF24_Motor_Servo
+  https://github.com/stanekTM/RX_nRF24_Stanek
   
   The "Stanek" protocol with the nRF24L01+ transceiver is included.
-  Setting the number of control channels in sub-protocols 2, 3, 4, 5, 6, 8, 10 and 13ch.
+  Setting the number of control channels in sub-protocols 2, 3, 4, 5, 6, 8, 12 and 13ch.
   Telemetry monitors receiver voltage A1(A2) and "fake" RSSI.
   The nRF24L01+ transceiver does not contain real RSSI and is only a rough counting of lost packets.
   **************************************************************************************************
@@ -130,7 +130,7 @@ static void __attribute__((unused)) STANEK_send_packet()
 {
   STANEK_get_telemetry();
   
-  // Setting the number of control channels in sub-protocols 2, 3, 4, 5, 6, 8, 10 and 13ch.
+  // Setting the number of control channels in sub-protocols 2, 3, 4, 5, 6, 8, 12 and 13ch.
   switch (sub_protocol)
   {
     case 1: num_ch = 3;
@@ -143,7 +143,7 @@ static void __attribute__((unused)) STANEK_send_packet()
     break;
     case 5: num_ch = 8;
     break;
-    case 6: num_ch = 10;
+    case 6: num_ch = 12;
     break;
     case 7: num_ch = 13;
     break;

@@ -121,7 +121,7 @@ const char STR_WL91X[]      ="WL91x";
 const char STR_WPL[]        ="WPL";
 
 const char STR_STANEK[]         ="Stanek";
-const char STR_SUBTYPE_STANEK[] = "\x04""2ch\0""3ch\0""4ch\0""5ch\0""6ch\0""8ch\0""10ch""13ch";
+const char STR_SUBTYPE_STANEK[] = "\x04""2ch\0""3ch\0""4ch\0""5ch\0""6ch\0""8ch\0""12ch""13ch";
 
 const char STR_SUBTYPE_FLYSKY[] =     "\x04""Std\0""V9x9""V6x6""V912""CX20";
 const char STR_SUBTYPE_HUBSAN[] =     "\x04""H107""H301""H501";
