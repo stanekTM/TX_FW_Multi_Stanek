@@ -15,7 +15,7 @@
 
 /*
   **************************************************************************************************
-  Support for custom Arduino-based DIY receivers with RF24 library from this repository:
+  Support for DIY receivers from this repository:
   https://github.com/stanekTM/RX_nRF24_Stanek
   
   The "Stanek" protocol with the nRF24L01+ transceiver is included.
@@ -31,19 +31,19 @@
 #include "iface_nrf24l01.h"
 
 
-uint8_t STANEK_TX_RX_ADDRESS[] = "jirka"; // Setting RF channels address (5 bytes number or character)
+uint8_t STANEK_TX_RX_Address[] = "jirka"; // Unique address (5 bytes number or character)
 
-#define STANEK_RF_CHANNEL      76   // Which RF channel to communicate on (0 to 125ch, 2.4Ghz + 76 = 2.476Ghz)
+#define STANEK_RF_CHANNEL      76         // RF channel 0 to 125 (2.4GHz to 2.525GHz)
 
-#define STANEK_PACKET_PERIOD   3000 // In microseconds
+#define STANEK_PACKET_PERIOD   3000       // In microseconds
 
 //**********************************************************************************************************************************
 // STANEK_RF_init
 //**********************************************************************************************************************************
 static void __attribute__((unused)) STANEK_RF_init()
 {
-  NRF24L01_WriteRegisterMulti(NRF24L01_10_TX_ADDR,    (uint8_t*)(&STANEK_TX_RX_ADDRESS), 5);
-  NRF24L01_WriteRegisterMulti(NRF24L01_0A_RX_ADDR_P0, (uint8_t*)(&STANEK_TX_RX_ADDRESS), 5);
+  NRF24L01_WriteRegisterMulti(NRF24L01_10_TX_ADDR,    (uint8_t*)(&STANEK_TX_RX_Address), 5);
+  NRF24L01_WriteRegisterMulti(NRF24L01_0A_RX_ADDR_P0, (uint8_t*)(&STANEK_TX_RX_Address), 5);
   
   NRF24L01_FlushTx();
   NRF24L01_FlushRx();
