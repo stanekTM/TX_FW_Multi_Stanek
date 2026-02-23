@@ -12,6 +12,7 @@ The nRF24L01+ transceiver does not contain real RSSI and is only a rough countin
 * Jumper T12
 * OpenTX v2.3.15
 <img align="center" width="260" src="https://github.com/stanekTM/RX_nRF24_Stanek/blob/master/documents/opentx_multi_tx.jpg">
+
 #
 # Multiprotocol TX Module
 <img align="right" width=300 src="docs/images/multi.png" />
