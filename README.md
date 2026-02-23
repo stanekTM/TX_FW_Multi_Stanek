@@ -8,10 +8,9 @@ The nRF24L01+ transceiver does not contain real RSSI and is only a rough countin
 
 ### Multiprotocol v1.3.4.52
 
-### Works in serial mode with
+### Works in serial mode with <img align=center width=260 src="https://github.com/stanekTM/RX_nRF24_Stanek/blob/master/documents/opentx_multi_tx.jpg">
 * Jumper T12
 * OpenTX v2.3.15
-<a href="https://github.com/stanekTM/RX_nRF24_Stanek/blob/master/documents/opentx_multi_tx.jpg"><img align=center width=260 src="https://github.com/stanekTM/RX_nRF24_Stanek/blob/master/documents/opentx_multi_tx.jpg"></a>
 
 #
 # Multiprotocol TX Module
