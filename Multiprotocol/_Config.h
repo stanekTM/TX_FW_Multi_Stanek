@@ -74,8 +74,8 @@
 //4-in-1 modules have the A7105, CYRF6936, CC2500 and NRF24L01 RF chips installed
 //5-in-1 modules have all RF chips installed
 //!!!If a RF chip is present it MUST be marked as installed!!! or weird things will happen you have been warned.
-#define A7105_INSTALLED
-#define CYRF6936_INSTALLED
+//#define A7105_INSTALLED
+//#define CYRF6936_INSTALLED
 #define CC2500_INSTALLED
 #define NRF24L01_INSTALLED
 //#define SX1276_INSTALLED		// only supported on STM32 modules
@@ -205,28 +205,28 @@
 #define	WK2x01_CYRF6936_INO
 
 //The protocols below need a CC2500 to be installed
-#define	CORONA_CC2500_INO
-#define	E016HV2_CC2500_INO
-#define	ESKY150V2_CC2500_INO
-#define	FRSKYL_CC2500_INO
-#define	FRSKYD_CC2500_INO
-#define	FRSKYV_CC2500_INO
-#define	FRSKYX_CC2500_INO		//Include FRSKYX2 protocol
-#define	FRSKY_RX_CC2500_INO
-#define	HITEC_CC2500_INO
-#define	HOTT_CC2500_INO
+//#define	CORONA_CC2500_INO
+//#define	E016HV2_CC2500_INO
+//#define	ESKY150V2_CC2500_INO
+//#define	FRSKYL_CC2500_INO
+//#define	FRSKYD_CC2500_INO
+//#define	FRSKYV_CC2500_INO
+//#define	FRSKYX_CC2500_INO		//Include FRSKYX2 protocol
+//#define	FRSKY_RX_CC2500_INO
+//#define	HITEC_CC2500_INO
+//#define	HOTT_CC2500_INO
 //#define	IKEAANSLUTA_CC2500_INO  // This is mostly a "for-fun" kind of a thing, not needed for most users
-#define	SCANNER_CC2500_INO
-#define	FUTABA_CC2500_INO
-#define	SKYARTEC_CC2500_INO
-#define	REDPINE_CC2500_INO
-#define	RLINK_CC2500_INO
+//#define	SCANNER_CC2500_INO
+//#define	FUTABA_CC2500_INO
+//#define	SKYARTEC_CC2500_INO
+//#define	REDPINE_CC2500_INO
+//#define	RLINK_CC2500_INO
 
 //The protocols below need a NRF24L01 to be installed
 #define STANEK_NRF24L01_INO
 #define	ASSAN_NRF24L01_INO
 #define	BAYANG_NRF24L01_INO
-#define	BAYANG_RX_NRF24L01_INO
+//#define	BAYANG_RX_NRF24L01_INO
 #define	BUGSMINI_NRF24L01_INO
 #define	CABELL_NRF24L01_INO
 #define	CFLIE_NRF24L01_INO
@@ -250,7 +250,7 @@
 #define	KAMTOM_NRF24L01_INO
 #define	KN_NRF24L01_INO
 #define	KYOSHO2_NRF24L01_INO
-#define	LOLI_NRF24L01_INO
+//#define	LOLI_NRF24L01_INO
 #define	MOULDKG_NRF24L01_INO
 #define	NCC1701_NRF24L01_INO
 #define	POTENSIC_NRF24L01_INO
@@ -269,19 +269,19 @@
 #define	ZSX_NRF24L01_INO
 
 //The protocols below need either a CC2500 or NRF24L01 to be installed
-#define	GD00X_CCNRF_INO
-#define	KF606_CCNRF_INO
-#define	MJXQ_CCNRF_INO
-#define	MT99XX_CCNRF_INO		//Include MT99XX2 protocol
-#define	OMP_CCNRF_INO
-#define	Q303_CCNRF_INO
-#define	Q90C_CCNRF_INO
-#define	SLT_CCNRF_INO
+//#define	GD00X_CCNRF_INO
+//#define	KF606_CCNRF_INO
+//#define	MJXQ_CCNRF_INO
+//#define	MT99XX_CCNRF_INO		//Include MT99XX2 protocol
+//define	OMP_CCNRF_INO
+//#define	Q303_CCNRF_INO
+//#define	Q90C_CCNRF_INO
+//#define	SLT_CCNRF_INO
 #define	UDIRC_CCNRF_INO
 #define	V911S_CCNRF_INO
-#define	WL91X_CCNRF_INO
-#define	XK_CCNRF_INO
-#define	XK2_CCNRF_INO
+//#define	WL91X_CCNRF_INO
+//#define	XK_CCNRF_INO
+//#define	XK2_CCNRF_INO
 
 //The protocols below need a SX1276 to be installed
 #define	FRSKYR9_SX1276_INO

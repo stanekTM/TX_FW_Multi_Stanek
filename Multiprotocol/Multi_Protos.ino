@@ -13,6 +13,7 @@
  along with Multiprotocol.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+const char STR_STANEK[]   ="Stanek";
 const char STR_FLYSKY[]		="FlySky";
 const char STR_HUBSAN[]		="Hubsan";
 const char STR_FRSKYD[]		="FrSky D";
@@ -120,9 +121,6 @@ const char STR_KAMTOM[]     ="KAMTOM";
 const char STR_WL91X[]      ="WL91x";
 const char STR_WPL[]        ="WPL";
 
-const char STR_STANEK[]         ="Stanek";
-const char STR_SUBTYPE_STANEK[] = "\x04""2ch\0""3ch\0""4ch\0""5ch\0""6ch\0""8ch\0""12ch""13ch";
-
 const char STR_SUBTYPE_FLYSKY[] =     "\x04""Std\0""V9x9""V6x6""V912""CX20";
 const char STR_SUBTYPE_HUBSAN[] =     "\x04""H107""H301""H501";
 const char STR_SUBTYPE_FRSKYD[] =     "\x06""D8\0   ""Cloned";
@@ -229,11 +227,11 @@ enum
 
 const mm_protocol_definition multi_protocols[] = {
 // Protocol number, Protocol String, Sub_protocol strings, Number of sub_protocols, Option type, Failsafe, ChMap, RF switch, Init, Callback
-  #if defined(STANEK_NRF24L01_INO)
-    {PROTO_STANEK,     STR_STANEK,    STR_SUBTYPE_STANEK,    8, OPTION_NONE,    0, 0, SW_NRF,    STANEK_init,     STANEK_callback     },
-  #endif
 	#if defined(MULTI_CONFIG_INO)
 		{PROTO_CONFIG,     STR_CONFIG,    NO_SUBTYPE,            0, OPTION_NONE,    0, 0, 0,         CONFIG_init,     CONFIG_callback     },
+	#endif
+	#if defined(STANEK_NRF24L01_INO)
+	  {PROTO_STANEK,     STR_STANEK,    NO_SUBTYPE,            0, OPTION_OPTION,  0, 0, SW_NRF,    STANEK_init,     STANEK_callback     },
 	#endif
 	#if defined(ASSAN_NRF24L01_INO)
 		{PROTO_ASSAN,      STR_ASSAN,     NO_SUBTYPE,            0, OPTION_NONE,    0, 0, SW_NRF,    ASSAN_init,      ASSAN_callback      },

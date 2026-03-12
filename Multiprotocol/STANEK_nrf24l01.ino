@@ -19,9 +19,11 @@
   https://github.com/stanekTM/RX_nRF24_Stanek
   
   The "Stanek" protocol with the nRF24L01+ transceiver is included.
-  Setting the number of control channels in sub-protocols 2, 3, 4, 5, 6, 8, 12 and 13ch.
   Telemetry monitors receiver voltage A1(A2) and "fake" RSSI.
   The nRF24L01+ transceiver does not contain real RSSI and is only a rough counting of lost packets.
+  
+  - Setting the number of channels in the option selection (2 to 13 channels).
+  - Fail-safe flag in bind option "Bnd".
   **************************************************************************************************
 */
 
@@ -130,42 +132,53 @@ static void __attribute__((unused)) STANEK_send_packet()
 {
   STANEK_get_telemetry();
   
-  // Setting the number of control channels in sub-protocols 2, 3, 4, 5, 6, 8, 12 and 13ch.
-  switch (sub_protocol)
+  // Setting the number of channels in the option selection (2 to 13 channels)
+  //switch (sub_protocol)
+  //switch (RX_num)
+  switch (option)
   {
-    case 1: num_ch = 3;
-    break;
-    case 2: num_ch = 4;
-    break;
-    case 3: num_ch = 5;
-    break;
-    case 4: num_ch = 6;
-    break;
-    case 5: num_ch = 8;
-    break;
-    case 6: num_ch = 12;
-    break;
-    case 7: num_ch = 13;
-    break;
-    default: num_ch = 2;
-    break;
+    case 0: num_ch = 2; break;
+    case 1: num_ch = 2; break;
+    case 2: num_ch = 2; break;
+    case 3: num_ch = 3; break;
+    case 4: num_ch = 4; break;
+    case 5: num_ch = 5; break;
+    case 6: num_ch = 6; break;
+    case 7: num_ch = 7; break;
+    case 8: num_ch = 8; break;
+    case 9: num_ch = 9; break;
+    case 10: num_ch = 10; break;
+    case 11: num_ch = 11; break;
+    case 12: num_ch = 12; break;
+    case 13: num_ch = 13; break;
   }
   
-  uint16_t hold_value;
+  // Fail-safe flag in bind option "Bnd"
+  bool fail_safe_flag = 0;
+  
+  if (IS_BIND_IN_PROGRESS)
+  {
+    fail_safe_flag = 1;
+    
+    if (bind_counter++ == 500) BIND_DONE;
+  }
+  
+  packet[0] = fail_safe_flag;
+  
   uint8_t payload_index = 0;
   
-  for (uint8_t x = 0; x < num_ch; x++)
+  for (uint8_t i = 0; i < num_ch; i++)
   {
-    hold_value = convert_channel_16b_limit(x, 1000, 2000); // Valid channel values are 1000 to 2000
+    uint16_t hold_value = convert_channel_16b_limit(i, 1000, 2000); // Valid channel values are 1000 to 2000
     
-    packet[payload_index] = hold_value & 0x00FF;
+    packet[1 + payload_index] = hold_value & 0x00FF;
     payload_index++;
-    packet[payload_index] = hold_value >> 8;
+    packet[1 + payload_index] = hold_value >> 8;
     payload_index++;
   }
   
-  uint8_t packet_size = num_ch * 2; // For one control channel with a value of 1000 to 2000 we need 2 bytes(packets)
-
+  uint8_t packet_size = (num_ch * 2) + 1; // For one control channel with a value of 1000 to 2000 we need 2 bytes(packets)
+  
   // Set RF channel and send data
   NRF24L01_WriteReg(NRF24L01_05_RF_CH, STANEK_RF_CHANNEL);
   NRF24L01_SetPower();
@@ -192,11 +205,11 @@ static void __attribute__((unused)) STANEK_send_packet()
 uint16_t STANEK_callback()
 {
   STANEK_send_packet();
-
+  
 #ifdef MULTI_SYNC
   telemetry_set_input_sync(packet_period);
 #endif
-
+  
   return packet_period; // Packet_period is set/adjusted in STANEK_send_packet
 }
 
@@ -205,7 +218,6 @@ uint16_t STANEK_callback()
 //**********************************************************************************************************************************
 void STANEK_init(void)
 {
-  BIND_DONE;
   STANEK_RF_init();
 }
 
