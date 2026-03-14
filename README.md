@@ -4,14 +4,15 @@
 The [**Stanek**](Multiprotocol/STANEK_nrf24l01.ino) protocol with the nRF24L01+ transceiver is included.
 Telemetry monitors receiver voltage A1(A2) and "fake" RSSI.
 The nRF24L01+ transceiver does not contain real RSSI and is only a rough counting of lost packets.
-* Setting the number of channels in the option selection (2 to 13 channels)
-* Fail-safe flag in bind option "Bnd"
+* Setting the number of channels in the option selection (2 to 13 channels).
+* Fail-safe flag in bind option "Bnd".
 
-### Multiprotocol v1.3.4.52
+Attention! To select protocols and build firmware, use Arduino IDE version 1.8.19. The current Arduino IDE version 2. .. has bugs (I will investigate later).
 
 ### Works in serial mode with
 * Jumper T12
 * OpenTX v2.3.15
+* Current Multiprotocol TX firmware v1.3.4.52
 <img width="260" src="https://github.com/stanekTM/RX_nRF24_Stanek/blob/master/documents/opentx_multi_tx.jpg">
 
 #

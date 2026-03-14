@@ -154,16 +154,13 @@ static void __attribute__((unused)) STANEK_send_packet()
   }
   
   // Fail-safe flag in bind option "Bnd"
-  bool fail_safe_flag = 0;
-  
   if (IS_BIND_IN_PROGRESS)
   {
-    fail_safe_flag = 1;
+    packet[0] = 1;
     
-    if (bind_counter++ == 500) BIND_DONE;
+    if (bind_counter++ == 550) BIND_DONE;
   }
-  
-  packet[0] = fail_safe_flag;
+  else packet[0] = 0;
   
   uint8_t payload_index = 0;
   
@@ -221,5 +218,5 @@ void STANEK_init(void)
   STANEK_RF_init();
 }
 
-#endif
+#endif // End STANEK_NRF24L01_INO
  
