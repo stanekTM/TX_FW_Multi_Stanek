@@ -7,7 +7,7 @@ The nRF24L01+ transceiver does not contain real RSSI and is only a rough countin
 * Setting the number of channels in the option selection (2 to 13 channels).
 * Fail-safe flag in bind option "Bnd".
 
-Attention! To select protocols and build firmware, use Arduino IDE version 1.8.19. The current Arduino IDE version 2. .. has bugs (I will investigate later).
+Attention! To select protocols and build firmware, use Arduino IDE version 1.8.19. Compiling with Arduino IDE version 2... has errors (I will investigate later).
 
 ### Works in serial mode with
 * Jumper T12
