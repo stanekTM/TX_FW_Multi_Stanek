@@ -14,7 +14,7 @@ Attention! To select protocols and build firmware, use Arduino IDE version 1.8.1
 * OpenTX v2.3.15
 * Current Multiprotocol TX firmware v1.3.4.52
 
-<img height="120" src=https://github.com/stanekTM/RX_nRF24_Stanek/blob/master/documents/opentx_multi_tx.png>
+<img height=120 src=https://github.com/stanekTM/RX_nRF24_Stanek/blob/master/documents/opentx_multi_tx.png>
 
 #
 # Multiprotocol TX Module
