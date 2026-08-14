@@ -104,7 +104,7 @@ uint16_t packet_period;
 uint8_t  packet_count;
 uint8_t  packet_sent;
 uint8_t  packet_length;
-#if defined(HOTT_CC2500_INO) || defined(ESKY150V2_CC2500_INO) || defined(MLINK_CYRF6936_INO)
+#if defined(HOTT_CC2500_INO) || defined(ESKY150V2_CC2500_INO) || defined(MLINK_CYRF6936_INO) || defined(ARES_CC2500_INO)
 	uint8_t  hopping_frequency[78];
 #else
 	uint8_t  hopping_frequency[50];
@@ -130,7 +130,7 @@ uint16_t pps_counter;
 #ifdef CC2500_INSTALLED
 	#ifdef SCANNER_CC2500_INO
 		uint8_t calData[255];
-	#elif defined(HOTT_CC2500_INO) || defined(ESKY150V2_CC2500_INO)
+	#elif defined(HOTT_CC2500_INO) || defined(ESKY150V2_CC2500_INO) || defined(ARES_CC2500_INO)
 		uint8_t calData[75];
 	#else
 		uint8_t calData[50];
@@ -264,6 +264,11 @@ uint8_t packet_in[TELEMETRY_BUFFER_SIZE];//telemetry receiving packets
 	#ifdef MULTI_CONFIG_INO
 		uint8_t CONFIG_SerialRX_val[7];
 		bool CONFIG_SerialRX=false;
+	#endif
+	#ifdef RLINK_HUB_TELEMETRY
+		uint8_t RLINK_SerialRX_val[8];
+		uint8_t RLINK_SerialRX_len=0;
+		bool RLINK_SerialRX=false;
 	#endif
 #endif // TELEMETRY
 
@@ -628,6 +633,11 @@ void setup()
 		#if defined(FORCE_HOTT_TUNING) && defined(HOTT_CC2500_INO)
 			if (protocol==PROTO_HOTT)
 				option			=	FORCE_HOTT_TUNING;			// Use config-defined tuning value for HOTT
+			else
+		#endif
+		#if defined(FORCE_ARES_TUNING) && defined(ARES_CC2500_INO)
+			if (protocol==PROTO_ARES)
+				option			=	FORCE_ARES_TUNING;			// Use config-defined tuning value for ARES
 			else
 		#endif
 				option			=	(uint8_t)PPM_prot_line->option;	// Use radio-defined option value
@@ -1372,6 +1382,11 @@ void update_serial_data()
 			option=FORCE_HOTT_TUNING;			// Use config-defined tuning value for HOTT
 		else
 	#endif
+	#if defined(FORCE_ARES_TUNING) && defined(ARES_CC2500_INO)
+		if (protocol==PROTO_ARES)
+			option=FORCE_ARES_TUNING;			// Use config-defined tuning value for ARES
+		else
+	#endif
 			option=rx_ok_buff[3];				// Use radio-defined option value
 
 	#ifdef FAILSAFE_ENABLE
@@ -1575,6 +1590,15 @@ void update_serial_data()
 			{//Protocol waiting for 7 bytes
 				memcpy(CONFIG_SerialRX_val, (const void *)&rx_ok_buff[27],7);
 				CONFIG_SerialRX=true;
+			}
+		#endif
+		#ifdef RLINK_HUB_TELEMETRY
+			if(protocol==PROTO_RLINK && sub_protocol==RLINK_DUMBORC_P
+				&& rx_len>27 && rx_len<=27+sizeof(RLINK_SerialRX_val))
+			{//DumboRC P raw command payload from Lua/multiBuffer bridge
+				RLINK_SerialRX_len=rx_len-27;
+				memcpy(RLINK_SerialRX_val, (const void *)&rx_ok_buff[27], RLINK_SerialRX_len);
+				RLINK_SerialRX=true;
 			}
 		#endif
 	}

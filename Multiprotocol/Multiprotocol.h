@@ -19,7 +19,7 @@
 #define VERSION_MAJOR		1
 #define VERSION_MINOR		3
 #define VERSION_REVISION	4
-#define VERSION_PATCH_LEVEL	58
+#define VERSION_PATCH_LEVEL	65
 
 #define MODE_SERIAL 0
 
@@ -135,6 +135,7 @@ enum PROTOCOLS
 	PROTO_SHENQI2	= 105,	// =>NRF24L01
 	PROTO_WL91X		= 106,	// =>CC2500 & NRF24L01
 	PROTO_WPL		= 107,	// =>NRF24L01
+	PROTO_ARES		= 108,	// =>CC2500
 	
 	PROTO_STANEK  = 125,  // =>NRF24L01
 	PROTO_NANORF	= 126,	// =>NRF24L01
@@ -217,6 +218,7 @@ enum SLT
 	MR100		= 4,
 	SLT_V1_4	= 5,
 	RF_SIM		= 6,
+	SLT6TX		= 7,
 };
 enum CX10
 {
@@ -474,6 +476,12 @@ enum RLINK
 	RLINK_AIR		= 1,
 	RLINK_DUMBORC	= 2,
 	RLINK_RC4G		= 3,
+	RLINK_DUMBORC_P	= 4,
+};
+enum REALACC
+{
+	REALACC_R11		= 0,
+	REALACC_WLV8TX	= 1,
 };
 enum MOULDKG
 {
@@ -508,6 +516,7 @@ enum SGF22
 	SGF22_F22S		= 1,
 	SGF22_J20 		= 2,
 	SGF22_CX10		= 3,
+	SGF22_T28 		= 4,
 };
 enum JIABAILE
 {
@@ -585,6 +594,7 @@ enum MultiPacketTypes
 	MULTI_TELEMETRY_MLINK			= 15,
 	MULTI_TELEMETRY_CONFIG			= 16,
 	MULTI_TELEMETRY_PROTO			= 17,
+	MULTI_TELEMETRY_RLINK			= 18,
 };
 
 // Macros
@@ -1143,6 +1153,7 @@ Serial: 100000 Baud 8e2      _ xxxx xxxx p --
 			MR100		4
 			SLT_V1_4CH	5
 			RF_SIM		6
+			SLT6TX		7
 		sub_protocol==E01X
 			E012		0
 			E015		1
@@ -1201,6 +1212,8 @@ Serial: 100000 Baud 8e2      _ xxxx xxxx p --
 			RLINK_SURFACE	0
 			RLINK_AIR		1
 			RLINK_DUMBORC	2
+			RLINK_RC4G		3
+			RLINK_DUMBORC_P	4
 
    Power value => 0x80	0=High/1=Low
   Stream[3]   = option_protocol;
@@ -1228,6 +1241,7 @@ Serial: 100000 Baud 8e2      _ xxxx xxxx p --
       FrSkyX and FrSkyX2: Stream[27..34] during normal operation unstuffed SPort data to be sent
 	  HoTT: Stream[27] 1 byte for telemetry type
 	  DSM: Stream[27..33] Forward Programming
+	  RadioLink/DumboRC P: Stream[27..35] raw command payload, used to send failsafe and gyro settings
 */
 /*
   Multiprotocol telemetry/command definition for OpenTX and erskyTX
@@ -1378,5 +1392,9 @@ Serial: 100000 Baud 8e2      _ xxxx xxxx p --
    data[n+2]   = number of sub protocols
    data[n+3]   = sub protocols text length, only sent if nbr_sub != 0
    data[n+4..] = sub protocol names, only sent if nbr_sub != 0
-   
+
+  Type 0x12 RadioLink/DumboRC P raw command payload
+   length: variable
+   data[0..] = raw command payload, used to send failsafe and gyro settings
+
 */

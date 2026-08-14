@@ -69,6 +69,11 @@
 
 // Check forced tuning values are valid
 //CC2500
+#ifdef FORCE_ARES_TUNING
+	#if ( FORCE_ARES_TUNING < -127 ) || ( FORCE_ARES_TUNING > 127 )
+		#error "The ARES forced frequency tuning value is outside of the range -127..127."
+	#endif
+#endif
 #ifdef FORCE_CORONA_TUNING
 	#if ( FORCE_CORONA_TUNING < -127 ) || ( FORCE_CORONA_TUNING > 127 )
 		#error "The CORONA forced frequency tuning value is outside of the range -127..127."
@@ -276,6 +281,7 @@
 #endif
 
 #if not defined(CC2500_INSTALLED) || defined MULTI_EU
+	#undef	ARES_CC2500_INO
 	#undef	CORONA_CC2500_INO
 	#undef	E016HV2_CC2500_INO
 	#undef	ESKY150V2_CC2500_INO
@@ -365,11 +371,6 @@
 	#undef	XK_CCNRF_INO
 	#undef	XK2_CCNRF_INO
 #endif
-#if defined(MCU_STM32F103C8)	// Save flash space...
-	#undef	BUMBLEB_CCNRF_INO
-	#undef	Q303_CCNRF_INO
-	#undef	Q90C_CCNRF_INO
-#endif
 #if not defined(DSM_CYRF6936_INO)
 	#undef	LOSI_CYRF6936_INO
 #endif
@@ -387,12 +388,9 @@
 
 #ifdef MULTI_AIR
 	#undef	JOYSWAY_A7105_INO
-	//#undef	KYOSHO_A7105_INO
-	//#undef	PELIKAN_A7105_INO
 	#undef	LOSI_CYRF6936_INO		//Need DSM to be enabled
 	#undef	TRAXXAS_CYRF6936_INO
 	#undef	EAZYRC_NRF24L01_INO
-	//#undef	KYOSHO2_NRF24L01_INO
 	#undef	KYOSHO3_CYRF6936_INO
 	#undef	MOULDKG_NRF24L01_INO
 	#undef	SHENQI_NRF24L01_INO
@@ -402,12 +400,21 @@
 	#undef	KAMTOM_NRF24L01_INO
 	#undef	WL91X_CCNRF_INO
 	#undef	WPL_NRF24L01_INO
-	//Save flash space...
+#endif
+
+#if defined(MULTI_AIR) || defined(MCU_STM32F103C8)
+	// Save flash space...
+	#undef	BUMBLEB_CCNRF_INO
 	#undef	CABELL_NRF24L01_INO
+	#undef	FQ777_NRF24L01_INO
+	#undef	NCC1701_NRF24L01_INO
+	#undef	Q303_CCNRF_INO
+	#undef	Q90C_CCNRF_INO
 	#undef	REDPINE_CC2500_INO
 #endif
 
 #ifdef MULTI_SURFACE
+	#undef	ARES_CC2500_INO
 	#undef	BUGS_A7105_INO
 	#undef	HEIGHT_A7105_INO
 	#undef	HUBSAN_A7105_INO
@@ -445,7 +452,7 @@
 	#undef	NCC1701_NRF24L01_INO
 	#undef	POTENSIC_NRF24L01_INO
 	#undef	PROPEL_NRF24L01_INO
-	#undef	REALACC_NRF24L01_INO
+	//#undef	REALACC_NRF24L01_INO // This now contains a WLtoys car sub protocol
 	#undef	SGF22_NRF24L01_INO
 	#undef	SYMAX_NRF24L01_INO
 	#undef	V761_NRF24L01_INO

@@ -120,6 +120,7 @@ const char STR_JIABAILE[]   ="JIABAILE";
 const char STR_KAMTOM[]     ="KAMTOM";
 const char STR_WL91X[]      ="WL91x";
 const char STR_WPL[]        ="WPL";
+const char STR_ARES[]        ="ARES";
 
 const char STR_SUBTYPE_FLYSKY[] =     "\x04""Std\0""V9x9""V6x6""V912""CX20";
 const char STR_SUBTYPE_HUBSAN[] =     "\x04""H107""H301""H501";
@@ -140,7 +141,7 @@ const char STR_SUBTYPE_DEVO[] =       "\x04""8ch\0""10ch""12ch""6ch\0""7ch\0";
 const char STR_SUBTYPE_YD717[] =      "\x07""Std\0   ""SkyWlkr""Syma X4""XINXUN\0""NIHUI\0 ";
 const char STR_SUBTYPE_KN[] =         "\x06""WLtoys""FeiLun";
 const char STR_SUBTYPE_SYMAX[] =      "\x03""Std""X5C";
-const char STR_SUBTYPE_SLT[] =        "\x06""V1_6ch""V2_8ch""Q100\0 ""Q200\0 ""MR100\0""V1_4ch""RF_SIM";
+const char STR_SUBTYPE_SLT[] =        "\x06""V1_6ch""V2_8ch""Q100\0 ""Q200\0 ""MR100\0""V1_4ch""RF_SIM""SLT6TX";
 const char STR_SUBTYPE_CX10[] =       "\x07""Green\0 ""Blue\0  ""DM007\0 ""-\0     ""JC3015a""JC3015b""MK33041";
 const char STR_SUBTYPE_CG023[] =      "\x05""Std\0 ""YD829";
 const char STR_SUBTYPE_BAYANG[] =     "\x07""Std\0   ""H8S3D\0 ""X16 AH\0""IRDrone""DHD D4\0""QX100\0 ";
@@ -181,7 +182,8 @@ const char STR_SUBTYPE_WFLY2[] =      "\x05""RF20x";
 const char STR_SUBTYPE_HOTT[] =       "\x07""Sync\0  ""No_Sync";
 const char STR_SUBTYPE_PELIKAN[] =    "\x05""Pro\0 ""Lite\0""SCX24";
 const char STR_SUBTYPE_V761[] =       "\x05""3ch\0 ""4ch\0 ""TOPRC";
-const char STR_SUBTYPE_RLINK[] =      "\x07""Surface""Air\0   ""DumboRC""RC4G\0  ";
+const char STR_SUBTYPE_RLINK[] =      "\x07""Surface""Air\0   ""DumboRC""RC4G\0  ""Dumbo_P";
+const char STR_SUBTYPE_REALACC[] =    "\x06""R11\0  ""WLV8TX";
 const char STR_SUBTYPE_KYOSHO[] =     "\x04""FHSS""Hype";
 const char STR_SUBTYPE_KYOSHO2[] =    "\x05""KT-17";
 const char STR_SUBTYPE_KYOSHO3[] =    "\x03""ASF";
@@ -191,7 +193,7 @@ const char STR_SUBTYPE_MOULDKG[] =    "\x05""A4444""D4444""A664\0";
 const char STR_SUBTYPE_KF606[] =      "\x06""KF606\0""MIG320""ZCZ50\0";
 const char STR_SUBTYPE_E129[] =       "\x04""E129""C186";
 const char STR_SUBTYPE_FX[] =         "\x05""FX816""FX620""9630\0""Q560\0""QF012""BM26\0""A570\0";
-const char STR_SUBTYPE_SGF22[] =      "\x04""F22\0""F22S""J20\0""CX10";
+const char STR_SUBTYPE_SGF22[] =      "\x04""F22\0""F22S""J20\0""CX10""T28\0";
 const char STR_SUBTYPE_JIABAILE[] =   "\x04""Std\0""Gyro";
 #define NO_SUBTYPE		nullptr
 
@@ -233,6 +235,8 @@ const mm_protocol_definition multi_protocols[] = {
 	#endif
 	#if defined(STANEK_NRF24L01_INO)
 	  {PROTO_STANEK,     STR_STANEK,    NO_SUBTYPE,            0, OPTION_OPTION,  0, 0, SW_NRF,    STANEK_init,     STANEK_callback     },
+	#if defined(ARES_CC2500_INO)
+		{PROTO_ARES,       STR_ARES,      NO_SUBTYPE,            0, OPTION_RFTUNE,  0, 0, SW_CC2500, ARES_init,       ARES_callback       },
 	#endif
 	#if defined(ASSAN_NRF24L01_INO)
 		{PROTO_ASSAN,      STR_ASSAN,     NO_SUBTYPE,            0, OPTION_NONE,    0, 0, SW_NRF,    ASSAN_init,      ASSAN_callback      },
@@ -464,10 +468,10 @@ const mm_protocol_definition multi_protocols[] = {
 		{PROTO_Q90C,       STR_Q90C,      NO_SUBTYPE,            0, OPTION_RFTUNE,  0, 0, SW_NRF,    Q90C_init,       Q90C_callback       },
 	#endif
 	#if defined(RLINK_CC2500_INO)
-		{PROTO_RLINK,      STR_RLINK,     STR_SUBTYPE_RLINK,     4, OPTION_RFTUNE,  0, 0, SW_CC2500, RLINK_init,      RLINK_callback      },
+		{PROTO_RLINK,      STR_RLINK,     STR_SUBTYPE_RLINK,     5, OPTION_RFTUNE,  0, 0, SW_CC2500, RLINK_init,      RLINK_callback      },
 	#endif
 	#if defined(REALACC_NRF24L01_INO)
-		{PROTO_REALACC,    STR_REALACC,   NO_SUBTYPE,            0, OPTION_NONE,    0, 0, SW_NRF,    REALACC_init,    REALACC_callback    },
+		{PROTO_REALACC,    STR_REALACC,   STR_SUBTYPE_REALACC,   2, OPTION_NONE,    0, 0, SW_NRF,    REALACC_init,    REALACC_callback    },
 	#endif
 	#if defined(REDPINE_CC2500_INO)
 		{PROTO_REDPINE,    STR_REDPINE,   STR_SUBTYPE_REDPINE,   2, OPTION_RFTUNE,  0, 0, SW_CC2500, REDPINE_init,    REDPINE_callback    },
@@ -479,7 +483,7 @@ const mm_protocol_definition multi_protocols[] = {
 		{PROTO_SCORPIO,    STR_SCORPIO,   NO_SUBTYPE,            0, OPTION_NONE,    0, 0, SW_CYRF,   SCORPIO_init,    SCORPIO_callback    },
 	#endif
 	#if defined(SGF22_NRF24L01_INO)
-		{PROTO_SGF22,      STR_SGF22,     STR_SUBTYPE_SGF22,     4, OPTION_NONE,    0, 0, SW_NRF,    SGF22_init,      SGF22_callback      },
+		{PROTO_SGF22,      STR_SGF22,     STR_SUBTYPE_SGF22,     5, OPTION_NONE,    0, 0, SW_NRF,    SGF22_init,      SGF22_callback      },
 	#endif
 	#if defined(SHENQI_NRF24L01_INO)
 		{PROTO_SHENQI,     STR_SHENQI,    NO_SUBTYPE,            0, OPTION_NONE,    0, 0, SW_NRF,    SHENQI_init,     SHENQI_callback     },
@@ -491,7 +495,7 @@ const mm_protocol_definition multi_protocols[] = {
 		{PROTO_SKYARTEC,   STR_SKYARTEC,  NO_SUBTYPE,            0, OPTION_RFTUNE,  0, 1, SW_CC2500, SKYARTEC_init,   SKYARTEC_callback   },
 	#endif
 	#if defined(SLT_CCNRF_INO)
-		{PROTO_SLT,        STR_SLT,       STR_SUBTYPE_SLT,       7, OPTION_RFTUNE,  0, 1, SW_NRF,    SLT_init,        SLT_callback        },
+		{PROTO_SLT,        STR_SLT,       STR_SUBTYPE_SLT,       8, OPTION_RFTUNE,  0, 1, SW_NRF,    SLT_init,        SLT_callback        },
 	#endif
   #if defined(SYMAX_NRF24L01_INO)
 		{PROTO_SYMAX,      STR_SYMAX,     STR_SUBTYPE_SYMAX,     2, OPTION_NONE,    0, 0, SW_NRF,    SYMAX_init,      SYMAX_callback      },

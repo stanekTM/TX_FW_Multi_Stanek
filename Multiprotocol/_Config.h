@@ -107,6 +107,7 @@
 //#define FORCE_REDPINE_TUNING	0
 //#define FORCE_FUTABA_TUNING	0
 //#define FORCE_SKYARTEC_TUNING	0
+//#define FORCE_ARES_TUNING		0
 
 /** A7105 Fine Frequency Tuning **/
 //This is required in rare cases where some A7105 modules and/or RXs have an inaccurate crystal oscillator.
@@ -221,6 +222,23 @@
 //#define	SKYARTEC_CC2500_INO
 //#define	REDPINE_CC2500_INO
 //#define	RLINK_CC2500_INO
+#define	ARES_CC2500_INO
+#define	CORONA_CC2500_INO
+#define	E016HV2_CC2500_INO
+#define	ESKY150V2_CC2500_INO
+#define	FRSKYL_CC2500_INO
+#define	FRSKYD_CC2500_INO
+#define	FRSKYV_CC2500_INO
+#define	FRSKYX_CC2500_INO		//Include FRSKYX2 protocol
+#define	FRSKY_RX_CC2500_INO
+#define	FUTABA_CC2500_INO
+#define	HITEC_CC2500_INO
+#define	HOTT_CC2500_INO
+//#define	IKEAANSLUTA_CC2500_INO  // This is mostly a "for-fun" kind of a thing, not needed for most users
+#define	SCANNER_CC2500_INO
+#define	SKYARTEC_CC2500_INO
+#define	REDPINE_CC2500_INO
+#define	RLINK_CC2500_INO
 
 //The protocols below need a NRF24L01 to be installed
 #define STANEK_NRF24L01_INO
@@ -295,6 +313,10 @@
 //The DSM protocol is using by default the Spektrum throw of 1100..1900us @100% and 1000..2000us @125%.
 // For more throw, 1024..1976us @100% and 904..2096us @125%, remove the "//" on the line below. Be aware that too much throw can damage some UMX servos. To achieve standard throw in this mode use a channel weight of 84%.
 //#define DSM_MAX_THROW
+
+//Enable X-Plus channels, Ch13-16.. if Enabled, will still respect the DSM_THROTTLE_KILL_CH feature
+#define DSM_X_PLUS
+
 //Some models (X-Vert, Blade 230S...) require a special value to instant stop the motor(s).
 // You can disable this feature by adding "//" on the line below. You have to specify which channel (14 by default) will be used to kill the throttle channel.
 // If the channel 14 is above -50% the throttle is untouched but if it is between -50% and -100%, the throttle output will be forced between -100% and -150%.
@@ -562,6 +584,8 @@ const PPM_Parameters PPM_prot[14*NBR_BANKS]=	{
 //  - 0x0000ABCD will give to the protocol the channels in the order 1,2,3,4,10,11,12,13 which potentially enables acces to channels not available on your TX. Note A=10,B=11,C=12,D=13,E=14,F=15.
 
 /* Available protocols and associated sub protocols to pick and choose from (Listed in alphabetical order)
+	PROTO_ARES
+		NONE
 	PROTO_AFHDS2A
 		PWM_IBUS
 		PPM_IBUS
@@ -822,7 +846,8 @@ const PPM_Parameters PPM_prot[14*NBR_BANKS]=	{
 	PROTO_Q90C
 		NONE
 	PROTO_REALACC
-		NONE
+		REALACC_R11
+		REALACC_WLV8TX
 	PROTO_REDPINE
 		RED_FAST
 		RED_SLOW
@@ -831,15 +856,17 @@ const PPM_Parameters PPM_prot[14*NBR_BANKS]=	{
 		RLINK_AIR
 		RLINK_DUMBORC
 		RLINK_RC4G
+		RLINK_DUMBORC_P
 	PROTO_SCANNER
 		NONE
 	PROTO_SCORPIO
 		NONE
 	PROTO_SGF22
-		SGF22
-		F22S
-  		J20
-		CX10
+		SGF22_F22
+		SGF22_F22S
+  		SGF22_J20
+		SGF22_CX10
+		SGF22_T28
 	PROTO_SHENQI
 		NONE
 	PROTO_SHENQI2
@@ -854,6 +881,7 @@ const PPM_Parameters PPM_prot[14*NBR_BANKS]=	{
 		MR100
 		V1_4CH
 		RF_SIM
+		SLT6TX
 	PROTO_SYMAX
 		SYMAX
 		SYMAX5C

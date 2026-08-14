@@ -63,6 +63,7 @@ You've upgraded the module but the radio does not display the name of the protoc
 
 Protocol Name|Build|Protocol Number|Sub_Proto 0|Sub_Proto 1|Sub_Proto 2|Sub_Proto 3|Sub_Proto 4|Sub_Proto 5|Sub_Proto 6|Sub_Proto 7|RF Module|Emulation
 ---|---|---|---|---|---|---|---|---|---|---|---|---
+[Ares](Protocols_Details.md#Ares---108)|AIR|108|||||||||CC2500|
 [Assan](Protocols_Details.md#ASSAN---24)|AIR/SFC|24|||||||||NRF24L01|
 [Bayang](Protocols_Details.md#BAYANG---14)|AIR/SFC|14|Bayang|H8S3D|X16_AH|IRDRONE|DHD_D4|QX100|||NRF24L01|XN297
 [Bayang RX](Protocols_Details.md#BAYANG-RX---59)|AIR/SFC|59|Multi|CPPM|||||||NRF24L01|XN297
@@ -137,16 +138,16 @@ CFlie|AIR|38|CFlie||||||||NRF24L01|
 [Q2X2](Protocols_Details.md#Q2X2---29)||29|Q222|Q242|Q282||||||NRF24L01|
 [Q303](Protocols_Details.md#Q303---31)||31|Q303|CX35|CX10D|CX10WD|||||NRF24L01|XN297
 [Q90C](Protocols_Details.md#Q90C---72)||72|Q90C*||||||||NRF24L01|XN297
-[RadioLink](Protocols_Details.md#RadioLink---74)||74|Surface|Air|DumboRC|RC4G|||||CC2500|
-[Realacc](Protocols_Details.md#Realacc---76)||76|R11||||||||NRF24L01|
+[RadioLink](Protocols_Details.md#RadioLink---74)||74|Surface|Air|DumboRC|RC4G|Dumbo_P||||CC2500|
+[Realacc](Protocols_Details.md#Realacc---76)||76|R11|WLV8TX|||||||NRF24L01|
 [Redpine](Protocols_Details.md#Redpine---50)||50|FAST|SLOW|||||||NRF24L01|XN297
 [Scanner](Protocols_Details.md#Scanner---54)||54|||||||||CC2500|
 [Scorpio](Protocols_Details.md#Scorpio---94)||94|||||||||CYRF6936|
-[SGF22](Protocols_Details.md#SGF22---97)||97|F22|F22S|J20|CX10|||||NRF24L01|XN297
+[SGF22](Protocols_Details.md#SGF22---97)||97|F22|F22S|J20|CX10|T28||||NRF24L01|XN297
 [Shenqi](Protocols_Details.md#Shenqi---19)||19|Shenqi||||||||NRF24L01|LT8900
 [Shenqi2](Protocols_Details.md#Shenqi2---105)||105|Shenqi2||||||||NRF24L01|XN297
 [Skyartec](Protocols_Details.md#Skyartec---68)||68|||||||||CC2500|CC2500
-[SLT](Protocols_Details.md#SLT---11)||11|SLT_V1|SLT_V2|Q100|Q200|MR100|V1_4CH|RF_SIM||NRF24L01|CC2500
+[SLT](Protocols_Details.md#SLT---11)||11|SLT_V1|SLT_V2|Q100|Q200|MR100|V1_4CH|RF_SIM|SLT6TX|NRF24L01|CC2500
 [SymaX](Protocols_Details.md#Symax---10)||10|SYMAX|SYMAX5C|||||||NRF24L01|
 [Traxxas](Protocols_Details.md#Traxxas---43)||43|TQ2|TQ1|||||||CYRF6936|
 [V2x2](Protocols_Details.md#V2X2---5)||5|V2x2|JXD506|MR101||||||NRF24L01|
@@ -237,21 +238,21 @@ Option is used to change the servo refresh rate. A value of 0 gives 50Hz (min), 
 ### Sub_protocol PWM_IBUS - *0*
 CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8|CH9|CH10|CH11|CH12|CH13|CH14|CH15|CH16|CH17
 ---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---
-A|E|T|R|CH5|CH6|CH7|CH8|CH9|CH10|CH11|CH12|CH13|CH14CH15|CH16|LQI
+A|E|T|R|CH5|CH6|CH7|CH8|CH9|CH10|CH11|CH12|CH13|CH14|CH15|CH16|LQI
 
 RX output will match the Flysky standard AETR.
 
 ### Sub_protocol PPM_IBUS - *1*
 CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8|CH9|CH10|CH11|CH12|CH13|CH14|CH15|CH16|CH17
 ---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---
-A|E|T|R|CH5|CH6|CH7|CH8|CH9|CH10|CH11|CH12|CH13|CH14CH15|CH16|LQI
+A|E|T|R|CH5|CH6|CH7|CH8|CH9|CH10|CH11|CH12|CH13|CH14|CH15|CH16|LQI
 
 RX output will match the Flysky standard AETR.
 
 ### Sub_protocol PWM_SBUS - *2*
 CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8|CH9|CH10|CH11|CH12|CH13|CH14|CH15|CH16|CH17
 ---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---
-A|E|T|R|CH5|CH6|CH7|CH8|CH9|CH10|CH11|CH12|CH13|CH14CH15|CH16|LQI
+A|E|T|R|CH5|CH6|CH7|CH8|CH9|CH10|CH11|CH12|CH13|CH14|CH15|CH16|LQI
 
 RX output will match the Flysky standard AETR.
 
@@ -539,9 +540,9 @@ Extended limits supported
 
 Telemetry enabled for TSSI and plugins
 
-CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8|CH9|CH10|CH11|CH12|----|CH14
----|---|---|---|---|---|---|---|---|----|----|----|----|----
-A|E|T|R|CH5|CH6|CH7|CH8|CH9|CH10|CH11|CH12|----|TH_KILL
+CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8|CH9|CH10|CH11|CH12|CH13|CH14|CH15|CH16
+---|---|---|---|---|---|---|---|---|----|----|----|----|----|----|----
+A|E|T|R|CH5|CH6|CH7|CH8|CH9|CH10|CH11|CH12|CH13|CH14/TH_KILL|CH15|CH16
 
 Notes:
  - The "AUTO" sub protocol is recommended to automatically select the best settings for your DSM RX. If the RX doesn't bind or work properly after bind, don't hesitate to test different combinations of sub protocol and number of channels until you have something working.
@@ -551,6 +552,7 @@ Notes:
     - If you want to override the above and get maximum throw either uncomment in _config.h the line #define DSM_MAX_THROW or on OpenTX 2.3.3+ use the "Enable max throw" feature on the GUI (0=No,1=Yes). In this mode to achieve standard throw use a channel weight of 84%.
  - TH_KILL is a feature which is enabled on channel 14 by default (can be disabled/changed) in the _config.h file. Some models (X-Vert, Blade 230S...) require a special position to instant stop the motor(s). If the channel 14 is above -50% the throttle is untouched but if it is between -50% and -100%, the throttle output will be forced between -100% and -150%. For example, a value of -80% applied on channel 14 will instantly kill the motors on the X-Vert.
  - To allow SAFE to be ON with a switch assignment you must remove the bind plug after powering up the RX but before turning on the TX to bind. If you select Autodetect to bind, The MPM will choose DSMX 11ms and Channels 1-7 ( Change to 1-9 if you wish to assign switch above channel 7 ). Then in order to use the manuals diagram of both sticks "Down-Inside" to set a SAFE Select Switch Designation, you must have Throttle and Elevator channels set to Normal direction but the Aileron and Rudder set to Reverse direction. If setting up a new model with all channels set to Normal you can hold both sticks "Down- OUTSIDE" to assign the switch with 5x flips. Tested on a Mode2 radio.
+ - Channels 13/14/15/16 are using XPlus with TH_KILL disabled. They are available when the number of channels selected on the TX is more than 12.
  
 Option=number of channels from 3 to 12. Option|0x80 enables Max Throw. Option|0x40 enables a servo refresh rate of 11ms.
 
@@ -759,6 +761,24 @@ CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8|CH9
 
 ***
 # CC2500 RF Module
+
+## Ares - *108*
+Models: ARES Gamma 370, P-51D Mustang 350, RTF models with 6HPA-Tx and AZS12006-Rx (6 channel).
+
+Autobind protocol:
+- to bind, power on the TX first
+- then power on the receiver - LED slow flash
+- press receiver bind button - LED faster flash
+- receiver LED will flash quickly (15 seconds) when bound LED turns solid
+
+Receiver numbers (0-63) available for model match, MPM global ID used for unique module identifier. Changing the TX module or RX number will require re-binding the receiver.
+
+Option for this protocol corresponds to fine frequency tuning. This value is different for each Module and **must** be accurate otherwise the link will not be stable.
+Check the [Frequency Tuning page](/docs/Frequency_Tuning.md) to determine it.
+
+CH1|CH2|CH3|CH4|CH5|CH6
+---|---|---|---|---|---
+CH1|CH2|CH3|CH4|CH5|CH6
 
 ## CORONA - *37*
 Models: Corona 2.4GHz FSS and DSSS receivers.
@@ -1063,7 +1083,21 @@ Air protocol. TXs: T8FB,T8S. Compatible RXs: R8EF,R8FM,R8SM,R4FG,R4F
 Telemetry: RX_RSSI (for the original value add -256), TX_RSSI, TX_QLY (0..100%)
 
 ### Sub_protocol DumboRC - *2*
-Compatible RXs: X6/X6F/X6FG
+Compatible RXs:
+* X6/X6F/X6FG/X6DC/X6DCG/X10F/X10FG (Other X Series should work as well)
+* P6F/P6FG/P6DC/P6DCG/P6FP/P10F/P10FG (Other P Series should work as well)
+
+For P series specific features, see subprotocol 4 below.
+
+CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8|CH9|CH10
+---|---|---|---|---|---|---|---|---|----
+CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8/Gyro gain|CH9|CH10
+
+Telemetry:
+* RX_RSSI uses the receiver's direct percentage when available
+* TX_RSSI is the module-side received RSSI
+* TX_QLY is 0..100%
+* A2=external battery voltage in 0.1V units (set the ratio to 25.5 and adjust with offset)
 
 ### Sub_protocol RC4G - *3*
 Compatible RXs: R4EH-G(/R4EH-H)
@@ -1075,6 +1109,21 @@ CH1|CH2|CH3|CH4|CH5|FS_CH1|FS_CH2|FS_CH3|FS_CH4
 FS=FailSafe
 
 CH5 is driven by CH3 on the original TX, gyro sensitivity?
+
+### Sub_protocol Dumbo_P - *4*
+Compatible RXs: P6F/P6FG/P6DC/P6DCG/P6FP/P10F/P10FG (Other P Series should work as well)
+
+P series supports configuring receiver from transmitter. Originally, this logic appeared on DumboRC DDF-350 transmitter in 1.1.5 firmware version.
+
+You can adjust these settings by using "DumboRC P Series.lua" script.
+
+Settings include:
+* gyro on/off
+* gyro phase
+* gyro tuning
+* gyro gain channel
+* setting gyro endpoints
+* setting failsafe values
 
 ## Futaba - *21*
 Also called SFHSS depending on radio version.
@@ -1502,6 +1551,16 @@ Please save radio-profile with a new name without setting reset-button in RF8. T
 
 Find the [Reset21] section and change Input=INT:-1 to Input=INT:9 
 
+### Sub_protocol SLT6TX - *7*
+Models: Blade Revolution 90 FP helicopter (SLT6 transmitter)
+
+CH1|CH2|CH3|CH4|CH5|CH6
+---|---|---|---|---|---
+A|E|T|R|FMODE|PANIC
+
+FMODE: flight mode switch (3-position)
+
+PANIC: panic/recovery button
 
 ## V911S - *46*
 
@@ -1871,7 +1930,7 @@ FX9630 and FX9603 Gyro: -100%=6G small throw, 0%=6G large throw, +100%=3D
 QIDI-550 Gyro: -100%=3D, 0%=6G, +100%=Torque
 
 ### Sub_protocol Q560 - *3*
-Model: QIDI-560, QIDI-580 (Cirrus SR22)
+Model: QIDI-560, QIDI-580, QIDI-590
 
 CH1|CH2|CH3|CH4|CH5|CH6|CH7
 ---|---|---|---|---|---|---
@@ -2272,13 +2331,30 @@ A|E|T|R|FLIP|LED|PICTURE|VIDEO|HEADLESS|RTH|XCAL|YCAL
 Model: JXD 509 is using Q282 with CH12=Start/Stop motors
 
 ## Realacc - *76*
-Model: Realacc R11, Eachine E017
 
 Autobind protocol
+
+### Sub_protocol R11 - *0*
+
+Models: Realacc R11, Eachine E017
 
 CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8|CH9|CH10|CH11
 ---|---|---|---|---|---|---|---|---|----|----
 A|E|T|R|FLIP|LIGHT|CALIB|HLESS|RTH|THR_CUT|ROTATE
+
+### Sub_protocol WLV8TX - *1*
+
+Models: WLtoys 284019A, 284191, Cars using V8 Transmitter
+
+CH1|CH2|CH3|CH4|CH5
+---|---|---|---|---
+Steering|Throttle|GY_TRIM|TH_TRIM|ST_TRIM
+
+GY TRIM: (Rate) -100% Min, +100% Max, variable/set up on a adj. pot.
+
+TH TRIM: (Rate) -100% Min, +100% Max, variable/set up on a adj. pot.
+
+ST TRIM: -100% Left, +100% Right, variable/shouldn't be needed? CH1 trim on steering is available on most radios.
 
 ## Redpine - *50*
 [Link to the forum](https://www.rcgroups.com/forums/showthread.php?3236043-Redpine-Lowest-latency-RC-protocol)
@@ -2320,6 +2396,9 @@ Model: Cheerson CX-10 with red PCB
 **Only 2 IDs available**, use RX num to cycle through them.
 
 Mode -100% = Low, 0% = Medium, 100% = High
+
+### Sub_protocol T28
+Model: FMS T28
 
 ## Shenqi - *19*
 Autobind protocol
