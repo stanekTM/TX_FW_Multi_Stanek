@@ -19,7 +19,7 @@
 #define VERSION_MAJOR		1
 #define VERSION_MINOR		3
 #define VERSION_REVISION	4
-#define VERSION_PATCH_LEVEL	65
+#define VERSION_PATCH_LEVEL	68
 
 #define MODE_SERIAL 0
 
@@ -394,6 +394,7 @@ enum XK
 	X450	= 0,
 	X420	= 1,
 	XK_CARS	= 2,
+	MOFLY	= 3,
 };
 enum XN297DUMP
 {
@@ -1174,6 +1175,8 @@ Serial: 100000 Baud 8e2      _ xxxx xxxx p --
 		sub_protocol==XK
 			X450		0
 			X420		1
+			Cars		2
+			MoFly		3
 		sub_protocol==FRSKY_R9
 			R9_915		0
 			R9_868		1
