@@ -126,6 +126,7 @@ CFlie|AIR|38|CFlie||||||||NRF24L01|
 [Losi](Protocols_Details.md#Losi---89)||89|||||||||CYRF6936|
 [MJXq](Protocols_Details.md#MJXQ---18)||18|WLH08|X600|X800|H26D|E010*|H26WH|PHOENIX*||NRF24L01|XN297
 [MLINK](Protocols_Details.md#MLINK---78)||78|||||||||CYRF6936|
+[MoFly](Protocols_Details.md#MoFly---109)||109|||||||||NRF24L01&CC2500|XN297
 [MouldKg](Protocols_Details.md#mouldkg---90)||90|A4444|D4444|A664||||||NRF24L01|XN297
 [MT99xx](Protocols_Details.md#MT99XX---17)||17|MT|H7|YZ|LS|FY805|A180|DRAGON|F949G|NRF24L01|XN297
 [MT99xx2](Protocols_Details.md#MT99XX2---92)||92|PA18|SU35|||||||NRF24L01|XN297
@@ -1257,6 +1258,19 @@ If a CC2500 is installed it will be used for this sub protocol. Option in this c
 
 If only a NRF24L01 is installed then this sub protocol might be problematic because it is using the xn297L emulation with a transmission speed of 250kbps which doesn't work very well with every NRF24L01, this is an hardware issue with the authenticity and accuracy of the components.
 
+## MoFly - *109*
+Models: MoFly planes MF-X7, P-51D, MF-A84 and Ki-84
+
+If a CC2500 is installed it will be used for this sub protocol. Option in this case is used for fine frequency tuning like any CC2500 protocols so check the [Frequency Tuning page](/docs/Frequency_Tuning.md).
+
+If only a NRF24L01 is installed then this sub protocol might be problematic because it is using the xn297L emulation with a transmission speed of 250kbps which doesn't work very well with every NRF24L01, this is an hardware issue with the authenticity and accuracy of the components.
+
+CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8|CH9|CH10
+---|---|---|---|---|---|---|---|---|----
+A|E|T|R|Flight_modes|Rate_L/H|Back_Flip|Left_Roll|Right_Roll|Inverted
+
+Flight_modes: -100%=MM-Mode, 0%=3D-Mode, +100%=6G-Mode. CH7-CH9 are momentary switches. CH10 is a toggle switch.
+
 ## MT99XX - *17*
 Autobind protocol
 
@@ -1626,19 +1640,6 @@ A|E|T|R|FLIP|LIGHT
 
 ### Sub_protocol Cars - *2*
 Models: WLtoys cars 284131/284161/284010/124016/124017/144010 and Eachine EAT14
-
-### Sub_protocol MoFly - *3*
-Models: MoFly planes
-
-If a CC2500 is installed it will be used for this sub protocol. Option in this case is used for fine frequency tuning like any CC2500 protocols so check the [Frequency Tuning page](/docs/Frequency_Tuning.md).
-
-If only a NRF24L01 is installed then this sub protocol might be problematic because it is using the xn297L emulation with a transmission speed of 250kbps which doesn't work very well with every NRF24L01, this is an hardware issue with the authenticity and accuracy of the components.
-
-CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8|CH9|CH10
----|---|---|---|---|---|---|---|---|----
-A|E|T|R|Flight_modes|Rate_L/H|Back_Flip|Left_Roll|Right_Roll|Inverted
-
-Flight_modes: -100%=MM-Mode, 0%=3D-Mode, +100%=6G-Mode. CH7-CH9 are momentary switches. CH10 is a toggle switch.
 
 ## XK2 - *99*
 
@@ -2403,23 +2404,27 @@ Mode -100% = 3D, 0% = 6G
 ### Sub_protocol J20
 Model: KF700 J20
 
-Mode -100% = Gyro off, 0% = Horizontal, 100% = Vertical. CH8 - Invert, CH10 - Fix Height (Altitude hold)
+Mode: -100% = Gyro off, 0% = Horizontal, 100% = Vertical. CH8 - Invert, CH10 - Fix Height (Altitude hold)
 
 ### Sub_protocol CX10
 Model: Cheerson CX-10 with red PCB
 
 **Only 2 IDs available**, use RX num to cycle through them.
 
-Mode -100% = Low, 0% = Medium, 100% = High
+Mode: -100% = Low, 0% = Medium, 100% = High
 
 ### Sub_protocol T28
 Model: FMS T28
 
 CH1|CH2|CH3|CH4|CH5|CH6|CH7|CH8|CH9|CH10|CH11|CH12|CH13
 ---|---|---|---|---|---|---|---|---|---|---|---|---
-A|E|T|R|MODE|FLIP|LIGHT|-|RTH|-|-|-|RTH_SET
+A|E|T|R|MODE|STUNT|LIGHT|INVERT|RTH|-|-|-|RTH_SET
 
-Mode -100% = Gyro off, 0% = Stabilized, 100% = Optimized
+Mode: -100% = Gyro off, 0% = Stabilized, 100% = Optimized
+
+Notes:
+ - CH6/CH9/CH13 (STUNT, RTH, RTH Set) are NOT required to be bound, or used to fly the plane.
+ - CH9 (RTH) WILL function without CH13 (RTH Set) bound/used.
 
 ## Shenqi - *19*
 Autobind protocol
