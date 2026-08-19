@@ -297,9 +297,9 @@
 //#define	SLT_CCNRF_INO
 #define	UDIRC_CCNRF_INO
 #define	V911S_CCNRF_INO
-#define	WL91X_CCNRF_INO
-#define	XK_CCNRF_INO			//Include MoFly protocol
-#define	XK2_CCNRF_INO
+//#define	WL91X_CCNRF_INO
+//#define	XK_CCNRF_INO			//Include MoFly protocol
+//#define	XK2_CCNRF_INO
 
 //The protocols below need a SX1276 to be installed
 #define	FRSKYR9_SX1276_INO
